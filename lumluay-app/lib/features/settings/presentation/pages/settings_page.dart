@@ -15,8 +15,10 @@ final _qrMenuLinkProvider = FutureProvider<({String menuUrl, String tenantName})
   if (tenantSlug == null || tenantSlug.isEmpty) return null;
 
   final tenantProfile = await ref.read(settingsRepositoryProvider).getTenantProfile();
-  final apiBaseUrl = await storage.read(key: AppConstants.keyApiBaseUrl) ??
-      AppEnv.fromDartDefine().apiBaseUrl;
+  final env = AppEnv.fromDartDefine();
+  final apiBaseUrl = env.resolveApiBaseUrl(
+    await storage.read(key: AppConstants.keyApiBaseUrl),
+  );
   final publicBaseUrl = apiBaseUrl
       .replaceFirst(RegExp(r'/api/?$'), '')
       .replaceFirst(RegExp(r'/v1/?$'), '');

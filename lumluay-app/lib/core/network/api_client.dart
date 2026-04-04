@@ -25,10 +25,17 @@ class ApiClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final baseUrl = await _storage.read(key: AppConstants.keyApiBaseUrl)
-              ?? _env.apiBaseUrl;
+          final storedBaseUrl =
+              await _storage.read(key: AppConstants.keyApiBaseUrl);
+          final baseUrl = _env.resolveApiBaseUrl(storedBaseUrl);
           final token = await _storage.read(key: AppConstants.keyAccessToken);
           final tenantId = await _storage.read(key: AppConstants.keyTenantId);
+
+          if (_env.isProduction &&
+              storedBaseUrl != null &&
+              storedBaseUrl != baseUrl) {
+            await _storage.delete(key: AppConstants.keyApiBaseUrl);
+          }
 
           options.baseUrl = baseUrl;
           if (token != null) {

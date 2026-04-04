@@ -36,6 +36,34 @@ class AppEnv {
     );
   }
 
+  bool get isProduction => flavor == AppFlavor.prod;
+
+  String resolveApiBaseUrl(String? storedBaseUrl) {
+    if (storedBaseUrl == null || storedBaseUrl.isEmpty) {
+      return apiBaseUrl;
+    }
+
+    final storedUri = Uri.tryParse(storedBaseUrl);
+    final envUri = Uri.tryParse(apiBaseUrl);
+    if (storedUri == null || envUri == null) {
+      return apiBaseUrl;
+    }
+
+    if (!isProduction) {
+      return storedBaseUrl;
+    }
+
+    final isSameHost = storedUri.host == envUri.host;
+    final isSecure = storedUri.scheme == 'https';
+    final isCompatiblePath = storedUri.path.isEmpty ||
+        storedUri.path == '/' ||
+        storedUri.path.startsWith(envUri.path);
+
+    return isSameHost && isSecure && isCompatiblePath
+        ? storedBaseUrl
+        : apiBaseUrl;
+  }
+
   String get flavorName => switch (flavor) {
         AppFlavor.dev => 'dev',
         AppFlavor.staging => 'staging',
