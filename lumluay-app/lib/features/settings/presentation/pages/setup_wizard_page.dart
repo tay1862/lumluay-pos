@@ -367,7 +367,7 @@ class _CurrencyTaxStep extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DropdownButtonFormField<String>(
-              value: defaultCurrency,
+              initialValue: defaultCurrency,
               items: const [
                 DropdownMenuItem(value: 'THB', child: Text('THB - บาทไทย')),
                 DropdownMenuItem(value: 'LAK', child: Text('LAK - กีบลาว')),
@@ -459,7 +459,7 @@ class _PrinterStep extends StatelessWidget {
               TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'ชื่อเครื่องพิมพ์')),
               SizedBox(height: 8.h),
               DropdownButtonFormField<String>(
-                value: type,
+                initialValue: type,
                 items: const [
                   DropdownMenuItem(value: 'bluetooth', child: Text('Bluetooth')),
                   DropdownMenuItem(value: 'usb', child: Text('USB')),
@@ -520,35 +520,29 @@ class _ProductImportStep extends StatelessWidget {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.w),
-        child: Column(
-          children: [
-            RadioListTile<String>(
-              value: 'sample',
-              groupValue: selectedMode,
-              title: const Text('ใช้ข้อมูลตัวอย่าง (แนะนำ)'),
-              subtitle: const Text('5 หมวดหมู่, 20 สินค้า ตัวอย่างสำหรับร้านอาหาร'),
-              onChanged: (v) {
-                if (v != null) onChanged(v);
-              },
-            ),
-            RadioListTile<String>(
-              value: 'csv',
-              groupValue: selectedMode,
-              title: const Text('นำเข้า CSV'),
-              subtitle: const Text('จะรองรับขั้นถัดไป'),
-              onChanged: (v) {
-                if (v != null) onChanged(v);
-              },
-            ),
-            RadioListTile<String>(
-              value: 'later',
-              groupValue: selectedMode,
-              title: const Text('เพิ่มทีหลัง'),
-              onChanged: (v) {
-                if (v != null) onChanged(v);
-              },
-            ),
-          ],
+        child: RadioGroup<String>(
+          groupValue: selectedMode,
+          onChanged: (v) {
+            if (v != null) onChanged(v);
+          },
+          child: Column(
+            children: [
+              RadioListTile<String>(
+                value: 'sample',
+                title: const Text('ใช้ข้อมูลตัวอย่าง (แนะนำ)'),
+                subtitle: const Text('5 หมวดหมู่, 20 สินค้า ตัวอย่างสำหรับร้านอาหาร'),
+              ),
+              RadioListTile<String>(
+                value: 'csv',
+                title: const Text('นำเข้า CSV'),
+                subtitle: const Text('จะรองรับขั้นถัดไป'),
+              ),
+              RadioListTile<String>(
+                value: 'later',
+                title: const Text('เพิ่มทีหลัง'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -588,7 +582,7 @@ class _CreateStaffStep extends StatelessWidget {
             TextField(controller: pinCtrl, decoration: const InputDecoration(labelText: 'PIN (ตัวเลือก)', hintText: '4-6 หลัก')),
             SizedBox(height: 12.h),
             DropdownButtonFormField<String>(
-              value: role,
+              initialValue: role,
               decoration: const InputDecoration(labelText: 'บทบาท'),
               items: const [
                 DropdownMenuItem(value: 'cashier', child: Text('Cashier')),

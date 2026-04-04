@@ -334,7 +334,7 @@ class _AdjustStockDialogState extends ConsumerState<_AdjustStockDialog> {
               loading: () => const CircularProgressIndicator(),
               error: (_, __) => const Text('ไม่สามารถโหลดสินค้า'),
               data: (items) => DropdownButtonFormField<StockItem>(
-                value: _selectedItem,
+                initialValue: _selectedItem,
                 hint: const Text('เลือกสินค้า'),
                 items: items
                     .map((i) => DropdownMenuItem(
@@ -351,7 +351,7 @@ class _AdjustStockDialogState extends ConsumerState<_AdjustStockDialog> {
             SizedBox(height: 8.h),
             // Type
             DropdownButtonFormField<String>(
-              value: _type,
+              initialValue: _type,
               items: const [
                 DropdownMenuItem(value: 'purchase', child: Text('รับเข้า (ซื้อ)')),
                 DropdownMenuItem(value: 'adjustment', child: Text('ปรับปรุง')),

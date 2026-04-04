@@ -63,7 +63,7 @@ class LumluayApp extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
     final locale = ref.watch(appLocaleProvider);
     return ScreenUtilInit(
-      designSize: const Size(1024, 768),
+      designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) => MaterialApp.router(

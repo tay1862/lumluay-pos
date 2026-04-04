@@ -372,7 +372,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                           loading: () => const LinearProgressIndicator(),
                           error: (_, __) => const SizedBox.shrink(),
                           data: (cats) => DropdownButtonFormField<String?>(
-                            value: _selectedCategoryId,
+                            initialValue: _selectedCategoryId,
                             decoration: const InputDecoration(
                                 labelText: 'หมวดหมู่',
                                 border: OutlineInputBorder()),
@@ -388,7 +388,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                         ),
                         SizedBox(height: 12.h),
                         DropdownButtonFormField<String>(
-                          value: _productType,
+                          initialValue: _productType,
                           decoration: const InputDecoration(
                               labelText: 'ประเภทสินค้า',
                               border: OutlineInputBorder()),
@@ -511,7 +511,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                             style: TextStyle(fontSize: 11.sp),
                           ),
                           value: _isActive,
-                          activeColor: AppColors.primary,
+                          activeThumbColor: AppColors.primary,
                           onChanged: (v) =>
                               setState(() => _isActive = v),
                           tileColor: Colors.white,

@@ -63,27 +63,27 @@ class ReceiptPage extends ConsumerWidget {
                         textAlign: TextAlign.center,
                       ),
                       const Divider(height: 32),
-                      _Row('ยอดรวม', '฿${currFmt.format(receipt.subtotal)}', theme),
+                      _receiptRow('ยอดรวม', '฿${currFmt.format(receipt.subtotal)}', theme),
                       if (receipt.discountAmount > 0)
-                        _Row(
+                        _receiptRow(
                           'ส่วนลด',
                           '-฿${currFmt.format(receipt.discountAmount)}',
                           theme,
                           isNegative: true,
                         ),
                       if (receipt.taxAmount > 0)
-                        _Row('ภาษี', '฿${currFmt.format(receipt.taxAmount)}', theme),
+                        _receiptRow('ภาษี', '฿${currFmt.format(receipt.taxAmount)}', theme),
                       if (receipt.serviceCharge > 0)
-                        _Row('ค่าบริการ', '฿${currFmt.format(receipt.serviceCharge)}', theme),
+                        _receiptRow('ค่าบริการ', '฿${currFmt.format(receipt.serviceCharge)}', theme),
                       const Divider(height: 24),
-                      _Row(
+                      _receiptRow(
                         'รวมทั้งหมด',
                         '฿${currFmt.format(receipt.total)}',
                         theme,
                         isTotal: true,
                       ),
                       SizedBox(height: 16.h),
-                      _Row(
+                      _receiptRow(
                         'วิธีชำระ',
                         _paymentLabel(receipt.paymentMethod),
                         theme,
@@ -99,7 +99,7 @@ class ReceiptPage extends ConsumerWidget {
     );
   }
 
-  Widget _Row(
+  Widget _receiptRow(
     String label,
     String value,
     ThemeData theme, {

@@ -402,7 +402,7 @@ class _UserFormDialogState extends ConsumerState<_UserFormDialog> {
             ],
             SizedBox(height: 10.h),
             DropdownButtonFormField<String>(
-              value: _role,
+              initialValue: _role,
               decoration: const InputDecoration(
                   labelText: 'ตำแหน่ง',
                   border: OutlineInputBorder()),

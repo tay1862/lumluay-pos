@@ -483,14 +483,12 @@ class _OptionTile extends StatelessWidget {
                         MaterialTapTargetSize.shrinkWrap,
                     visualDensity: VisualDensity.compact,
                   )
-                : Radio<bool>(
-                    value: true,
-                    groupValue: isSelected,
-                    onChanged: (_) => onToggle(),
-                    activeColor: AppColors.primary,
-                    materialTapTargetSize:
-                        MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity.compact,
+                : Icon(
+                    isSelected
+                        ? Icons.radio_button_checked
+                        : Icons.radio_button_unchecked,
+                    color: isSelected ? AppColors.primary : null,
+                    size: 20.sp,
                   ),
             SizedBox(width: 8.w),
             Expanded(

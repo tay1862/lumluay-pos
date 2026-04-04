@@ -652,7 +652,7 @@ class _MultiCurrencyInput extends StatelessWidget {
             Expanded(
               flex: 4,
               child: DropdownButtonFormField<String>(
-                value: selectedCurrency,
+                initialValue: selectedCurrency,
                 items: currencies
                     .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                     .toList(),

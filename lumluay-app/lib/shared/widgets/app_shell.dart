@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/providers/auth_provider.dart';
 import '../../core/services/auto_lock_service.dart';
+import '../../core/sync/sync_engine.dart';
+import '../../core/sync/sync_notifier.dart';
+import '../../core/services/connectivity_bloc.dart';
 import 'offline_banner.dart';
 import 'language_switcher.dart';
 import 'sync_status_indicator.dart';
@@ -379,6 +382,7 @@ class ShellTopBar extends ConsumerWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+          const _TopBarSyncButton(),
           const LanguageSwitcher(compact: true),
           SizedBox(width: 6.w),
           Stack(
@@ -540,6 +544,87 @@ class _NavTrailer extends ConsumerWidget {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Top bar sync button — compact indicator with manual sync tap
+// ─────────────────────────────────────────────────────────────────────────────
+class _TopBarSyncButton extends ConsumerWidget {
+  const _TopBarSyncButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final connectivityAsync = ref.watch(connectivityBlocStreamProvider);
+    final syncState = ref.watch(syncNotifierProvider);
+
+    final isOnline = connectivityAsync.maybeWhen(
+      data: (s) => s is ConnectivityOnline,
+      orElse: () => false,
+    );
+
+    final Color dotColor;
+    final String tooltip;
+    final Widget? overlay;
+
+    if (!isOnline) {
+      dotColor = Theme.of(context).colorScheme.error;
+      tooltip = 'ออฟไลน์';
+      overlay = null;
+    } else if (syncState.isSyncing) {
+      dotColor = Theme.of(context).colorScheme.primary;
+      tooltip = 'กำลังซิงค์...';
+      overlay = SizedBox(
+        width: 16.w,
+        height: 16.w,
+        child: CircularProgressIndicator(strokeWidth: 2, color: dotColor),
+      );
+    } else if (syncState.hasError) {
+      dotColor = Colors.orange;
+      tooltip = 'ซิงค์ล้มเหลว — แตะเพื่อลองใหม่';
+      overlay = null;
+    } else if (syncState.pendingCount > 0) {
+      dotColor = Colors.orange;
+      tooltip = 'รอซิงค์ ${syncState.pendingCount} รายการ — แตะเพื่อซิงค์';
+      overlay = null;
+    } else {
+      dotColor = Colors.green;
+      tooltip = syncState.lastSyncAt != null ? 'ซิงค์แล้ว' : 'ออนไลน์';
+      overlay = null;
+    }
+
+    return Tooltip(
+      message: tooltip,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: isOnline && !syncState.isSyncing
+            ? () => ref.read(syncEngineProvider).performSync()
+            : null,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 8.h),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (overlay != null)
+                overlay
+              else
+                Icon(Icons.sync, size: 18.sp, color: dotColor),
+              if (syncState.pendingCount > 0) ...[
+                SizedBox(width: 2.w),
+                Text(
+                  '${syncState.pendingCount}',
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w700,
+                    color: dotColor,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }

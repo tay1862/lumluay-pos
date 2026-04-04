@@ -512,68 +512,59 @@ class _ThemeLanguageTab extends ConsumerWidget {
       children: [
         _SectionHeader(title: 'ธีม'),
         Card(
-          child: Column(
-            children: [
-              RadioListTile<ThemeMode>(
-                title: const Text('สว่าง'),
-                secondary: const Icon(Icons.light_mode_outlined),
-                value: ThemeMode.light,
-                groupValue: themeMode,
-                onChanged: (v) =>
-                    ref.read(_themeModeProvider.notifier).state =
-                        v ?? ThemeMode.light,
-              ),
-              RadioListTile<ThemeMode>(
-                title: const Text('มืด'),
-                secondary: const Icon(Icons.dark_mode_outlined),
-                value: ThemeMode.dark,
-                groupValue: themeMode,
-                onChanged: (v) =>
-                    ref.read(_themeModeProvider.notifier).state =
-                        v ?? ThemeMode.light,
-              ),
-              RadioListTile<ThemeMode>(
-                title: const Text('ตามระบบ'),
-                secondary: const Icon(Icons.brightness_auto_outlined),
-                value: ThemeMode.system,
-                groupValue: themeMode,
-                onChanged: (v) =>
-                    ref.read(_themeModeProvider.notifier).state =
-                        v ?? ThemeMode.light,
-              ),
-            ],
+          child: RadioGroup<ThemeMode>(
+            groupValue: themeMode,
+            onChanged: (v) {
+              if (v != null) ref.read(_themeModeProvider.notifier).state = v;
+            },
+            child: Column(
+              children: [
+                RadioListTile<ThemeMode>(
+                  title: const Text('สว่าง'),
+                  secondary: const Icon(Icons.light_mode_outlined),
+                  value: ThemeMode.light,
+                ),
+                RadioListTile<ThemeMode>(
+                  title: const Text('มืด'),
+                  secondary: const Icon(Icons.dark_mode_outlined),
+                  value: ThemeMode.dark,
+                ),
+                RadioListTile<ThemeMode>(
+                  title: const Text('ตามระบบ'),
+                  secondary: const Icon(Icons.brightness_auto_outlined),
+                  value: ThemeMode.system,
+                ),
+              ],
+            ),
           ),
         ),
         SizedBox(height: 20.h),
         _SectionHeader(title: 'ภาษา'),
         Card(
-          child: Column(
-            children: [
-              RadioListTile<String>(
-                title: const Text('ภาษาไทย'),
-                secondary: const Text('🇹🇭', style: TextStyle(fontSize: 22)),
-                value: 'th',
-                groupValue: locale,
-                onChanged: (v) =>
-                    ref.read(_localeProvider.notifier).state = v ?? 'th',
-              ),
-              RadioListTile<String>(
-                title: const Text('English'),
-                secondary: const Text('🇺🇸', style: TextStyle(fontSize: 22)),
-                value: 'en',
-                groupValue: locale,
-                onChanged: (v) =>
-                    ref.read(_localeProvider.notifier).state = v ?? 'th',
-              ),
-              RadioListTile<String>(
-                title: const Text('ພາສາລາວ'),
-                secondary: const Text('🇱🇦', style: TextStyle(fontSize: 22)),
-                value: 'lo',
-                groupValue: locale,
-                onChanged: (v) =>
-                    ref.read(_localeProvider.notifier).state = v ?? 'th',
-              ),
-            ],
+          child: RadioGroup<String>(
+            groupValue: locale,
+            onChanged: (v) {
+              if (v != null) ref.read(_localeProvider.notifier).state = v;
+            },
+            child: Column(
+              children: [
+                RadioListTile<String>(
+                  title: const Text('ภาษาไทย'),
+                  secondary: const Text('🇹🇭', style: TextStyle(fontSize: 22)),
+                  value: 'th',
+                ),
+                RadioListTile<String>(
+                  title: const Text('English'),
+                  secondary: const Text('🇺🇸', style: TextStyle(fontSize: 22)),
+                  value: 'en',
+                ),
+                RadioListTile<String>(
+                  title: const Text('ພາສາລາວ'),
+                  secondary: const Text('🇱🇦', style: TextStyle(fontSize: 22)),
+                  value: 'lo',
+                ),
+              ],
+            ),
           ),
         ),
         SizedBox(height: 20.h),

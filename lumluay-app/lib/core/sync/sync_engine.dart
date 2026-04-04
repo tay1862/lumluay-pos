@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../network/api_client.dart';
 import '../services/connectivity_service.dart';
@@ -15,6 +18,7 @@ import 'sync_notifier.dart';
 const _batchSize = 50;
 const _maxAttempts = 5;
 const _timerInterval = Duration(seconds: 30);
+const _deviceIdKey = 'sync_device_id';
 
 final syncEngineProvider = Provider<SyncEngine>((ref) {
   final engine = SyncEngine(
@@ -46,10 +50,23 @@ class SyncEngine {
   final SyncQueueManager _queueManager;
   final ConnectivityService _connectivity;
   final SyncNotifier _notifier;
+  static const _storage = FlutterSecureStorage();
+  static const _uuid = Uuid();
 
   Timer? _timer;
   bool _isSyncing = false;
   DateTime? _lastSyncAt;
+  String? _deviceId;
+
+  Future<String> _getDeviceId() async {
+    if (_deviceId != null) return _deviceId!;
+    _deviceId = await _storage.read(key: _deviceIdKey);
+    if (_deviceId == null) {
+      _deviceId = _uuid.v4();
+      await _storage.write(key: _deviceIdKey, value: _deviceId);
+    }
+    return _deviceId!;
+  }
 
   /// Starts the background sync timer and resets any stuck entries.
   void start() {
@@ -116,45 +133,46 @@ class SyncEngine {
     final ids = pending.map((e) => e.id).toList();
     await _queueManager.markSyncing(ids);
 
-    final payload = pending
+    final deviceId = await _getDeviceId();
+
+    // Build operations matching backend PushSyncDto
+    final operations = pending
         .map((e) => {
-              'id': e.id,
               'operation': e.operation,
               'entityType': e.entityType,
               if (e.entityId != null) 'entityId': e.entityId,
-              'payload': e.payload,
+              'payload': e.payload.startsWith('{')
+                  ? jsonDecode(e.payload)
+                  : e.payload,
               if (e.checksum != null) 'checksum': e.checksum,
+              'clientTimestamp': e.clientTimestamp,
             })
         .toList();
 
     try {
       final result = await _api.post<Map<String, dynamic>>(
         '/sync/push',
-        data: {'items': payload},
+        data: {'deviceId': deviceId, 'operations': operations},
         fromJson: (d) => Map<String, dynamic>.from(d as Map),
       );
 
       final results =
           (result['results'] as List? ?? []).cast<Map<String, dynamic>>();
-      for (final r in results) {
-        final id = r['id'] as String?;
-        if (id == null) continue;
-        final success = r['success'] as bool? ?? false;
-        if (success) {
+      // Backend returns results in same order as operations
+      for (var i = 0; i < results.length && i < ids.length; i++) {
+        final r = results[i];
+        final id = ids[i];
+        final status = r['status'] as String? ?? 'error';
+        if (status == 'applied' || status == 'ok') {
           await _queueManager.markCompleted(id);
         } else {
-          await _queueManager.markFailed(id, r['error'] as String? ?? 'unknown');
+          await _queueManager.markFailed(
+              id, r['error'] as String? ?? 'unknown');
         }
       }
-      // Any id not in results → mark failed
-      final respondedIds = results
-          .map((r) => r['id'] as String?)
-          .whereType<String>()
-          .toSet();
-      for (final id in ids) {
-        if (!respondedIds.contains(id)) {
-          await _queueManager.markFailed(id, 'no response from server');
-        }
+      // Any id without a result → mark failed
+      for (var i = results.length; i < ids.length; i++) {
+        await _queueManager.markFailed(ids[i], 'no response from server');
       }
     } catch (e) {
       for (final id in ids) {
@@ -168,14 +186,17 @@ class SyncEngine {
 
   Future<void> _pullChanges({String? since}) async {
     final sinceParam = since ?? _lastSyncAt?.toIso8601String() ?? '';
+    final deviceId = await _getDeviceId();
 
-    final data = await _api.get<Map<String, dynamic>>(
+    final result = await _api.get<Map<String, dynamic>>(
       '/sync/pull',
-      queryParameters: {'since': sinceParam},
+      queryParameters: {'since': sinceParam, 'deviceId': deviceId},
       fromJson: (d) => Map<String, dynamic>.from(d as Map),
     );
 
-    await _applyPull(data);
+    // Backend returns { deviceId, serverTime, since, data: { products, categories, members } }
+    final innerData = result['data'] as Map<String, dynamic>? ?? result;
+    await _applyPull(innerData);
   }
 
   Future<void> _applyPull(Map<String, dynamic> data) async {

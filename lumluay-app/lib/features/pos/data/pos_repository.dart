@@ -155,22 +155,66 @@ class PosRepository {
   }
 
   Future<void> confirmOrder(String orderId) async {
-    await _api.post<void>('/orders/$orderId/confirm');
+    final online = await _connectivity.isOnline;
+    if (online) {
+      await _api.post<void>('/orders/$orderId/confirm');
+    } else {
+      await _db.ordersDao.updateOrderStatus(orderId, 'confirmed');
+      await _queue.enqueue(
+        operation: 'update',
+        entityType: 'order',
+        entityId: orderId,
+        payload: {'id': orderId, 'action': 'confirm'},
+      );
+    }
   }
 
   Future<void> holdOrder(String orderId) async {
-    await _api.post<void>('/orders/$orderId/hold');
+    final online = await _connectivity.isOnline;
+    if (online) {
+      await _api.post<void>('/orders/$orderId/hold');
+    } else {
+      await _db.ordersDao.updateOrderStatus(orderId, 'held');
+      await _queue.enqueue(
+        operation: 'update',
+        entityType: 'order',
+        entityId: orderId,
+        payload: {'id': orderId, 'action': 'hold'},
+      );
+    }
   }
 
   Future<void> resumeOrder(String orderId) async {
-    await _api.post<void>('/orders/$orderId/resume');
+    final online = await _connectivity.isOnline;
+    if (online) {
+      await _api.post<void>('/orders/$orderId/resume');
+    } else {
+      await _db.ordersDao.updateOrderStatus(orderId, 'open');
+      await _queue.enqueue(
+        operation: 'update',
+        entityType: 'order',
+        entityId: orderId,
+        payload: {'id': orderId, 'action': 'resume'},
+      );
+    }
   }
 
   Future<void> voidOrder(String orderId, {required String reason}) async {
-    await _api.post<void>(
-      '/orders/$orderId/void',
-      data: {'reason': reason},
-    );
+    final online = await _connectivity.isOnline;
+    if (online) {
+      await _api.post<void>(
+        '/orders/$orderId/void',
+        data: {'reason': reason},
+      );
+    } else {
+      await _db.ordersDao.updateOrderStatus(orderId, 'voided');
+      await _queue.enqueue(
+        operation: 'update',
+        entityType: 'order',
+        entityId: orderId,
+        payload: {'id': orderId, 'action': 'void', 'reason': reason},
+      );
+    }
   }
 
   Future<List<Map<String, dynamic>>> getProductModifiers(
@@ -192,26 +236,66 @@ class PosRepository {
     String? reference,
     String? note,
   }) async {
-    return _api.post<Map<String, dynamic>>(
-      '/orders/$orderId/payments',
-      data: {
-        'amount': amount,
-        'method': method,
-        'currency': currency,
-        if (exchangeRate != null) 'exchangeRate': exchangeRate,
-        if (received != null) 'tendered': received,
-        if (reference != null && reference.trim().isNotEmpty) 'reference': reference.trim(),
-        if (note != null && note.trim().isNotEmpty) 'note': note.trim(),
-      },
-      fromJson: (d) => Map<String, dynamic>.from(d as Map),
+    final paymentData = {
+      'amount': amount,
+      'method': method,
+      'currency': currency,
+      if (exchangeRate != null) 'exchangeRate': exchangeRate,
+      if (received != null) 'tendered': received,
+      if (reference != null && reference.trim().isNotEmpty) 'reference': reference.trim(),
+      if (note != null && note.trim().isNotEmpty) 'note': note.trim(),
+    };
+
+    final online = await _connectivity.isOnline;
+    if (online) {
+      return _api.post<Map<String, dynamic>>(
+        '/orders/$orderId/payments',
+        data: paymentData,
+        fromJson: (d) => Map<String, dynamic>.from(d as Map),
+      );
+    }
+
+    // Offline: store locally and enqueue sync
+    final paymentId = _uuid.v4();
+    final now = DateTime.now().toIso8601String();
+    await _db.paymentsDao.insertPayment(
+      LocalPaymentsCompanion(
+        id: Value(paymentId),
+        orderId: Value(orderId),
+        method: Value(method),
+        amount: Value(amount),
+        reference: Value(reference),
+        createdAt: Value(now),
+        isSynced: const Value(false),
+      ),
     );
+    await _queue.enqueue(
+      operation: 'create',
+      entityType: 'payment',
+      entityId: paymentId,
+      payload: {'id': paymentId, 'orderId': orderId, ...paymentData},
+    );
+    return {'id': paymentId, 'orderId': orderId, ...paymentData, 'createdAt': now};
   }
 
   Future<Map<String, dynamic>> completeOrder(String orderId) async {
-    return _api.post<Map<String, dynamic>>(
-      '/orders/$orderId/complete',
-      data: const {},
-      fromJson: (d) => Map<String, dynamic>.from(d as Map),
+    final online = await _connectivity.isOnline;
+    if (online) {
+      return _api.post<Map<String, dynamic>>(
+        '/orders/$orderId/complete',
+        data: const {},
+        fromJson: (d) => Map<String, dynamic>.from(d as Map),
+      );
+    }
+
+    // Offline: update local status and enqueue sync
+    await _db.ordersDao.updateOrderStatus(orderId, 'completed');
+    await _queue.enqueue(
+      operation: 'update',
+      entityType: 'order',
+      entityId: orderId,
+      payload: {'id': orderId, 'action': 'complete'},
     );
+    return {'id': orderId, 'status': 'completed'};
   }
 }

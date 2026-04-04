@@ -189,7 +189,7 @@ class _CurrencySettingsPageState extends ConsumerState<CurrencySettingsPage> {
                   ),
                   SizedBox(height: 8.h),
                   DropdownButtonFormField<String>(
-                    value: _baseCurrency,
+                    initialValue: _baseCurrency,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       contentPadding:

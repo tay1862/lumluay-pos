@@ -317,7 +317,7 @@ class _PrinterDialogState extends State<_PrinterDialog> {
             ),
             SizedBox(height: 12.h),
             DropdownButtonFormField<String>(
-              value: _type,
+              initialValue: _type,
               decoration: const InputDecoration(
                 labelText: 'ประเภทการเชื่อมต่อ',
                 border: OutlineInputBorder(),

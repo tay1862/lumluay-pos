@@ -110,7 +110,7 @@ class TrainingModePage extends ConsumerWidget {
               title: const Text('เปิดโหมดฝึกอบรม'),
               subtitle: const Text('สำหรับฝึกพนักงานใหม่'),
               value: isTraining,
-              activeColor: Colors.orange,
+              activeThumbColor: Colors.orange,
               onChanged: (value) async {
                 if (value) {
                   // Confirm before enabling
