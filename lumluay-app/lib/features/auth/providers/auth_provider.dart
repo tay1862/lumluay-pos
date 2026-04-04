@@ -122,7 +122,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         username: username,
         password: password,
       );
-      await _saveTokens(data);
+      await _saveTokens(data, tenantSlug: tenantSlug);
       state = AuthAuthenticated(AuthUser.fromJson(data['user'] as Map<String, dynamic>));
     } catch (e) {
       state = AuthError(_parseError(e));
@@ -151,11 +151,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = const AuthUnauthenticated();
   }
 
-  Future<void> _saveTokens(Map<String, dynamic> data) async {
+  Future<void> _saveTokens(
+    Map<String, dynamic> data, {
+    String? tenantSlug,
+  }) async {
     await Future.wait([
       _storage.write(key: AppConstants.keyAccessToken, value: data['accessToken'] as String),
       _storage.write(key: AppConstants.keyRefreshToken, value: data['refreshToken'] as String),
       _storage.write(key: AppConstants.keyTenantId, value: (data['user'] as Map)['tenantId'] as String),
+      if (tenantSlug != null && tenantSlug.isNotEmpty)
+        _storage.write(key: AppConstants.keyTenantSlug, value: tenantSlug),
     ]);
   }
 
@@ -164,6 +169,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       _storage.delete(key: AppConstants.keyAccessToken),
       _storage.delete(key: AppConstants.keyRefreshToken),
       _storage.delete(key: AppConstants.keyTenantId),
+      _storage.delete(key: AppConstants.keyTenantSlug),
     ]);
   }
 

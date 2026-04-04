@@ -27,6 +27,12 @@ class _NavItem {
   });
 }
 
+bool _canAccessNavItem(_NavItem item, String userRole) {
+  if (userRole == 'super_admin') return true;
+  if (item.roles == null) return true;
+  return item.roles!.contains(userRole);
+}
+
 const _navItems = [
   _NavItem(
     path: '/dashboard',
@@ -205,8 +211,7 @@ class _WideShellState extends State<_WideShell> {
   @override
   Widget build(BuildContext context) {
     final visibleItems = _navItems.where((item) {
-      if (item.roles == null) return true;
-      return item.roles!.contains(widget.userRole);
+      return _canAccessNavItem(item, widget.userRole);
     }).toList();
 
     final selectedIdx = visibleItems.indexWhere(
@@ -311,7 +316,7 @@ class _NarrowShell extends ConsumerWidget {
     final userRole = authState is AuthAuthenticated ? authState.user.role : 'cashier';
     final moreItems = _navItems
         .where((item) => !_bottomNavItems.any((b) => b.path == item.path))
-        .where((item) => item.roles == null || item.roles!.contains(userRole))
+        .where((item) => _canAccessNavItem(item, userRole))
         .toList();
 
     await showModalBottomSheet<void>(

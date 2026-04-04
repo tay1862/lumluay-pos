@@ -30,11 +30,19 @@ import '../../features/settings/presentation/pages/theme_settings_page.dart';
 import '../../features/settings/presentation/pages/auto_lock_settings_page.dart';
 import '../../features/settings/presentation/pages/training_mode_page.dart';
 import '../../features/settings/presentation/pages/setup_wizard_page.dart';
+import '../../features/settings/presentation/pages/backup_settings_page.dart';
+import '../../features/settings/presentation/pages/import_page.dart';
+import '../../features/settings/presentation/pages/export_page.dart';
 import '../../features/products/presentation/pages/category_management_page.dart';
 import '../../features/products/presentation/pages/modifier_group_management_page.dart';
 import '../../features/tables/presentation/pages/zone_management_page.dart';
 import '../../features/coupons/presentation/pages/coupons_page.dart';
 import '../../features/coupons/presentation/pages/coupon_form_page.dart';
+import '../../features/admin/presentation/pages/admin_dashboard_page.dart';
+import '../../features/admin/presentation/pages/tenant_list_page.dart';
+import '../../features/admin/presentation/pages/plan_management_page.dart';
+import '../../features/pos/presentation/pages/customer_display_page.dart';
+import '../../features/qr_menu/presentation/pages/qr_menu_page.dart';
 import '../../features/coupons/data/coupons_repository.dart' show Coupon;
 import '../../../shared/widgets/app_shell.dart';
 
@@ -47,11 +55,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final authState = ref.read(authProvider);
       final isAuthenticated = authState is AuthAuthenticated;
+      final userRole = authState is AuthAuthenticated
+          ? authState.user.role
+          : null;
       final loc = state.matchedLocation;
       final isPublic = loc == '/login' || loc == '/pin';
 
       if (!isAuthenticated && !isPublic) return '/login';
       if (isAuthenticated && loc == '/login') return '/dashboard';
+      if (isAuthenticated && loc.startsWith('/admin') && userRole != 'super_admin') {
+        return '/dashboard';
+      }
 
       // 10.2.5 — Shift check: after login, ensure a shift is open.
       // Routes exempt from shift check: settings, shifts itself, public routes.
@@ -171,6 +185,21 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const TrainingModePage(),
           ),
           GoRoute(
+            path: '/settings/backup',
+            name: 'settings-backup',
+            builder: (context, state) => const BackupSettingsPage(),
+          ),
+          GoRoute(
+            path: '/settings/import',
+            name: 'settings-import',
+            builder: (context, state) => const ImportPage(),
+          ),
+          GoRoute(
+            path: '/settings/export',
+            name: 'settings-export',
+            builder: (context, state) => const ExportPage(),
+          ),
+          GoRoute(
             path: '/settings/zones',
             name: 'settings-zones',
             builder: (context, state) => const ZoneManagementPage(),
@@ -264,6 +293,34 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: '/notifications',
             name: 'notifications',
             builder: (context, state) => const NotificationsPage(),
+          ),
+          GoRoute(
+            path: '/customer-display',
+            name: 'customer-display',
+            builder: (context, state) => const CustomerDisplayPage(),
+          ),
+          GoRoute(
+            path: '/qr-menu',
+            name: 'qr-menu',
+            builder: (context, state) => QrMenuPage(
+              menuUrl: state.uri.queryParameters['url'] ?? '',
+              tenantName: state.uri.queryParameters['name'] ?? 'LUMLUAY POS',
+            ),
+          ),
+          GoRoute(
+            path: '/admin/dashboard',
+            name: 'admin-dashboard',
+            builder: (context, state) => const AdminDashboardPage(),
+          ),
+          GoRoute(
+            path: '/admin/tenants',
+            name: 'admin-tenants',
+            builder: (context, state) => const TenantListPage(),
+          ),
+          GoRoute(
+            path: '/admin/plans',
+            name: 'admin-plans',
+            builder: (context, state) => const PlanManagementPage(),
           ),
         ],
       ),

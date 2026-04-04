@@ -1,9 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import '../../data/settings_repository.dart';
+import '../../../auth/providers/auth_provider.dart';
+import '../../../../core/config/app_env.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/theme/app_theme.dart';
+
+final _qrMenuLinkProvider = FutureProvider<({String menuUrl, String tenantName})?>((ref) async {
+  final storage = const FlutterSecureStorage();
+  final tenantSlug = await storage.read(key: AppConstants.keyTenantSlug);
+  if (tenantSlug == null || tenantSlug.isEmpty) return null;
+
+  final tenantProfile = await ref.read(settingsRepositoryProvider).getTenantProfile();
+  final apiBaseUrl = await storage.read(key: AppConstants.keyApiBaseUrl) ??
+      AppEnv.fromDartDefine().apiBaseUrl;
+  final publicBaseUrl = apiBaseUrl
+      .replaceFirst(RegExp(r'/api/?$'), '')
+      .replaceFirst(RegExp(r'/v1/?$'), '');
+
+  return (
+    menuUrl: '$publicBaseUrl/public/menu/$tenantSlug',
+    tenantName: tenantProfile.tenant.name.isNotEmpty
+        ? tenantProfile.tenant.name
+        : (tenantProfile.tenant.ownerName.isNotEmpty
+            ? tenantProfile.tenant.ownerName
+            : 'LUMLUAY POS'),
+  );
+});
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -126,6 +152,11 @@ class _StoreSettingsTabState extends ConsumerState<_StoreSettingsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
+    final isSuperAdmin = authState is AuthAuthenticated &&
+        authState.user.role == 'super_admin';
+    final qrMenuLinkAsync = ref.watch(_qrMenuLinkProvider);
+
     final async = ref.watch(settingsDataProvider);
     return async.when(
       loading: () =>
@@ -197,6 +228,84 @@ class _StoreSettingsTabState extends ConsumerState<_StoreSettingsTab> {
                 subtitle: 'CRUD โซน เช่น ชั้น 1, ระเบียง, VIP',
                 onTap: () => context.push('/settings/zones'),
               ),
+              SizedBox(height: 8.h),
+              _SettingsTile(
+                icon: Icons.backup_outlined,
+                title: 'สำรองข้อมูล',
+                subtitle: 'สร้างและตรวจสอบไฟล์สำรองข้อมูล',
+                onTap: () => context.push('/settings/backup'),
+              ),
+              SizedBox(height: 8.h),
+              _SettingsTile(
+                icon: Icons.file_upload_outlined,
+                title: 'นำเข้าข้อมูล',
+                subtitle: 'อัปโหลด CSV เพื่อเติมข้อมูลสินค้า',
+                onTap: () => context.push('/settings/import'),
+              ),
+              SizedBox(height: 8.h),
+              _SettingsTile(
+                icon: Icons.file_download_outlined,
+                title: 'ส่งออกข้อมูล',
+                subtitle: 'ดาวน์โหลดข้อมูลสินค้าและสมาชิกเป็น CSV',
+                onTap: () => context.push('/settings/export'),
+              ),
+              SizedBox(height: 8.h),
+              _SettingsTile(
+                icon: Icons.monitor_outlined,
+                title: 'จอลูกค้า',
+                subtitle: 'เปิดหน้าจอแสดงผลฝั่งลูกค้า',
+                onTap: () => context.push('/customer-display'),
+              ),
+              SizedBox(height: 8.h),
+              _SettingsTile(
+                icon: Icons.qr_code_2_outlined,
+                title: 'QR Menu',
+                subtitle: qrMenuLinkAsync.maybeWhen(
+                  data: (value) => value == null
+                      ? 'ยังไม่มี tenant slug สำหรับสร้างลิงก์เมนู'
+                      : 'สร้าง QR ให้ลูกค้าเปิดเมนูร้านนี้',
+                  orElse: () => 'กำลังเตรียมลิงก์เมนูสาธารณะ',
+                ),
+                trailing: qrMenuLinkAsync.isLoading
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : null,
+                onTap: qrMenuLinkAsync.maybeWhen(
+                  data: (value) => value == null
+                      ? null
+                      : () => context.push(
+                            '/qr-menu?url=${Uri.encodeComponent(value.menuUrl)}&name=${Uri.encodeComponent(value.tenantName)}',
+                          ),
+                  orElse: () => null,
+                ),
+              ),
+              if (isSuperAdmin) ...[
+                SizedBox(height: 24.h),
+                _SectionHeader(title: 'ระบบส่วนกลาง'),
+                _SettingsTile(
+                  icon: Icons.admin_panel_settings_outlined,
+                  title: 'ภาพรวมระบบ',
+                  subtitle: 'ดูสถิติรวมของ tenant, users และ orders',
+                  onTap: () => context.push('/admin/dashboard'),
+                ),
+                SizedBox(height: 8.h),
+                _SettingsTile(
+                  icon: Icons.apartment_outlined,
+                  title: 'จัดการ Tenant',
+                  subtitle: 'เปิด/ปิดการใช้งาน tenant และตรวจสอบสถานะ',
+                  onTap: () => context.push('/admin/tenants'),
+                ),
+                SizedBox(height: 8.h),
+                _SettingsTile(
+                  icon: Icons.workspace_premium_outlined,
+                  title: 'จัดการแพ็กเกจ',
+                  subtitle: 'สร้างและปิดใช้งาน subscription plans',
+                  onTap: () => context.push('/admin/plans'),
+                ),
+              ],
               SizedBox(height: 32.h),
               FilledButton(
                 onPressed: _saving ? null : () => _save(data.settings),

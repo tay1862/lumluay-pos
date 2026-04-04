@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException, Inject, NotFoundException } from '@n
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { eq, and, isNull } from 'drizzle-orm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DATABASE } from '@/database/database.module';
 import * as schema from '@/database/schema';

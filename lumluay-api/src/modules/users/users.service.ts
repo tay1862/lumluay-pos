@@ -5,7 +5,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { eq, and, isNull, desc } from 'drizzle-orm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DATABASE } from '@/database/database.module';
 import * as schema from '@/database/schema';

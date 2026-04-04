@@ -1,7 +1,7 @@
 import {
   Injectable, Inject, NotFoundException, BadRequestException,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { eq, and, desc, gte, lt, inArray, sql } from 'drizzle-orm';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DATABASE } from '@/database/database.module';
