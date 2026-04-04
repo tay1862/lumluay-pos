@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../main.dart';
 import '../constants/app_constants.dart';
 import '../config/app_env.dart';
 
-final apiClientProvider = Provider<ApiClient>((ref) => ApiClient(AppEnv.fromDartDefine()));
+final apiClientProvider = Provider<ApiClient>(
+  (ref) => ApiClient(ref.watch(currentAppEnvProvider)),
+);
 
 class ApiClient {
   late final Dio _dio;

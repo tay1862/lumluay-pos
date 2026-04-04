@@ -13,13 +13,24 @@ import 'core/localization/locale_notifier.dart';
 import 'core/config/app_env.dart';
 import 'core/services/fcm_service.dart';
 
+final currentAppEnvProvider = Provider<AppEnv>(
+  (ref) => throw UnimplementedError('AppEnv override is required'),
+);
+
 void main() async {
   await bootstrapApp(AppEnv.fromDartDefine());
 }
 
 Future<void> bootstrapApp(AppEnv env) async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(ProviderScope(child: LumluayApp(env: env)));
+  runApp(
+    ProviderScope(
+      overrides: [
+        currentAppEnvProvider.overrideWithValue(env),
+      ],
+      child: LumluayApp(env: env),
+    ),
+  );
   unawaited(_initializeOptionalFirebase());
 }
 

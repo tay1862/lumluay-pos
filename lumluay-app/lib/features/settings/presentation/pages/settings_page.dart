@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../main.dart';
 import '../../data/settings_repository.dart';
 import '../../../auth/providers/auth_provider.dart';
-import '../../../../core/config/app_env.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/theme/app_theme.dart';
 
@@ -15,7 +15,7 @@ final _qrMenuLinkProvider = FutureProvider<({String menuUrl, String tenantName})
   if (tenantSlug == null || tenantSlug.isEmpty) return null;
 
   final tenantProfile = await ref.read(settingsRepositoryProvider).getTenantProfile();
-  final env = AppEnv.fromDartDefine();
+  final env = ref.read(currentAppEnvProvider);
   final apiBaseUrl = env.resolveApiBaseUrl(
     await storage.read(key: AppConstants.keyApiBaseUrl),
   );
