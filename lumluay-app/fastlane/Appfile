@@ -1,0 +1,13 @@
+# fastlane/Appfile
+# ─────────────────────────────────────────────────────────────────────────────
+# Replace the placeholder values before first run.
+# Set secrets via environment variables (never commit real values here):
+#   APPLE_ID            — your Apple ID email
+#   APP_STORE_CONNECT_TEAM_ID — 10-char Team ID from developer.apple.com
+#   MATCH_GIT_URL       — private git repo for certificates (fastlane match)
+# ─────────────────────────────────────────────────────────────────────────────
+
+app_identifier "com.lumluay.pos"          # Production bundle ID
+apple_id ENV["APPLE_ID"]                  # Your Apple Developer account email
+itc_team_id ENV["ITC_TEAM_ID"]           # App Store Connect Team ID (numeric)
+team_id ENV["APP_STORE_CONNECT_TEAM_ID"] # Developer Portal Team ID (10-char)

@@ -1,0 +1,30 @@
+{
+  "@@locale": "en",
+  "appTitle": "LUMLUAY POS",
+  "languageSettingsTitle": "Language Settings",
+  "languageSettingsDescription": "Select your preferred language",
+  "languageChanged": "Language changed to {language}",
+  "@languageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "Object"
+      }
+    }
+  },
+  "localeThai": "Thai",
+  "localeEnglish": "English",
+  "localeLao": "Lao",
+  "languageSupportHint": "Some content may still appear in Thai depending on source support.",
+  "setupWizardTitle": "Setup Wizard",
+  "next": "Next",
+  "back": "Back",
+  "finish": "Finish",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "confirm": "Confirm",
+  "retry": "Retry",
+  "loading": "Loading...",
+  "errorOccurred": "An error occurred",
+  "settings": "Settings"
+}

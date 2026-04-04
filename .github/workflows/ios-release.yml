@@ -1,0 +1,99 @@
+name: iOS Release
+
+# ─── Triggers ─────────────────────────────────────────────────────────────────
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'   # e.g. v1.0.0 — triggers TestFlight upload
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: 'Fastlane lane to run'
+        required: true
+        default: beta
+        type: choice
+        options: [beta, build_only, sync_certs]
+
+# ─── Permissions ──────────────────────────────────────────────────────────────
+permissions:
+  contents: read
+
+jobs:
+  build-and-upload:
+    name: Build & Upload to TestFlight
+    runs-on: macos-14           # Apple Silicon (M1) runner — faster Xcode builds
+
+    steps:
+      # ── 1. Checkout ─────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0        # needed for version tag
+
+      # ── 2. Flutter SDK ──────────────────────────────────────────────────────
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: stable
+          cache: true
+
+      - name: Verify Flutter installation
+        run: flutter --version
+
+      # ── 3. Ruby / Bundler (for Fastlane) ────────────────────────────────────
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+          working-directory: lumluay-app
+
+      # ── 4. Flutter dependencies ─────────────────────────────────────────────
+      - name: Get Flutter packages
+        working-directory: lumluay-app
+        run: flutter pub get
+
+      # ── 5. Generate l10n files ───────────────────────────────────────────────
+      - name: Generate localization files
+        working-directory: lumluay-app
+        run: flutter gen-l10n
+
+      # ── 6. CocoaPods ────────────────────────────────────────────────────────
+      - name: Install CocoaPods dependencies
+        working-directory: lumluay-app/ios
+        run: pod install --repo-update
+
+      # ── 7. Bump build number from git tag ───────────────────────────────────
+      - name: Set build number from run number
+        run: |
+          BUILD_NUMBER=${{ github.run_number }}
+          sed -i '' "s/FLUTTER_BUILD_NUMBER=.*/FLUTTER_BUILD_NUMBER=${BUILD_NUMBER}/" \
+            lumluay-app/ios/Flutter/Generated.xcconfig || true
+
+      # ── 8. Fastlane beta lane ────────────────────────────────────────────────
+      - name: Upload to TestFlight via Fastlane
+        working-directory: lumluay-app
+        env:
+          APPLE_ID:                             ${{ secrets.APPLE_ID }}
+          APP_STORE_CONNECT_TEAM_ID:            ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
+          ITC_TEAM_ID:                          ${{ secrets.ITC_TEAM_ID }}
+          MATCH_GIT_URL:                        ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD:                       ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_BASIC_AUTHORIZATION:        ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          APP_STORE_CONNECT_API_KEY_ID:         ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID:      ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT:    ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          TESTFLIGHT_CHANGELOG:                 "Build ${{ github.run_number }} — ${{ github.ref_name }}"
+          LANG:                                 en_US.UTF-8
+          LC_ALL:                               en_US.UTF-8
+        run: bundle exec fastlane ios ${{ inputs.lane || 'beta' }}
+
+      # ── 9. Upload IPA as artifact (for manual inspection) ───────────────────
+      - name: Upload IPA artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LumluayPOS-${{ github.run_number }}.ipa
+          path: lumluay-app/build/ios/iphoneos/LumluayPOS.ipa
+          retention-days: 14

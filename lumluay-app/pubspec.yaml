@@ -1,0 +1,155 @@
+name: lumluay_pos
+description: "LUMLUAY POS - SaaS Point of Sale for restaurants and retail"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # ─── State Management ─────────────────────────────────────
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # ─── Navigation / Routing ─────────────────────────────────
+  go_router: ^14.6.3
+
+  # ─── HTTP & Auth ──────────────────────────────────────────
+  dio: ^5.7.0
+  dio_cache_interceptor: ^3.5.0
+  flutter_secure_storage: ^9.2.4
+  jwt_decoder: ^2.0.1
+
+  # ─── Local Database (Offline) ─────────────────────────────
+  drift: ^2.22.1
+  sqlcipher_flutter_libs: ^0.5.6
+  path_provider: ^2.1.5
+  path: ^1.9.0
+
+  # ─── UI / Theming ─────────────────────────────────────────
+  flutter_screenutil: ^5.9.3
+  google_fonts: ^6.2.1
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
+  lottie: ^3.3.1
+  audioplayers: ^6.1.0
+
+  # ─── Printing / Receipt ───────────────────────────────────
+  printing: ^5.14.2
+  pdf: ^3.11.3
+  esc_pos_utils_plus: ^2.0.1
+
+  # ─── Bluetooth Printing ───────────────────────────────────
+  flutter_blue_plus: ^1.35.0
+
+  # ─── USB Serial Printing ──────────────────────────────────
+  usb_serial: ^0.5.0
+
+  # ─── Dual Screen Output ───────────────────────────────────
+  presentation_displays: ^1.0.0
+
+  # ─── Firebase Push Notifications ─────────────────────────
+  firebase_core: ^3.13.0
+  firebase_messaging: ^15.2.5
+
+  # ─── Camera / Barcode ─────────────────────────────────────
+  mobile_scanner: ^5.2.3
+
+  # ─── QR Code Generator ────────────────────────────────────
+  qr_flutter: ^4.1.0
+
+  # ─── Push / Local Notifications ───────────────────────────
+  flutter_local_notifications: ^18.0.0
+
+  # ─── File Sharing ─────────────────────────────────────────
+  share_plus: ^10.1.4
+  file_picker: ^8.1.7
+
+  # ─── Real-time ────────────────────────────────────────────
+  socket_io_client: ^2.0.3+1
+
+  # ─── Date / Intl ──────────────────────────────────────────
+  intl: ^0.19.0
+
+  # ─── Connectivity ─────────────────────────────────────────
+  connectivity_plus: ^6.1.3
+
+  # ─── Utils ────────────────────────────────────────────────
+  uuid: ^4.5.1
+  equatable: ^2.0.7
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  collection: ^1.19.1
+  shared_preferences: ^2.3.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.13
+  riverpod_generator: ^2.6.1
+  freezed: ^2.5.7
+  json_serializable: ^6.9.0
+  drift_dev: ^2.22.1
+  custom_lint: ^0.7.3
+  riverpod_lint: ^2.6.1
+  mocktail: ^1.0.4
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/lottie/
+    - assets/sounds/
+    - assets/fonts/
+
+  fonts:
+    - family: Sarabun
+      fonts:
+        - asset: assets/fonts/Sarabun-Regular.ttf
+        - asset: assets/fonts/Sarabun-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Sarabun-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Sarabun-Bold.ttf
+          weight: 700
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
+
+dependency_overrides:
+  analyzer_plugin: ^0.13.4
+  presentation_displays:
+    path: packages/presentation_displays
+  sqlcipher_flutter_libs:
+    path: packages/sqlcipher_flutter_libs

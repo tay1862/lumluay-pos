@@ -1,0 +1,128 @@
+# fastlane/Fastfile
+# ─────────────────────────────────────────────────────────────────────────────
+# Lanes:
+#   fastlane ios beta          — build & upload to TestFlight
+#   fastlane ios release       — build & submit for App Store review
+#   fastlane ios build_only    — build IPA only (no upload)
+#   fastlane ios sync_certs    — fetch/create certs & profiles via match
+#
+# Required env vars (set in CI secrets or .env):
+#   APPLE_ID, APP_STORE_CONNECT_TEAM_ID, ITC_TEAM_ID
+#   MATCH_GIT_URL, MATCH_PASSWORD
+#   APP_STORE_CONNECT_API_KEY_ID, APP_STORE_CONNECT_API_ISSUER_ID
+#   APP_STORE_CONNECT_API_KEY_CONTENT  (base64-encoded .p8 key file)
+# ─────────────────────────────────────────────────────────────────────────────
+
+default_platform :ios
+
+WORKSPACE      = "Runner.xcworkspace"
+SCHEME         = "Runner"
+OUTPUT_DIR     = "../build/ios/iphoneos"
+BUNDLE_ID      = "com.lumluay.pos"
+EXPORT_OPTIONS = "ExportOptions.plist"
+
+platform :ios do
+
+  # ── Shared setup: App Store Connect API key ────────────────────────────────
+  before_all do
+    if ENV["APP_STORE_CONNECT_API_KEY_CONTENT"]
+      app_store_connect_api_key(
+        key_id:        ENV["APP_STORE_CONNECT_API_KEY_ID"],
+        issuer_id:     ENV["APP_STORE_CONNECT_API_ISSUER_ID"],
+        key_content:   Base64.decode64(ENV["APP_STORE_CONNECT_API_KEY_CONTENT"]),
+        is_key_content_base64: false,
+        in_house: false,
+      )
+    end
+  end
+
+  # ── Sync certificates & provisioning profiles ──────────────────────────────
+  lane :sync_certs do
+    match(
+      type:           "appstore",
+      app_identifier: BUNDLE_ID,
+      readonly:       is_ci,
+    )
+  end
+
+  # ── Build IPA (no upload) ─────────────────────────────────────────────────
+  lane :build_only do
+    _flutter_build
+    gym(
+      workspace:          WORKSPACE,
+      scheme:             SCHEME,
+      configuration:      "Release",
+      export_method:      "app-store",
+      export_options:     EXPORT_OPTIONS,
+      output_directory:   OUTPUT_DIR,
+      output_name:        "LumluayPOS.ipa",
+      clean:              true,
+      silent:             true,
+      suppress_xcode_output: true,
+    )
+  end
+
+  # ── Build + upload to TestFlight ───────────────────────────────────────────
+  lane :beta do
+    sync_certs
+    _flutter_build
+    gym(
+      workspace:          WORKSPACE,
+      scheme:             SCHEME,
+      configuration:      "Release",
+      export_method:      "app-store",
+      export_options:     EXPORT_OPTIONS,
+      output_directory:   OUTPUT_DIR,
+      output_name:        "LumluayPOS.ipa",
+      clean:              true,
+      silent:             true,
+      suppress_xcode_output: true,
+    )
+    pilot(
+      skip_waiting_for_build_processing: true,
+      changelog: ENV["TESTFLIGHT_CHANGELOG"] || "Internal build",
+      distribute_external: false,
+    )
+    notification(
+      title:   "TestFlight Upload",
+      message: "LumluayPOS build uploaded successfully",
+    ) unless is_ci
+  end
+
+  # ── Build + submit for App Store review ───────────────────────────────────
+  lane :release do
+    sync_certs
+    _flutter_build
+    gym(
+      workspace:          WORKSPACE,
+      scheme:             SCHEME,
+      configuration:      "Release",
+      export_method:      "app-store",
+      export_options:     EXPORT_OPTIONS,
+      output_directory:   OUTPUT_DIR,
+      output_name:        "LumluayPOS.ipa",
+      clean:              true,
+    )
+    deliver(
+      skip_screenshots:    true,
+      skip_metadata:       true,
+      submit_for_review:   true,
+      automatic_release:   false,
+      force:               true,
+    )
+  end
+
+  # ── Error handler ─────────────────────────────────────────────────────────
+  error do |lane, exception|
+    UI.error "Lane '#{lane}' failed: #{exception.message}"
+  end
+
+end
+
+# ── Private: run flutter build ios before gym ─────────────────────────────────
+private_lane :_flutter_build do
+  Dir.chdir("..") do
+    sh "flutter pub get"
+    sh "flutter build ios --release --no-codesign"
+  end
+end

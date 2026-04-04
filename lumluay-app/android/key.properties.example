@@ -1,0 +1,8 @@
+# Android Signing (key.properties)
+# Do NOT commit actual keystores or passwords.
+# Copy this file to android/key.properties and fill in your values.
+#
+# storeFile=../keystores/lumluay-release.jks   <- path relative to android/app/
+# storePassword=YOUR_STORE_PASSWORD
+# keyAlias=lumluay
+# keyPassword=YOUR_KEY_PASSWORD

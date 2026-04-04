@@ -1,0 +1,18 @@
+# Node.js / NestJS
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+uploads/
+coverage/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+*.iml

@@ -1,0 +1,30 @@
+# ─── Backend ───────────────────────────────────────────────────────────────────
+lumluay-api/.env
+lumluay-api/node_modules/
+lumluay-api/dist/
+lumluay-api/uploads/
+lumluay-api/coverage/
+
+# ─── Flutter ───────────────────────────────────────────────────────────────────
+lumluay-app/.dart_tool/
+lumluay-app/build/
+lumluay-app/.flutter-plugins
+lumluay-app/.flutter-plugins-dependencies
+lumluay-app/.pub-cache/
+lumluay-app/.pub/
+lumluay-app/android/key.properties
+lumluay-app/android/keystores/
+lumluay-app/ios/Pods/
+lumluay-app/ios/Runner/GeneratedPluginRegistrant.*
+
+# ─── OS / Editor ──────────────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/settings.json
+*.swp
+Thumbs.db
+
+# ─── Secrets ──────────────────────────────────────────────────────────────────
+*.p12
+*.mobileprovision
+lumluay-app/packages/presentation_displays/Sequence_small.gif

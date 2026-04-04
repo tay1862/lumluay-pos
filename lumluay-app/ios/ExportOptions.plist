@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  ios/ExportOptions.plist — Used by `xcodebuild -exportArchive` to produce
+  the IPA for TestFlight / App Store submission.
+
+  Before use, replace:
+    YOUR_TEAM_ID                → Apple Developer Team ID (10-char alphanumeric)
+    com.lumluay.pos             → Production bundle ID
+    LumluayPOS Distribution     → Name of your Distribution provisioning profile
+
+  To find your Team ID:
+    developer.apple.com → Account → Membership → Team ID
+-->
+<plist version="1.0">
+<dict>
+  <!-- Upload directly to App Store Connect / TestFlight -->
+  <key>method</key>
+  <string>app-store</string>
+
+  <key>teamID</key>
+  <string>YOUR_TEAM_ID</string>
+
+  <!-- Signing -->
+  <key>signingStyle</key>
+  <string>manual</string>
+
+  <key>provisioningProfiles</key>
+  <dict>
+    <key>com.lumluay.pos</key>
+    <string>LumluayPOS Distribution</string>
+  </dict>
+
+  <!-- IPA options -->
+  <key>uploadBitcode</key>
+  <false/>
+  <key>uploadSymbols</key>
+  <true/>
+  <key>compileBitcode</key>
+  <false/>
+  <key>thinning</key>
+  <string>&lt;none&gt;</string>
+</dict>
+</plist>

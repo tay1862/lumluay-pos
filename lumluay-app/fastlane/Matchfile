@@ -1,0 +1,17 @@
+# fastlane/Matchfile
+# ─────────────────────────────────────────────────────────────────────────────
+# fastlane match stores certificates and provisioning profiles in a private
+# Git repository (encrypted with MATCH_PASSWORD).
+#
+# First-time setup:
+#   1. Create a private GitHub repo for certs (e.g. github.com/YOUR_ORG/lumluay-certs)
+#   2. Set MATCH_GIT_URL and MATCH_PASSWORD env vars
+#   3. Run: cd lumluay-app && fastlane match appstore
+# ─────────────────────────────────────────────────────────────────────────────
+
+git_url ENV["MATCH_GIT_URL"]          # e.g. "https://github.com/YOUR_ORG/lumluay-certs"
+storage_mode "git"
+type "appstore"                        # "development", "adhoc", or "appstore"
+app_identifier ["com.lumluay.pos"]
+username ENV["APPLE_ID"]
+readonly true                          # CI: never create new; only read existing

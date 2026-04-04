@@ -1,0 +1,30 @@
+{
+  "@@locale": "lo",
+  "appTitle": "LUMLUAY POS",
+  "languageSettingsTitle": "ຕັ້ງຄ່າພາສາ",
+  "languageSettingsDescription": "ເລືອກພາສາທີ່ທ່ານຕ້ອງການ",
+  "languageChanged": "ປ່ຽນພາສາເປັນ {language} ແລ້ວ",
+  "@languageChanged": {
+    "placeholders": {
+      "language": {
+        "type": "Object"
+      }
+    }
+  },
+  "localeThai": "ໄທ",
+  "localeEnglish": "ອັງກິດ",
+  "localeLao": "ລາວ",
+  "languageSupportHint": "ຂໍ້ຄວາມບາງສ່ວນອາດຈະຍັງເປັນພາສາໄທຕາມແຫຼ່ງຂໍ້ມູນ",
+  "setupWizardTitle": "ຕັ້ງຄ່າເບື້ອງຕົ້ນ",
+  "next": "ຕໍ່ໄປ",
+  "back": "ກັບຄືນ",
+  "finish": "ສໍາເລັດ",
+  "save": "ບັນທຶກ",
+  "cancel": "ຍົກເລີກ",
+  "delete": "ລົບ",
+  "confirm": "ຢືນຢັນ",
+  "retry": "ລອງໃໝ່",
+  "loading": "ກໍາລັງໂຫຼດ...",
+  "errorOccurred": "ເກີດຂໍ້ຜິດພາດ",
+  "settings": "ການຕັ້ງຄ່າ"
+}

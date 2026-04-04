@@ -1,0 +1,71 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# docker-compose.monitoring.yml — 18.6.7: Uptime monitoring stack
+#
+# Services:
+#   - Uptime Kuma:   lightweight uptime / health monitoring UI    → :3002
+#   - Prometheus:    metrics scraping from NestJS /metrics        → :9090
+#   - Grafana:       dashboard for Prometheus metrics             → :3003
+#
+# Start:
+#   docker compose -f docker-compose.prod.yml \
+#                  -f docker-compose.monitoring.yml up -d
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: '3.9'
+
+services:
+  # ── Uptime Kuma (simple HTTP health monitoring) ──────────────────────────
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: lumluay_uptime_kuma
+    restart: unless-stopped
+    volumes:
+      - uptime_kuma_data:/app/data
+    ports:
+      - '3002:3001'
+    networks:
+      - lumluay-network
+
+  # ── Prometheus ────────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.51.2
+    container_name: lumluay_prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=30d'
+    ports:
+      - '9090:9090'
+    networks:
+      - lumluay-network
+
+  # ── Grafana ───────────────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: lumluay_grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-changeMe!}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_ANALYTICS_REPORTING_ENABLED=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - '3003:3000'
+    networks:
+      - lumluay-network
+    depends_on:
+      - prometheus
+
+volumes:
+  uptime_kuma_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  lumluay-network:
+    external: true
