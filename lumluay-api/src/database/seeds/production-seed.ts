@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { eq } from 'drizzle-orm';
-import postgres from 'postgres';
-import bcrypt from 'bcrypt';
+import postgres = require('postgres');
+import bcrypt = require('bcrypt');
 import * as schema from '../schema';
 
 async function ensurePlan(

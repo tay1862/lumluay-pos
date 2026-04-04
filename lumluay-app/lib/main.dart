@@ -17,9 +17,26 @@ void main() async {
 
 Future<void> bootstrapApp(AppEnv env) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await FcmService.instance.init();
+  await _initializeOptionalFirebase();
   runApp(ProviderScope(child: LumluayApp(env: env)));
+}
+
+Future<void> _initializeOptionalFirebase() async {
+  try {
+    await Firebase.initializeApp();
+    await FcmService.instance.init();
+  } catch (error, stackTrace) {
+    FlutterError.reportError(
+      FlutterErrorDetails(
+        exception: error,
+        stack: stackTrace,
+        library: 'bootstrapApp',
+        context: ErrorDescription(
+          'while initializing optional Firebase services',
+        ),
+      ),
+    );
+  }
 }
 
 class LumluayApp extends ConsumerWidget {
