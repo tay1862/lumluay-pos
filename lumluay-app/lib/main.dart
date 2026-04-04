@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,8 +19,8 @@ void main() async {
 
 Future<void> bootstrapApp(AppEnv env) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await _initializeOptionalFirebase();
   runApp(ProviderScope(child: LumluayApp(env: env)));
+  unawaited(_initializeOptionalFirebase());
 }
 
 Future<void> _initializeOptionalFirebase() async {
