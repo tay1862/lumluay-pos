@@ -41,6 +41,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       );
     }
 
-    reply.status(status).send(errorBody);
+    reply.code(status).send(errorBody);
   }
 }

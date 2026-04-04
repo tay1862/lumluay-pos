@@ -32,7 +32,8 @@ class AppLocalizationsTh extends AppLocalizations {
   String get localeLao => 'ພາສາລາວ';
 
   @override
-  String get languageSupportHint => 'บางข้อความอาจยังแสดงเป็นภาษาไทย ขึ้นอยู่กับการรองรับของเนื้อหา';
+  String get languageSupportHint =>
+      'บางข้อความอาจยังแสดงเป็นภาษาไทย ขึ้นอยู่กับการรองรับของเนื้อหา';
 
   @override
   String get setupWizardTitle => 'Setup Wizard';

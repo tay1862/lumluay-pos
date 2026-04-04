@@ -51,8 +51,8 @@ JWT_SECRET=<64+ char secret>
 JWT_REFRESH_SECRET=<different 64+ char secret>
 SUPER_ADMIN_USERNAME=superadmin
 SUPER_ADMIN_PASSWORD=<strong password>
-CORS_ORIGINS=https://your-domain.com,https://www.your-domain.com
-DOMAIN=your-domain.com
+CORS_ORIGINS=https://kanghan.site,https://www.kanghan.site
+DOMAIN=kanghan.site
 CERTBOT_EMAIL=you@example.com
 ```
 
@@ -95,13 +95,13 @@ This runs:
 Once DNS resolves correctly:
 
 ```bash
-DOMAIN=your-domain.com CERTBOT_EMAIL=you@example.com \
+DOMAIN=kanghan.site CERTBOT_EMAIL=you@example.com \
 docker compose -f docker-compose.prod.yml --profile certbot run --rm certbot
 ```
 
 After the certificate is issued:
 
-1. edit `nginx/conf.d/ssl.conf` and replace every `YOUR_DOMAIN` with the real domain
+1. verify `nginx/conf.d/ssl.conf` still matches `kanghan.site`
 2. reload Nginx:
 
 ```bash

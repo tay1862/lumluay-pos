@@ -5,8 +5,8 @@ Future<void> main() async {
   await bootstrapApp(
     const AppEnv(
       flavor: AppFlavor.prod,
-      apiBaseUrl: 'https://api.lumluay.app/v1',
-      wsBaseUrl: 'https://api.lumluay.app',
+      apiBaseUrl: 'https://kanghan.site/api',
+      wsBaseUrl: 'https://kanghan.site',
     ),
   );
 }

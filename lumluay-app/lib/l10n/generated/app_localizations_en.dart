@@ -32,7 +32,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get localeLao => 'Lao';
 
   @override
-  String get languageSupportHint => 'Some content may still appear in Thai depending on source support.';
+  String get languageSupportHint =>
+      'Some content may still appear in Thai depending on source support.';
 
   @override
   String get setupWizardTitle => 'Setup Wizard';

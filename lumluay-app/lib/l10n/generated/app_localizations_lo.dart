@@ -32,7 +32,8 @@ class AppLocalizationsLo extends AppLocalizations {
   String get localeLao => 'ລາວ';
 
   @override
-  String get languageSupportHint => 'ຂໍ້ຄວາມບາງສ່ວນອາດຈະຍັງເປັນພາສາໄທຕາມແຫຼ່ງຂໍ້ມູນ';
+  String get languageSupportHint =>
+      'ຂໍ້ຄວາມບາງສ່ວນອາດຈະຍັງເປັນພາສາໄທຕາມແຫຼ່ງຂໍ້ມູນ';
 
   @override
   String get setupWizardTitle => 'ຕັ້ງຄ່າເບື້ອງຕົ້ນ';

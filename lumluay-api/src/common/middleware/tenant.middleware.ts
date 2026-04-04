@@ -21,7 +21,8 @@ export class TenantMiddleware implements NestMiddleware {
       this.extractFromHost(req.hostname);
 
     if (!tenantId) {
-      throw new BadRequestException('Tenant identifier is required');
+      next();
+      return;
     }
 
     // The x-tenant-id header (or subdomain) must be a valid UUID when it
