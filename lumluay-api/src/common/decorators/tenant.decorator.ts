@@ -3,7 +3,13 @@ import { FastifyRequest } from 'fastify';
 
 export const TenantId = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext): string => {
-    const request = ctx.switchToHttp().getRequest<FastifyRequest>();
-    return (request as FastifyRequest & { tenantId?: string }).tenantId ?? '';
+    const request = ctx.switchToHttp().getRequest<
+      FastifyRequest & {
+        tenantId?: string;
+        user?: { tenantId?: string };
+      }
+    >();
+
+    return request.tenantId ?? request.user?.tenantId ?? '';
   },
 );
