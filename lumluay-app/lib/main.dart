@@ -91,6 +91,10 @@ Future<void> bootstrapApp(AppEnv env) async {
 }
 
 Future<void> _initializeOptionalFirebase() async {
+  if (kIsWeb) {
+    return;
+  }
+
   try {
     await Firebase.initializeApp();
     await FcmService.instance.init();
