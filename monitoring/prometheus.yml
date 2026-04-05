@@ -10,8 +10,6 @@ scrape_configs:
     metrics_path: '/v1/health/metrics'
     static_configs:
       - targets: ['api:3000']
-    # The NestJS health endpoint returns JSON; use a Prometheus exporter
-    # if @willsoto/nestjs-prometheus is added to the API.
 
   - job_name: 'nginx'
     static_configs:

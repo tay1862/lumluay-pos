@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, Length } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, Length, Matches } from 'class-validator';
 
 export class LoginDto {
   @IsString()
@@ -55,5 +55,9 @@ export class ChangePasswordDto {
   @IsString()
   @IsNotEmpty()
   @Length(8, 100)
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, {
+    message:
+      'Password must contain at least one uppercase letter, one lowercase letter, and one digit',
+  })
   newPassword: string;
 }

@@ -1,7 +1,7 @@
-import { Injectable, UnauthorizedException, Inject, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Inject, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { eq, and, isNull } from 'drizzle-orm';
+import { eq, and, isNull, sql } from 'drizzle-orm';
 import * as bcrypt from 'bcryptjs';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DATABASE } from '@/database/database.module';
@@ -9,6 +9,9 @@ import * as schema from '@/database/schema';
 import { users, userSessions, tenants } from '@/database/schema';
 import { LoginDto, LoginPinDto, RefreshTokenDto } from './dto/auth.dto';
 import { createHash, randomBytes } from 'crypto';
+
+const MAX_FAILED_ATTEMPTS = 10;
+const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 
 @Injectable()
 export class AuthService {
@@ -39,11 +42,15 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    this.checkLockout(user);
+
     const isValid = await bcrypt.compare(dto.password, user.passwordHash);
     if (!isValid) {
+      await this.recordFailedAttempt(user.id);
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    await this.resetFailedAttempts(user.id);
     const tokens = await this.generateTokens(user, dto.deviceId, dto.deviceName, ipAddress);
 
     await this.db
@@ -76,11 +83,15 @@ export class AuthService {
       throw new UnauthorizedException('PIN login not available');
     }
 
+    this.checkLockout(user);
+
     const isValid = await bcrypt.compare(dto.pin, user.pinCode);
     if (!isValid) {
+      await this.recordFailedAttempt(user.id);
       throw new UnauthorizedException('Invalid PIN');
     }
 
+    await this.resetFailedAttempts(user.id);
     const tokens = await this.generateTokens(user, dto.deviceId, undefined, ipAddress);
 
     return {
@@ -216,5 +227,50 @@ export class AuthService {
       avatarUrl: user.avatarUrl,
       locale: user.locale,
     };
+  }
+
+  // ─── Account Lockout ───────────────────────────────────────────────────────
+
+  private checkLockout(user: typeof users.$inferSelect) {
+    if (
+      user.lockedUntil &&
+      new Date(user.lockedUntil) > new Date()
+    ) {
+      const retryAfterMs =
+        new Date(user.lockedUntil).getTime() - Date.now();
+      const retryAfterSec = Math.ceil(retryAfterMs / 1000);
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.TOO_MANY_REQUESTS,
+          message: `Account locked due to too many failed attempts. Try again in ${Math.ceil(retryAfterSec / 60)} minute(s).`,
+          retryAfterSeconds: retryAfterSec,
+        },
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
+    }
+  }
+
+  private async recordFailedAttempt(userId: string) {
+    const [updated] = await this.db
+      .update(users)
+      .set({
+        failedLoginAttempts: sql`${users.failedLoginAttempts} + 1`,
+      } as any)
+      .where(eq(users.id, userId))
+      .returning({ attempts: users.failedLoginAttempts });
+
+    if (updated && updated.attempts >= MAX_FAILED_ATTEMPTS) {
+      await this.db
+        .update(users)
+        .set({ lockedUntil: new Date(Date.now() + LOCKOUT_DURATION_MS) })
+        .where(eq(users.id, userId));
+    }
+  }
+
+  private async resetFailedAttempts(userId: string) {
+    await this.db
+      .update(users)
+      .set({ failedLoginAttempts: 0, lockedUntil: null })
+      .where(eq(users.id, userId));
   }
 }

@@ -1,0 +1,33 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches: [develop]
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          script: |
+            cd /opt/lumluay-pos
+            git fetch origin develop
+            git checkout develop
+            git pull origin develop
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+            docker compose exec -T api npm run db:migrate
+            echo "✅ Staging deployed at $(date)"
