@@ -2,7 +2,7 @@ import {
   Controller, Get, Post, Param, ParseUUIDPipe, Body, UseGuards,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
-import { CreatePaymentDto, CompleteOrderDto, RefundOrderDto } from './dto/payment.dto';
+import { CreatePaymentDto, SplitPaymentDto, CompleteOrderDto, RefundOrderDto } from './dto/payment.dto';
 import { TenantId } from '@/common/decorators/tenant.decorator';
 import { CurrentUser, AuthUser } from '@/common/decorators/user.decorator';
 import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard';
@@ -39,6 +39,16 @@ export class PaymentsController {
     @Body() dto: CreatePaymentDto,
   ) {
     return this.paymentsService.create(tenantId, user.id, orderId, dto);
+  }
+
+  @Post('orders/:orderId/split-payment')
+  splitPayment(
+    @TenantId() tenantId: string,
+    @CurrentUser() user: AuthUser,
+    @Param('orderId', ParseUUIDPipe) orderId: string,
+    @Body() dto: SplitPaymentDto,
+  ) {
+    return this.paymentsService.splitPayment(tenantId, user.id, orderId, dto);
   }
 
   @Post('orders/:orderId/complete')

@@ -9,6 +9,7 @@ import * as schema from '@/database/schema';
 import {
   orders, orderItems, orderItemModifiers,
   products, productVariants, modifierOptions, kitchenTickets, users,
+  storeSettings,
 } from '@/database/schema';
 import {
   CreateOrderDto,
@@ -30,6 +31,15 @@ export class OrdersService {
     private readonly kitchenGateway: KitchenGateway,
   ) {}
 
+  private async getReceiptPrefix(tenantId: string): Promise<string> {
+    const settings = await this.db.query.storeSettings.findFirst({
+      where: eq(storeSettings.tenantId, tenantId),
+    });
+    if (settings?.receiptPrefix) return settings.receiptPrefix;
+    const extra = (settings?.extra ?? {}) as Record<string, unknown>;
+    return (extra.receiptPrefix as string) ?? 'RC';
+  }
+
   private async nextReceiptNumber(tenantId: string): Promise<string> {
     // Wrap in a transaction with a per-tenant advisory lock to prevent
     // concurrent duplicate receipt numbers (TOCTOU race condition fix).
@@ -38,7 +48,8 @@ export class OrdersService {
 
       const now = new Date();
       const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
-      const prefix = `RC-${datePart}-`;
+      const rcPrefix = await this.getReceiptPrefix(tenantId);
+      const prefix = `${rcPrefix}-${datePart}-`;
 
       const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);

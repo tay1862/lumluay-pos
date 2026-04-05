@@ -8,6 +8,7 @@ import * as schema from '@/database/schema';
 import { payments, orders, orderItems, stockLevels, stockMovements, members, products } from '@/database/schema';
 import {
   CreatePaymentDto,
+  SplitPaymentDto,
   CompleteOrderDto,
   RefundOrderDto,
 } from './dto/payment.dto';
@@ -61,7 +62,8 @@ export class PaymentsService {
 
     const order = await this.findOrderForPayment(tenantId, orderId);
 
-    const currency = (dto.currency ?? 'THB').toUpperCase();
+    const baseCurrency = await this.exchangeRateService.getBaseCurrency(tenantId);
+    const currency = (dto.currency ?? baseCurrency).toUpperCase();
     const amount = dto.amount;
     const tendered = dto.tendered ?? amount;
 
@@ -78,14 +80,15 @@ export class PaymentsService {
       Math.round((Number(order.totalAmount) - paidBefore) * 100) / 100,
     );
 
-    const dueInCurrency = currency === 'THB'
+    const isBaseCurrency = currency === baseCurrency;
+    const dueInCurrency = isBaseCurrency
       ? remainingBefore
-      : remainingBefore * rate;
+      : remainingBefore / (rate || 1);
     const rawChange = Math.max(0, tendered - dueInCurrency);
     const changeInCurrency = Math.round(rawChange * 100) / 100;
-    const changeInBase = currency === 'THB'
+    const changeInBase = isBaseCurrency
       ? changeInCurrency
-      : Math.round((changeInCurrency / (rate || 1)) * 100) / 100;
+      : Math.round((changeInCurrency * (rate || 1)) * 100) / 100;
 
     const paidAfter = Math.round((paidBefore + baseAmount) * 100) / 100;
     const remaining = Math.max(0, Math.round((Number(order.totalAmount) - paidAfter) * 100) / 100);
@@ -136,6 +139,83 @@ export class PaymentsService {
         amount: changeInCurrency,
       },
     };
+  }
+
+  // ─── Split Payment (batch) ───────────────────────────────────────────────
+  async splitPayment(
+    tenantId: string,
+    cashierId: string,
+    orderId: string,
+    dto: SplitPaymentDto,
+  ) {
+    const order = await this.findOrderForPayment(tenantId, orderId);
+    const total = Number(order.totalAmount);
+    const paidBefore = await this.getPaidTotal(tenantId, orderId);
+    const remainingBefore = Math.max(0, this.round2(total - paidBefore));
+    const baseCurrency = await this.exchangeRateService.getBaseCurrency(tenantId);
+
+    // Validate that the sum of payment amounts covers the remaining balance
+    const sumBase: number[] = [];
+    for (const item of dto.payments) {
+      const currency = (item.currency ?? baseCurrency).toUpperCase();
+      const { baseAmount } = await this.exchangeRateService.toBase(
+        tenantId,
+        item.amount,
+        currency,
+        item.exchangeRate,
+      );
+      sumBase.push(baseAmount);
+    }
+    const totalSubmitted = this.round2(sumBase.reduce((a, b) => a + b, 0));
+    if (totalSubmitted < remainingBefore) {
+      throw new BadRequestException(
+        `Insufficient split payment: submitted ${totalSubmitted.toFixed(2)} < remaining ${remainingBefore.toFixed(2)}`,
+      );
+    }
+
+    // Process each payment
+    const results: Array<Awaited<ReturnType<typeof this.create>>> = [];
+    for (const item of dto.payments) {
+      const singleDto: CreatePaymentDto = {
+        method: item.method,
+        amount: item.amount,
+        tendered: item.tendered,
+        reference: item.reference,
+        note: item.note,
+        currency: item.currency,
+        exchangeRate: item.exchangeRate,
+      };
+      const result = await this.create(tenantId, cashierId, orderId, singleDto);
+      results.push(result);
+    }
+
+    const lastResult = results[results.length - 1];
+    const paidAfter = lastResult.split.paidAfter;
+    const remaining = lastResult.split.remaining;
+
+    // Auto-complete if requested and fully paid
+    let completedOrder: Awaited<ReturnType<typeof this.completeOrder>> | null = null;
+    if (dto.autoComplete !== false && remaining <= 0) {
+      completedOrder = await this.completeOrder(tenantId, orderId);
+    }
+
+    return {
+      payments: results.map((r) => r.payment),
+      summary: {
+        total,
+        paidBefore,
+        paidAfter,
+        remaining,
+        paymentCount: results.length,
+        change: lastResult.change,
+      },
+      completed: completedOrder !== null,
+      order: completedOrder?.order ?? null,
+    };
+  }
+
+  private round2(value: number): number {
+    return Math.round(value * 100) / 100;
   }
 
   async completeOrder(tenantId: string, orderId: string, _dto?: CompleteOrderDto) {
