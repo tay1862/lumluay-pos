@@ -86,9 +86,9 @@ bash scripts/deploy.sh
 
 This runs:
 
-- `docker compose -f docker-compose.prod.yml up -d --build`
-- `npm run db:migrate`
-- `npm run db:seed:prod`
+- `docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml up -d --build`
+- `docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml exec -T api npm run db:migrate`
+- `docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml exec -T api npm run db:seed:prod`
 
 ## 7. Issue SSL Certificates
 
@@ -96,7 +96,7 @@ Once DNS resolves correctly:
 
 ```bash
 DOMAIN=kanghan.site CERTBOT_EMAIL=you@example.com \
-docker compose -f docker-compose.prod.yml --profile certbot run --rm certbot
+docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml --profile certbot run --rm certbot
 ```
 
 After the certificate is issued:
@@ -105,7 +105,7 @@ After the certificate is issued:
 2. reload Nginx:
 
 ```bash
-docker compose -f docker-compose.prod.yml exec nginx nginx -s reload
+docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml exec nginx nginx -s reload
 ```
 
 ## 8. Health Checks
@@ -113,9 +113,9 @@ docker compose -f docker-compose.prod.yml exec nginx nginx -s reload
 Useful commands:
 
 ```bash
-docker compose -f docker-compose.prod.yml ps
-docker compose -f docker-compose.prod.yml logs -f api
-docker compose -f docker-compose.prod.yml logs -f nginx
+docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml ps
+docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml logs -f api
+docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml logs -f nginx
 curl http://localhost/healthz
 curl http://localhost/api/health
 ```

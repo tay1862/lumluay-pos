@@ -120,12 +120,12 @@ fi
 # ══════════════════ 7. Build & start ══════════════════════════════════════════
 info "Building and starting production stack..."
 cd "$APP_DIR"
-docker compose -f docker-compose.prod.yml pull --quiet
-docker compose -f docker-compose.prod.yml up -d --build
+docker compose --env-file "$ENV_FILE" -f docker-compose.prod.yml pull --quiet
+docker compose --env-file "$ENV_FILE" -f docker-compose.prod.yml up -d --build
 info "Running DB migrations..."
-docker compose -f docker-compose.prod.yml exec -T api npm run db:migrate || warn "Migration step failed — check logs"
+docker compose --env-file "$ENV_FILE" -f docker-compose.prod.yml exec -T api npm run db:migrate || warn "Migration step failed — check logs"
 info "Seeding production defaults..."
-docker compose -f docker-compose.prod.yml exec -T api npm run db:seed:prod || warn "Seed step failed — might already be seeded"
+docker compose --env-file "$ENV_FILE" -f docker-compose.prod.yml exec -T api npm run db:seed:prod || warn "Seed step failed — might already be seeded"
 
 # ══════════════════ 8. Let's Encrypt certificate ═══════════════════════════════
 DOMAIN="${DOMAIN:-}"
@@ -134,10 +134,10 @@ CERTBOT_EMAIL="${CERTBOT_EMAIL:-}"
 if [[ -n "$DOMAIN" && -n "$CERTBOT_EMAIL" ]]; then
   info "Issuing Let's Encrypt certificate for $DOMAIN..."
   DOMAIN="$DOMAIN" CERTBOT_EMAIL="$CERTBOT_EMAIL" \
-    docker compose -f docker-compose.prod.yml \
+    docker compose --env-file "$ENV_FILE" -f docker-compose.prod.yml \
       --profile certbot run --rm certbot || warn "Certificate issuance failed — check logs"
   info "Reloading nginx..."
-  docker compose -f docker-compose.prod.yml exec nginx nginx -s reload || true
+  docker compose --env-file "$ENV_FILE" -f docker-compose.prod.yml exec nginx nginx -s reload || true
 else
   warn "DOMAIN or CERTBOT_EMAIL not set — skipping certificate issuance."
   warn "Set them and run:  DOMAIN=your.domain CERTBOT_EMAIL=you@mail.com \\"
@@ -166,13 +166,13 @@ info "════════════════════════�
 info " LUMLUAY POS VPS setup complete!"
 info ""
 info " Stack status:"
-docker compose -f "$APP_DIR/docker-compose.prod.yml" ps
+docker compose --env-file "$ENV_FILE" -f "$APP_DIR/docker-compose.prod.yml" ps
 info ""
 info " Next steps:"
 info "  1. Verify .env at $ENV_FILE has correct values"
 info "  2. Point your DNS A record for \$DOMAIN → $(curl -s ifconfig.me 2>/dev/null || echo '<VPS IP>')"
 info "  3. Issue SSL cert:  DOMAIN=your.domain CERTBOT_EMAIL=you@mail.com \\"  
-info "       docker compose -f docker-compose.prod.yml --profile certbot run --rm certbot"
-info "  4. Reload nginx:    docker compose -f docker-compose.prod.yml exec nginx nginx -s reload"
+info "       docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml --profile certbot run --rm certbot"
+info "  4. Reload nginx:    docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml exec nginx nginx -s reload"
 info "  5. Swap nginx config to ssl.conf after cert is issued"
 info "════════════════════════════════════════════════════════════"

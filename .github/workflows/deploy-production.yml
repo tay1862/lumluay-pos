@@ -35,6 +35,6 @@ jobs:
             git fetch origin main
             git checkout main
             git pull origin main
-            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
-            docker compose exec -T api npm run db:migrate
+            docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml up -d --build
+            docker compose --env-file lumluay-api/.env -f docker-compose.prod.yml exec -T api npm run db:migrate
             echo "✅ Production deployed at $(date)"

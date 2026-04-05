@@ -36,16 +36,16 @@ ALTER TABLE modifier_groups         ENABLE ROW LEVEL SECURITY;
 ALTER TABLE modifier_options        ENABLE ROW LEVEL SECURITY;
 ALTER TABLE unit_conversions        ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "tables"                ENABLE ROW LEVEL SECURITY;
-ALTER TABLE zone_aliases            ENABLE ROW LEVEL SECURITY;
+ALTER TABLE zones                   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE orders                  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE order_items             ENABLE ROW LEVEL SECURITY;
 ALTER TABLE payments                ENABLE ROW LEVEL SECURITY;
-ALTER TABLE stock                   ENABLE ROW LEVEL SECURITY;
+ALTER TABLE stock_levels            ENABLE ROW LEVEL SECURITY;
 ALTER TABLE stock_movements         ENABLE ROW LEVEL SECURITY;
 ALTER TABLE members                 ENABLE ROW LEVEL SECURITY;
 ALTER TABLE shifts                  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE coupons                 ENABLE ROW LEVEL SECURITY;
-ALTER TABLE queue_entries           ENABLE ROW LEVEL SECURITY;
+ALTER TABLE queue                   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE kitchen_tickets         ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs              ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sync_queue              ENABLE ROW LEVEL SECURITY;
@@ -113,9 +113,9 @@ DROP POLICY IF EXISTS tenant_isolation ON "tables";
 CREATE POLICY tenant_isolation ON "tables"
   USING (tenant_id = current_setting('app.tenant_id', true)::uuid);
 
--- zone_aliases
-DROP POLICY IF EXISTS tenant_isolation ON zone_aliases;
-CREATE POLICY tenant_isolation ON zone_aliases
+-- zones
+DROP POLICY IF EXISTS tenant_isolation ON zones;
+CREATE POLICY tenant_isolation ON zones
   USING (tenant_id = current_setting('app.tenant_id', true)::uuid);
 
 -- orders
@@ -138,9 +138,9 @@ DROP POLICY IF EXISTS tenant_isolation ON payments;
 CREATE POLICY tenant_isolation ON payments
   USING (tenant_id = current_setting('app.tenant_id', true)::uuid);
 
--- stock
-DROP POLICY IF EXISTS tenant_isolation ON stock;
-CREATE POLICY tenant_isolation ON stock
+-- stock_levels
+DROP POLICY IF EXISTS tenant_isolation ON stock_levels;
+CREATE POLICY tenant_isolation ON stock_levels
   USING (tenant_id = current_setting('app.tenant_id', true)::uuid);
 
 -- stock_movements
@@ -163,9 +163,9 @@ DROP POLICY IF EXISTS tenant_isolation ON coupons;
 CREATE POLICY tenant_isolation ON coupons
   USING (tenant_id = current_setting('app.tenant_id', true)::uuid);
 
--- queue_entries
-DROP POLICY IF EXISTS tenant_isolation ON queue_entries;
-CREATE POLICY tenant_isolation ON queue_entries
+-- queue
+DROP POLICY IF EXISTS tenant_isolation ON queue;
+CREATE POLICY tenant_isolation ON queue
   USING (tenant_id = current_setting('app.tenant_id', true)::uuid);
 
 -- kitchen_tickets

@@ -1,12 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import '../data/auth_repository.dart';
-import '../../../core/constants/app_constants.dart';
 
-// ---------------------------------------------------------------------------
-// Models
-// ---------------------------------------------------------------------------
+import '../../../core/constants/app_constants.dart';
+import '../data/auth_repository.dart';
 
 class AuthUser {
   final String id;
@@ -23,13 +20,25 @@ class AuthUser {
     required this.role,
   });
 
-  factory AuthUser.fromJson(Map<String, dynamic> json) => AuthUser(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        username: json['username'] as String,
-        displayName: json['displayName'] as String,
-        role: json['role'] as String,
-      );
+  factory AuthUser.fromJson(Map<String, dynamic> json) {
+    final id = '${json['id'] ?? json['sub'] ?? ''}'.trim();
+    final tenantId = '${json['tenantId'] ?? ''}'.trim();
+    final username = '${json['username'] ?? ''}'.trim();
+    final displayName = '${json['displayName'] ?? username}'.trim();
+    final role = '${json['role'] ?? 'cashier'}'.trim();
+
+    if (id.isEmpty || tenantId.isEmpty || username.isEmpty) {
+      throw const FormatException('Incomplete user payload');
+    }
+
+    return AuthUser(
+      id: id,
+      tenantId: tenantId,
+      username: username,
+      displayName: displayName.isEmpty ? username : displayName,
+      role: role.isEmpty ? 'cashier' : role,
+    );
+  }
 }
 
 sealed class AuthState {
@@ -46,6 +55,7 @@ class AuthLoading extends AuthState {
 
 class AuthAuthenticated extends AuthState {
   final AuthUser user;
+
   const AuthAuthenticated(this.user);
 }
 
@@ -55,15 +65,11 @@ class AuthUnauthenticated extends AuthState {
 
 class AuthError extends AuthState {
   final String message;
+
   const AuthError(this.message);
 }
 
-// ---------------------------------------------------------------------------
-// Notifier
-// ---------------------------------------------------------------------------
-
-final authProvider =
-    StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   return AuthNotifier(
     repository: ref.read(authRepositoryProvider),
     storage: const FlutterSecureStorage(),
@@ -88,24 +94,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (token != null && !JwtDecoder.isExpired(token)) {
       try {
         final claims = JwtDecoder.decode(token);
-        // Rebuild AuthUser from stored data; fetch /auth/me if needed
-        final userId = claims['sub'] as String?;
-        final tenantId = claims['tenantId'] as String?;
-        final username = claims['username'] as String?;
-        final displayName = claims['displayName'] as String?;
-        final role = claims['role'] as String?;
-        if (userId != null && tenantId != null && username != null) {
-          state = AuthAuthenticated(AuthUser(
-            id: userId,
-            tenantId: tenantId,
-            username: username,
-            displayName: displayName ?? username,
-            role: role ?? 'cashier',
-          ));
-          return;
-        }
-      } catch (_) {}
+        state = AuthAuthenticated(AuthUser.fromJson(claims));
+        return;
+      } catch (_) {
+        // Ignore broken cached sessions and reset below.
+      }
     }
+
     await _clearTokens();
     state = const AuthUnauthenticated();
   }
@@ -122,8 +117,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
         username: username,
         password: password,
       );
-      await _saveTokens(data, tenantSlug: tenantSlug);
-      state = AuthAuthenticated(AuthUser.fromJson(data['user'] as Map<String, dynamic>));
+      final authUser = _buildAuthUser(data);
+      await _saveTokens(data, authUser: authUser, tenantSlug: tenantSlug);
+      state = AuthAuthenticated(authUser);
     } catch (e) {
       state = AuthError(_parseError(e));
     }
@@ -136,8 +132,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = const AuthLoading();
     try {
       final data = await _repository.loginWithPin(pin: pin, userId: userId);
-      await _saveTokens(data);
-      state = AuthAuthenticated(AuthUser.fromJson(data['user'] as Map<String, dynamic>));
+      final authUser = _buildAuthUser(data);
+      await _saveTokens(data, authUser: authUser);
+      state = AuthAuthenticated(authUser);
     } catch (e) {
       state = AuthError(_parseError(e));
     }
@@ -147,18 +144,45 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       await _repository.logout();
     } catch (_) {}
+
     await _clearTokens();
     state = const AuthUnauthenticated();
   }
 
+  AuthUser _buildAuthUser(Map<String, dynamic> data) {
+    final rawUser = data['user'];
+    if (rawUser is Map<String, dynamic>) {
+      try {
+        return AuthUser.fromJson(rawUser);
+      } catch (_) {
+        // Fall back to token claims below when the backend payload is partial.
+      }
+    }
+
+    final accessToken = data['accessToken'] as String?;
+    if (accessToken != null && accessToken.isNotEmpty) {
+      final claims = JwtDecoder.decode(accessToken);
+      return AuthUser.fromJson(claims);
+    }
+
+    throw const FormatException('Invalid login response');
+  }
+
   Future<void> _saveTokens(
     Map<String, dynamic> data, {
+    required AuthUser authUser,
     String? tenantSlug,
   }) async {
     await Future.wait([
-      _storage.write(key: AppConstants.keyAccessToken, value: data['accessToken'] as String),
-      _storage.write(key: AppConstants.keyRefreshToken, value: data['refreshToken'] as String),
-      _storage.write(key: AppConstants.keyTenantId, value: (data['user'] as Map)['tenantId'] as String),
+      _storage.write(
+        key: AppConstants.keyAccessToken,
+        value: data['accessToken'] as String,
+      ),
+      _storage.write(
+        key: AppConstants.keyRefreshToken,
+        value: data['refreshToken'] as String,
+      ),
+      _storage.write(key: AppConstants.keyTenantId, value: authUser.tenantId),
       if (tenantSlug != null && tenantSlug.isNotEmpty)
         _storage.write(key: AppConstants.keyTenantSlug, value: tenantSlug),
     ]);
