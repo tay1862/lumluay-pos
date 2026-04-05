@@ -339,7 +339,7 @@ export class ReportsService {
   ): Promise<string> {
     if (type === 'products') {
       const rows = await this.getProductsReport(tenantId, from, to, 9999);
-      const header = 'Rank,Product,Category,Qty Sold,Revenue (THB),Orders';
+      const header = 'Rank,Product,Category,Qty Sold,Revenue,Orders';
       const lines = rows.map(
         (r) =>
           `${r.rank},"${r.productName}","${r.categoryName}",${r.totalQty},${r.totalRevenue.toFixed(2)},${r.orderCount}`,
@@ -347,7 +347,7 @@ export class ReportsService {
       return [header, ...lines].join('\n');
     } else {
       const rows = await this.getSalesReport(tenantId, from, to);
-      const header = 'Date,Orders,Revenue (THB),Discount (THB),Net (THB)';
+      const header = 'Date,Orders,Revenue,Discount,Net';
       const lines = rows.map(
         (r) =>
           `${r.period},${r.orderCount},${r.revenue.toFixed(2)},${r.discount.toFixed(2)},${r.net.toFixed(2)}`,

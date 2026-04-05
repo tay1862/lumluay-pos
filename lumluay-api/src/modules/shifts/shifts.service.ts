@@ -4,7 +4,7 @@ import {
   ConflictException,
   BadRequestException,
 } from '@nestjs/common';
-import { eq, and, desc } from 'drizzle-orm';
+import { eq, and, desc, gte, lte } from 'drizzle-orm';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { InjectDrizzle } from '@/database/database.module';
 import * as schema from '@/database/schema';
@@ -62,7 +62,8 @@ export class ShiftsService {
     const shift = await this.getCurrent(tenantId);
     if (!shift) throw new BadRequestException('No open shift found');
 
-    // Calculate total sales from completed orders in this shift period
+    // Calculate total sales from completed orders during this shift period
+    const now = new Date();
     const salesRows = await this.db
       .select({ total: schema.orders.totalAmount })
       .from(schema.orders)
@@ -70,6 +71,8 @@ export class ShiftsService {
         and(
           eq(schema.orders.tenantId, tenantId),
           eq(schema.orders.status, 'completed'),
+          gte(schema.orders.completedAt, shift.openedAt),
+          lte(schema.orders.completedAt, now),
         ),
       );
 
