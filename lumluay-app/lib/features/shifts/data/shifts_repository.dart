@@ -1,5 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/network/api_client.dart';
+
+class ShiftAuthRequiredException implements Exception {
+  const ShiftAuthRequiredException();
+}
 
 enum ShiftStatus { open, closed }
 
@@ -52,8 +57,11 @@ class ShiftsRepository {
       final resp = await _api.get('/shifts/current');
       if (resp == null) return null;
       return Shift.fromJson(resp as Map<String, dynamic>);
-    } catch (_) {
-      return null;
+    } on DioException catch (error) {
+      if (error.response?.statusCode == 401) {
+        throw const ShiftAuthRequiredException();
+      }
+      rethrow;
     }
   }
 
@@ -124,11 +132,13 @@ class ShiftBlocState {
 }
 
 class ShiftNotifier extends StateNotifier<ShiftBlocState> {
-  ShiftNotifier(this._repo) : super(const ShiftBlocState()) {
-    checkCurrent();
-  }
+  ShiftNotifier(this._repo) : super(const ShiftBlocState());
 
   final ShiftsRepository _repo;
+
+  void reset() {
+    state = const ShiftBlocState();
+  }
 
   Future<void> checkCurrent() async {
     state = state.copyWith(status: ShiftBlocStatus.loading);
@@ -139,6 +149,8 @@ class ShiftNotifier extends StateNotifier<ShiftBlocState> {
       } else {
         state = const ShiftBlocState(status: ShiftBlocStatus.closed);
       }
+    } on ShiftAuthRequiredException {
+      reset();
     } catch (e) {
       state = ShiftBlocState(
           status: ShiftBlocStatus.error, errorMessage: e.toString());

@@ -332,6 +332,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 class _RouterNotifier extends ChangeNotifier {
   _RouterNotifier(this._ref) {
     _ref.listen(authProvider, (previous, next) {
+      final shiftNotifier = _ref.read(shiftBlocProvider.notifier);
+      final wasAuthenticated = previous is AuthAuthenticated;
+      final isAuthenticated = next is AuthAuthenticated;
+
+      if (!wasAuthenticated && isAuthenticated) {
+        shiftNotifier.checkCurrent();
+      } else if (wasAuthenticated && !isAuthenticated) {
+        shiftNotifier.reset();
+      }
+
       notifyListeners();
     });
     _ref.listen(shiftBlocProvider, (previous, next) {
