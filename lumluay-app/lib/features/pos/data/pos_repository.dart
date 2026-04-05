@@ -18,18 +18,18 @@ final posRepositoryProvider = Provider<PosRepository>(
   ),
 );
 
-/// Fetches categories and products from the API.
+/// POS reads from the local Drift cache so initial sync and background sync
+/// can refresh the UI without extra provider invalidation.
 final categoriesProvider =
-    FutureProvider<List<Map<String, dynamic>>>((ref) async {
+    StreamProvider<List<Map<String, dynamic>>>((ref) {
   final repo = ref.read(posRepositoryProvider);
-  return repo.getCategories();
+  return repo.watchCategories();
 });
 
-final productsProvider = FutureProvider.family<List<ProductItem>, String?>(
-  (ref, categoryId) async {
+final productsProvider = StreamProvider.family<List<ProductItem>, String?>(
+  (ref, categoryId) {
     final repo = ref.read(posRepositoryProvider);
-    final items = await repo.getProducts(categoryId: categoryId);
-    return items;
+    return repo.watchProducts(categoryId: categoryId);
   },
 );
 
@@ -40,6 +40,39 @@ class PosRepository {
   final SyncQueueManager _queue;
 
   PosRepository(this._api, this._connectivity, this._db, this._queue);
+
+  Stream<List<Map<String, dynamic>>> watchCategories() {
+    return _db.productsDao.watchAllCategories().map(
+          (rows) => rows
+              .map(
+                (row) => <String, dynamic>{
+                  'id': row.id,
+                  'name': row.name,
+                  'sortOrder': row.sortOrder,
+                },
+              )
+              .toList(),
+        );
+  }
+
+  Stream<List<ProductItem>> watchProducts({String? categoryId}) {
+    return _db.productsDao.watchProducts(categoryId: categoryId).map(
+          (rows) => rows
+              .map(
+                (row) => ProductItem(
+                  id: row.id,
+                  name: row.name,
+                  imageUrl: row.imageUrl,
+                  price: row.basePrice,
+                  sku: row.sku,
+                  productType: row.productType,
+                  categoryId: row.categoryId ?? '',
+                  isAvailable: row.isActive,
+                ),
+              )
+              .toList(),
+        );
+  }
 
   Future<List<Map<String, dynamic>>> getCategories() async {
     return _api.get<List<Map<String, dynamic>>>(
@@ -159,7 +192,6 @@ class PosRepository {
     if (online) {
       await _api.post<void>('/orders/$orderId/confirm');
     } else {
-      await _db.ordersDao.updateOrderStatus(orderId, 'confirmed');
       await _queue.enqueue(
         operation: 'update',
         entityType: 'order',
@@ -231,7 +263,7 @@ class PosRepository {
     required double amount,
     required String method,
     double? received,
-    String currency = 'THB',
+    String currency = 'LAK',
     double? exchangeRate,
     String? reference,
     String? note,

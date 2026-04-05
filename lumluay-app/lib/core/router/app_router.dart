@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +7,7 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/pin_lock_page.dart';
 import '../../features/auth/providers/auth_provider.dart';
 import '../../features/shifts/data/shifts_repository.dart';
+import '../sync/sync_engine.dart';
 import '../../features/pos/presentation/pages/pos_page.dart';
 import '../../features/kitchen/presentation/pages/kitchen_page.dart';
 import '../../features/reports/presentation/pages/reports_page.dart';
@@ -333,13 +336,21 @@ class _RouterNotifier extends ChangeNotifier {
   _RouterNotifier(this._ref) {
     _ref.listen(authProvider, (previous, next) {
       final shiftNotifier = _ref.read(shiftBlocProvider.notifier);
+      final syncEngine = _ref.read(syncEngineProvider);
       final wasAuthenticated = previous is AuthAuthenticated;
       final isAuthenticated = next is AuthAuthenticated;
 
       if (!wasAuthenticated && isAuthenticated) {
         shiftNotifier.checkCurrent();
+        syncEngine.start();
+        unawaited(
+          syncEngine.performInitialSync().catchError((Object error) {
+            debugPrint('[SyncEngine] initial sync failed: $error');
+          }),
+        );
       } else if (wasAuthenticated && !isAuthenticated) {
         shiftNotifier.reset();
+        syncEngine.stop();
       }
 
       notifyListeners();

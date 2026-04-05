@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/auth_provider.dart';
-import '../../../../core/sync/sync_engine.dart';
 import '../../../../core/theme/app_theme.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -68,13 +66,6 @@ class _LoginPageState extends ConsumerState<LoginPage>
 
     ref.listen(authProvider, (prev, next) {
       if (next is AuthAuthenticated) {
-        final engine = ref.read(syncEngineProvider);
-        engine.start();
-        unawaited(
-          engine.performInitialSync().catchError((Object e) {
-            debugPrint('[SyncEngine] initial sync failed: $e');
-          }),
-        );
         context.go('/pos');
       } else if (next is AuthError) {
         ScaffoldMessenger.of(context).showSnackBar(

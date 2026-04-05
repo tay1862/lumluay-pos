@@ -231,6 +231,9 @@ class SyncEngine {
           imageUrl: Value(p['imageUrl'] != null ? '${p['imageUrl']}' : null),
           productType: Value('${p['productType'] ?? 'simple'}'),
           isActive: Value((p['isActive'] as bool?) ?? true),
+          trackStock: Value((p['trackStock'] as bool?) ?? false),
+          sortOrder: Value(int.tryParse('${p['sortOrder'] ?? 0}') ?? 0),
+          extraJson: Value(jsonEncode(p['extra'] ?? const {})),
           updatedAt: '${p['updatedAt'] ?? now}',
         ),
       );
