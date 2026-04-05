@@ -16,17 +16,17 @@ class ProductsPage extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: const Color(0xFFF5F5F7),
         appBar: AppBar(
-          title: const Text('สินค้า'),
+          title: const Text('ສິນຄ້າ'),
           bottom: TabBar(
             tabs: const [
-              Tab(text: 'สินค้าทั้งหมด'),
-              Tab(text: 'หมวดหมู่'),
+              Tab(text: 'ສິນຄ້າທັງໝົດ'),
+              Tab(text: 'ໝວດໝູ່'),
             ],
           ),
           actions: [
             IconButton(
               icon: const Icon(Icons.add),
-              tooltip: 'เพิ่มสินค้า',
+              tooltip: 'ເພີ່ມສິນຄ້າ',
               onPressed: () => context.push('/products/new'),
             ),
           ],
@@ -79,7 +79,7 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
               TextField(
                 controller: _searchCtrl,
                 decoration: InputDecoration(
-                  hintText: 'ค้นหาสินค้า...',
+                  hintText: 'ຄົ້ນຫາສິນຄ້າ...',
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: _searchCtrl.text.isNotEmpty
                       ? IconButton(
@@ -108,7 +108,7 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
                   child: Row(
                     children: [
                       _FilterChip(
-                        label: 'ทั้งหมด',
+                        label: 'ທັງໝົດ',
                         selected: selectedCat == null,
                         onSelected: () => ref
                             .read(
@@ -134,7 +134,7 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
           child: productsAsync.when(
             loading: () =>
                 const Center(child: CircularProgressIndicator()),
-            error: (e, _) => Center(child: Text('เกิดข้อผิดพลาด: $e')),
+            error: (e, _) => Center(child: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
             data: (products) {
               if (products.isEmpty) {
                 return const Center(
@@ -144,7 +144,7 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
                       Icon(Icons.storefront_outlined,
                           size: 64, color: Colors.black26),
                       SizedBox(height: 12),
-                      Text('ยังไม่มีสินค้า',
+                      Text('ຍັງບໍ່ມີສິນຄ້າ',
                           style: TextStyle(color: Colors.black45)),
                     ],
                   ),
@@ -234,7 +234,7 @@ class _ProductCard extends StatelessWidget {
                           MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '฿ ${fmt.format(product.basePrice)}',
+                          '₭ ${fmt.format(product.basePrice)}',
                           style: TextStyle(
                               color: AppColors.primary,
                               fontWeight: FontWeight.w700,
@@ -248,7 +248,7 @@ class _ProductCard extends StatelessWidget {
                               color: Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(6.r),
                             ),
-                            child: Text('ปิด',
+                            child: Text('ປິດ',
                                 style: TextStyle(
                                     fontSize: 9.sp,
                                     color: Colors.grey.shade600)),
@@ -297,7 +297,7 @@ class _CategoriesTab extends ConsumerWidget {
         data: (cats) {
           if (cats.isEmpty) {
             return const Center(
-              child: Text('ยังไม่มีหมวดหมู่',
+              child: Text('ຍັງບໍ່ມີໝວດໝູ່',
                   style: TextStyle(color: Colors.black45)),
             );
           }
@@ -333,7 +333,7 @@ class _CategoriesTab extends ConsumerWidget {
                     ),
                     title: Text(cat.name,
                         style: TextStyle(fontWeight: FontWeight.w600)),
-                    subtitle: Text('ลำดับ: ${cat.sortOrder}',
+                    subtitle: Text('ລຳດັບ: ${cat.sortOrder}',
                         style: TextStyle(fontSize: 11.sp)),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -377,17 +377,17 @@ class _CategoriesTab extends ConsumerWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('ยืนยันการลบ'),
-        content: Text('ต้องการลบหมวดหมู่ "${cat.name}" ?'),
+        title: const Text('ຢືນຢັນການລົບ'),
+        content: Text('ຕ້ອງການລົບໝວດໝູ່ "${cat.name}" ?'),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('ยกเลิก')),
+              child: const Text('ຍົກເລີກ')),
           FilledButton(
             style:
                 FilledButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('ลบ'),
+            child: const Text('ລົບ'),
           ),
         ],
       ),
@@ -460,17 +460,17 @@ class _CategoryDialogState extends ConsumerState<_CategoryDialog> {
   Widget build(BuildContext context) {
     final isEdit = widget.existing != null;
     return AlertDialog(
-      title: Text(isEdit ? 'แก้ไขหมวดหมู่' : 'เพิ่มหมวดหมู่'),
+      title: Text(isEdit ? 'ແກ້ໄຂໝວດໝູ່' : 'ເພີ່ມໝວດໝູ່'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: _nameCtrl,
-            decoration: const InputDecoration(labelText: 'ชื่อ'),
+            decoration: const InputDecoration(labelText: 'ຊື່'),
           ),
           TextField(
             controller: _sortCtrl,
-            decoration: const InputDecoration(labelText: 'ลำดับ'),
+            decoration: const InputDecoration(labelText: 'ລຳດັບ'),
             keyboardType: TextInputType.number,
           ),
         ],
@@ -478,11 +478,11 @@ class _CategoryDialogState extends ConsumerState<_CategoryDialog> {
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ยกเลิก')),
+            child: const Text('ຍົກເລີກ')),
         FilledButton(
           onPressed: _loading ? null : _save,
           child:
-              _loading ? const CircularProgressIndicator() : const Text('บันทึก'),
+              _loading ? const CircularProgressIndicator() : const Text('ບັນທຶກ'),
         ),
       ],
     );

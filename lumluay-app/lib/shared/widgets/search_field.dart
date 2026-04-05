@@ -13,7 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SearchField extends StatefulWidget {
   const SearchField({
     super.key,
-    this.hintText = 'ค้นหา...',
+    this.hintText = 'ຄົ້ນຫາ...',
     this.onChanged,
     this.onSubmitted,
     this.onScan,
@@ -81,7 +81,7 @@ class _SearchFieldState extends State<SearchField> {
             if (widget.onScan != null)
               IconButton(
                 icon: Icon(Icons.qr_code_scanner, size: 20.sp),
-                tooltip: 'สแกนบาร์โค้ด',
+                tooltip: 'ສແກນບາໂຄ້ດ',
                 onPressed: widget.onScan,
               ),
           ],

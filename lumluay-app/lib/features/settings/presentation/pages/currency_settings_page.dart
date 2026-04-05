@@ -39,11 +39,11 @@ class CurrencySettingsPage extends ConsumerStatefulWidget {
 
 class _CurrencySettingsPageState extends ConsumerState<CurrencySettingsPage> {
   static const _kAvailableCurrencies = [
-    ('THB', '฿', 'บาทไทย'),
-    ('LAK', '₭', 'กีบลาว'),
-    ('USD', r'$', 'ดอลลาร์สหรัฐ'),
-    ('EUR', '€', 'ยูโร'),
-    ('CNY', '¥', 'หยวนจีน'),
+    ('THB', '฿', 'ບາດໄທ'),
+    ('LAK', '₭', 'ກີບລາວ'),
+    ('USD', r'$', 'ໂດລາສະຫະລັດ'),
+    ('EUR', '€', 'ຢູໂຣ'),
+    ('CNY', '¥', 'ຢວນຈີນ'),
   ];
 
   late List<_CurrencyEntry> _entries;
@@ -124,13 +124,13 @@ class _CurrencySettingsPageState extends ConsumerState<CurrencySettingsPage> {
       await repo.updateExchangeRates(exchangeRates);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('บันทึกการตั้งค่าสกุลเงินแล้ว')),
+          const SnackBar(content: Text('ບັນທຶກການຕັ້ງຄ່າສະກຸນເງິນແລ້ວ')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+          SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
         );
       }
     } finally {
@@ -155,7 +155,7 @@ class _CurrencySettingsPageState extends ConsumerState<CurrencySettingsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ตั้งค่าสกุลเงิน'),
+        title: const Text('ຕັ້ງຄ່າສະກຸນເງິນ'),
         actions: [
           if (_saving)
             const Padding(
@@ -169,7 +169,7 @@ class _CurrencySettingsPageState extends ConsumerState<CurrencySettingsPage> {
           else
             TextButton(
               onPressed: _save,
-              child: const Text('บันทึก'),
+              child: const Text('ບັນທຶກ'),
             ),
         ],
       ),
@@ -184,7 +184,7 @@ class _CurrencySettingsPageState extends ConsumerState<CurrencySettingsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'สกุลเงินหลัก',
+                    'ສະກຸນເງິນຫຼັກ',
                     style: theme.textTheme.titleSmall,
                   ),
                   SizedBox(height: 8.h),
@@ -225,7 +225,7 @@ class _CurrencySettingsPageState extends ConsumerState<CurrencySettingsPage> {
 
           // ── Currency list ────────────────────────────────────────────
           Text(
-            'สกุลเงินที่รองรับ',
+            'ສະກຸນເງິນທີ່ຮອງຮັບ',
             style: theme.textTheme.titleSmall,
           ),
           SizedBox(height: 8.h),
@@ -276,7 +276,7 @@ class _CurrencySettingsPageState extends ConsumerState<CurrencySettingsPage> {
                         keyboardType: const TextInputType.numberWithOptions(
                             decimal: true),
                         decoration: InputDecoration(
-                          labelText: 'อัตราแลกเปลี่ยน (1 $_baseCurrency = ? ${e.code})',
+                          labelText: 'ອັດຕາແລກປ່ຽນ (1 $_baseCurrency = ? ${e.code})',
                           border: const OutlineInputBorder(),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 8),

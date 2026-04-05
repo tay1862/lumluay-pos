@@ -4,11 +4,13 @@ class AppEnv {
   final AppFlavor flavor;
   final String apiBaseUrl;
   final String wsBaseUrl;
+  final String sentryDsn;
 
   const AppEnv({
     required this.flavor,
     required this.apiBaseUrl,
     required this.wsBaseUrl,
+    this.sentryDsn = '',
   });
 
   static const String _flavorValue = String.fromEnvironment(
@@ -23,6 +25,10 @@ class AppEnv {
     'WS_BASE_URL',
     defaultValue: 'http://localhost:3000',
   );
+  static const String _sentryDsnValue = String.fromEnvironment(
+    'SENTRY_DSN',
+    defaultValue: '',
+  );
 
   factory AppEnv.fromDartDefine() {
     return AppEnv(
@@ -33,6 +39,7 @@ class AppEnv {
       },
       apiBaseUrl: _apiBaseUrlValue,
       wsBaseUrl: _wsBaseUrlValue,
+      sentryDsn: _sentryDsnValue,
     );
   }
 

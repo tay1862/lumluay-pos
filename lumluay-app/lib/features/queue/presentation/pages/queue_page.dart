@@ -19,7 +19,7 @@ class QueuePage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F7),
       appBar: AppBar(
-        title: const Text('จัดการคิว'),
+        title: const Text('ຈັດການຄິວ'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -30,7 +30,7 @@ class QueuePage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showNewQueueDialog(context, ref),
         icon: const Icon(Icons.add),
-        label: const Text('รับคิวใหม่'),
+        label: const Text('ລັບຄິວໃໝ່'),
         backgroundColor: AppColors.primary,
       ),
       body: Column(
@@ -45,7 +45,7 @@ class QueuePage extends ConsumerWidget {
               child: Row(
                 children: [
                   _StatusChip(
-                    label: 'ทั้งหมด',
+                    label: 'ທັງໝົດ',
                     selected: statusFilter == null,
                     onSelected: () => ref
                         .read(queueStatusFilterProvider.notifier)
@@ -73,7 +73,7 @@ class QueuePage extends ConsumerWidget {
             child: queueAsync.when(
               loading: () =>
                   const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Center(child: Text('เกิดข้อผิดพลาด: $e')),
+              error: (e, _) => Center(child: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
               data: (tickets) {
                 if (tickets.isEmpty) {
                   return const Center(
@@ -83,7 +83,7 @@ class QueuePage extends ConsumerWidget {
                         Icon(Icons.people_outline,
                             size: 64, color: Colors.black26),
                         SizedBox(height: 12),
-                        Text('ยังไม่มีคิว',
+                        Text('ຍັງບໍ່ມີຄິວ',
                             style: TextStyle(color: Colors.black45)),
                       ],
                     ),
@@ -161,7 +161,7 @@ class _QueueCard extends ConsumerWidget {
                         fontWeight: FontWeight.w900,
                         fontSize: 16.sp,
                         color: _statusColor(ticket.status))),
-                Text('คิว',
+                Text('ຄິວ',
                     style: TextStyle(
                         fontSize: 9.sp,
                         color: _statusColor(ticket.status))),
@@ -177,7 +177,7 @@ class _QueueCard extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    Text(ticket.customerName ?? 'ลูกค้าทั่วไป',
+                    Text(ticket.customerName ?? 'ລູກຄ້າທົ່ວໄປ',
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 13.sp)),
@@ -203,7 +203,7 @@ class _QueueCard extends ConsumerWidget {
                   children: [
                     Icon(Icons.people, size: 12.sp, color: Colors.black45),
                     SizedBox(width: 3.w),
-                    Text('${ticket.partySize} คน',
+                    Text('${ticket.partySize} ຄົນ',
                         style: TextStyle(
                             fontSize: 11.sp, color: Colors.black54)),
                     SizedBox(width: 10.w),
@@ -251,7 +251,7 @@ class _ActionButtons extends ConsumerWidget {
                   backgroundColor: Colors.blue,
                   minimumSize: Size(60.w, 34.h),
                   padding: EdgeInsets.zero),
-              child: Text('เรียก', style: TextStyle(fontSize: 11.sp)),
+              child: Text('ເຣີກ', style: TextStyle(fontSize: 11.sp)),
             ),
             SizedBox(width: 6.w),
             IconButton(
@@ -274,7 +274,7 @@ class _ActionButtons extends ConsumerWidget {
               backgroundColor: Colors.green,
               minimumSize: Size(70.w, 34.h),
               padding: EdgeInsets.symmetric(horizontal: 8.w)),
-          child: Text('จัดโต๊ะ', style: TextStyle(fontSize: 11.sp)),
+          child: Text('ຈັດໂຕະ', style: TextStyle(fontSize: 11.sp)),
         );
       case QueueStatus.serving:
         return FilledButton(
@@ -286,7 +286,7 @@ class _ActionButtons extends ConsumerWidget {
               backgroundColor: AppColors.primary,
               minimumSize: Size(70.w, 34.h),
               padding: EdgeInsets.symmetric(horizontal: 8.w)),
-          child: Text('เสร็จสิ้น', style: TextStyle(fontSize: 11.sp)),
+          child: Text('ສຳເລັດ', style: TextStyle(fontSize: 11.sp)),
         );
       default:
         return const SizedBox.shrink();
@@ -307,12 +307,12 @@ class _QueueSeatDialog extends ConsumerWidget {
     final tablesAsync = ref.watch(tablesProvider(null));
 
     return AlertDialog(
-      title: Text('เลือกโต๊ะ — คิว ${ticket.ticketNumber}'),
+      title: Text('ເລືອກໂຕະ — ຄິວ ${ticket.ticketNumber}'),
       content: SizedBox(
         width: 320.w,
         child: tablesAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (e, _) => Text('โหลดโต๊ะไม่ได้: $e'),
+          error: (e, _) => Text('ໂຫຼດໂຕະບໍ່ໄດ້: $e'),
           data: (tables) {
             final available = tables
                 .where((t) => t.status == TableStatus.available)
@@ -320,7 +320,7 @@ class _QueueSeatDialog extends ConsumerWidget {
             if (available.isEmpty) {
               return const Padding(
                 padding: EdgeInsets.symmetric(vertical: 12),
-                child: Text('ไม่มีโต๊ะว่างในขณะนี้',
+                child: Text('ບໍ່ມີໂຕະວ່າງໃນຂະນະນີ້',
                     textAlign: TextAlign.center),
               );
             }
@@ -332,7 +332,7 @@ class _QueueSeatDialog extends ConsumerWidget {
                   return ActionChip(
                     avatar:
                         const Icon(Icons.table_restaurant, size: 16),
-                    label: Text('${t.name} (${t.seats} ที่)'),
+                    label: Text('${t.name} (${t.seats} ທີ່)'),
                     onPressed: () async {
                       Navigator.pop(context);
                       try {
@@ -348,7 +348,7 @@ class _QueueSeatDialog extends ConsumerWidget {
                       } catch (e) {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('เกิดข้อผิดพลาด: $e')));
+                              SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')));
                         }
                       }
                     },
@@ -362,7 +362,7 @@ class _QueueSeatDialog extends ConsumerWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('ยกเลิก'),
+          child: const Text('ຍົກເລີກ'),
         ),
       ],
     );
@@ -416,26 +416,26 @@ class _NewQueueDialogState extends ConsumerState<_NewQueueDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('รับคิวใหม่'),
+      title: const Text('ລັບຄິວໃໝ່'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: _nameCtrl,
             decoration: const InputDecoration(
-                labelText: 'ชื่อลูกค้า (ไม่บังคับ)'),
+                labelText: 'ຊື່ລູກຄ້າ (ບໍ່ບັງຄັບ)'),
           ),
           SizedBox(height: 8.h),
           TextField(
             controller: _phoneCtrl,
             decoration: const InputDecoration(
-                labelText: 'เบอร์โทร (ไม่บังคับ)'),
+                labelText: 'ເບີໂທລ (ບໍ່ບັງຄັບ)'),
             keyboardType: TextInputType.phone,
           ),
           SizedBox(height: 12.h),
           Row(
             children: [
-              const Text('จำนวนคน:'),
+              const Text('ຈຳນວນຄົນ:'),
               const Spacer(),
               IconButton(
                 icon: const Icon(Icons.remove_circle_outline),
@@ -457,14 +457,14 @@ class _NewQueueDialogState extends ConsumerState<_NewQueueDialog> {
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ยกเลิก')),
+            child: const Text('ຍົກເລີກ')),
         FilledButton(
           onPressed: _loading ? null : _save,
           style: FilledButton.styleFrom(
               backgroundColor: AppColors.primary),
           child: _loading
               ? const CircularProgressIndicator(color: Colors.white)
-              : const Text('รับคิว'),
+              : const Text('ລັບຄິວ'),
         ),
       ],
     );
@@ -492,15 +492,15 @@ Color _statusColor(QueueStatus s) {
 String _statusLabel(QueueStatus s) {
   switch (s) {
     case QueueStatus.waiting:
-      return 'รอเรียก';
+      return 'ລໍເຣີກ';
     case QueueStatus.called:
-      return 'เรียกแล้ว';
+      return 'ເຣີກແລ້ວ';
     case QueueStatus.serving:
-      return 'กำลังบริการ';
+      return 'ກຳລັງບໍລິການ';
     case QueueStatus.done:
-      return 'เสร็จสิ้น';
+      return 'ສຳເລັດ';
     case QueueStatus.cancelled:
-      return 'ยกเลิก';
+      return 'ຍົກເລີກ';
   }
 }
 

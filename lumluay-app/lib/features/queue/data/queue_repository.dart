@@ -64,15 +64,15 @@ class QueueTicket {
   String get statusLabel {
     switch (status) {
       case QueueStatus.waiting:
-        return 'รอเรียก';
+        return 'ລໍເຣີກ';
       case QueueStatus.called:
-        return 'เรียกแล้ว';
+        return 'ເຣີກແລ້ວ';
       case QueueStatus.serving:
-        return 'กำลังบริการ';
+        return 'ກຳລັງບໍລິການ';
       case QueueStatus.done:
-        return 'เสร็จสิ้น';
+        return 'ສຳເລັດ';
       case QueueStatus.cancelled:
-        return 'ยกเลิก';
+        return 'ຍົກເລີກ';
     }
   }
 }

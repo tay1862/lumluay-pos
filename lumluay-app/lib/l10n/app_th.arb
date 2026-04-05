@@ -19,6 +19,7 @@
   "next": "ถัดไป",
   "back": "ย้อนกลับ",
   "finish": "เสร็จสิ้น",
+  "add": "เพิ่ม",
   "save": "บันทึก",
   "cancel": "ยกเลิก",
   "delete": "ลบ",
@@ -26,5 +27,54 @@
   "retry": "ลองใหม่",
   "loading": "กำลังโหลด...",
   "errorOccurred": "เกิดข้อผิดพลาด",
-  "settings": "ตั้งค่า"
+  "settings": "ตั้งค่า",
+  "setupWizardCompleted": "ตั้งค่าเริ่มต้นเสร็จสมบูรณ์แล้ว",
+  "setupWizardStoreNameRequired": "กรุณากรอกชื่อร้าน",
+  "setupWizardSeedSampleDataFailed": "ไม่สามารถเพิ่มข้อมูลตัวอย่างได้",
+  "setupWizardStaffInfoIncomplete": "กรอกข้อมูลพนักงานให้ครบ (รหัสผ่านอย่างน้อย 8 ตัว)",
+  "setupWizardStepStoreInfo": "ข้อมูลร้าน",
+  "setupWizardStepCurrencyTax": "สกุลเงินและภาษี",
+  "setupWizardStepPrinters": "เครื่องพิมพ์",
+  "setupWizardStepProductImport": "นำเข้าสินค้า",
+  "setupWizardStepCreateStaff": "สร้างพนักงาน",
+  "setupWizardStepProgress": "Setup Wizard • ขั้นตอน {currentStep}/{totalSteps}",
+  "@setupWizardStepProgress": {
+    "placeholders": {
+      "currentStep": {
+        "type": "int"
+      },
+      "totalSteps": {
+        "type": "int"
+      }
+    }
+  },
+  "setupWizardStoreName": "ชื่อร้าน",
+  "setupWizardOwnerName": "ชื่อเจ้าของ / ผู้ดูแล",
+  "setupWizardPhone": "เบอร์โทร",
+  "setupWizardAddress": "ที่อยู่",
+  "setupWizardTaxId": "เลขผู้เสียภาษี",
+  "setupWizardDefaultCurrency": "สกุลเงินเริ่มต้น",
+  "setupWizardVatRate": "VAT",
+  "setupWizardCurrencyThb": "THB - บาทไทย",
+  "setupWizardCurrencyLak": "LAK - กีบลาว",
+  "setupWizardCurrencyUsd": "USD - ดอลลาร์สหรัฐ",
+  "setupWizardPrinterHint": "เพิ่มเครื่องพิมพ์อย่างน้อย 1 เครื่อง (ข้ามได้)",
+  "setupWizardAddPrinter": "เพิ่มเครื่องพิมพ์",
+  "setupWizardPrinterName": "ชื่อเครื่องพิมพ์",
+  "setupWizardPrinterType": "ประเภท",
+  "setupWizardUseSampleData": "ใช้ข้อมูลตัวอย่าง (แนะนำ)",
+  "setupWizardUseSampleDataHint": "5 หมวดหมู่, 20 สินค้า ตัวอย่างสำหรับร้านอาหาร",
+  "setupWizardImportCsv": "นำเข้า CSV",
+  "setupWizardImportCsvHint": "จะรองรับขั้นถัดไป",
+  "setupWizardAddLater": "เพิ่มทีหลัง",
+  "setupWizardUsername": "Username",
+  "setupWizardDisplayName": "ชื่อที่แสดง",
+  "setupWizardPassword": "รหัสผ่าน (8+ ตัวอักษร)",
+  "setupWizardPinOptional": "PIN (ตัวเลือก)",
+  "setupWizardPinHint": "4-6 หลัก",
+  "setupWizardRole": "บทบาท",
+  "setupWizardRoleCashier": "Cashier",
+  "setupWizardRoleWaiter": "Waiter",
+  "setupWizardRoleKitchen": "Kitchen",
+  "setupWizardRoleManager": "Manager"
 }

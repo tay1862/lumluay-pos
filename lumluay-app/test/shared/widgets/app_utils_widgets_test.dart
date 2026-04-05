@@ -47,7 +47,7 @@ void main() {
     );
 
     expect(find.text('Failed'), findsOneWidget);
-    await tester.tap(find.text('ลองใหม่'));
+    await tester.tap(find.text('ລອງໃໝ່'));
     await tester.pump();
     expect(tapped, isTrue);
   });

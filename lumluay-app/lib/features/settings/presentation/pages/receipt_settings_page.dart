@@ -66,13 +66,13 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
       );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('บันทึกการตั้งค่าใบเสร็จแล้ว')),
+          const SnackBar(content: Text('ບັນທຶກການຕັ້ງຄ່າໃບເສັດແລ້ວ')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+          SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
         );
       }
     } finally {
@@ -96,7 +96,7 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ตั้งค่าใบเสร็จ'),
+        title: const Text('ຕັ້ງຄ່າໃບເສັດ'),
         actions: [
           if (_saving)
             const Padding(
@@ -108,7 +108,7 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
               ),
             )
           else
-            TextButton(onPressed: _save, child: const Text('บันทึก')),
+            TextButton(onPressed: _save, child: const Text('ບັນທຶກ')),
         ],
       ),
       body: ListView(
@@ -121,15 +121,15 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('ข้อความใบเสร็จ',
+                  Text('ຂໍ້ຄວາມໃບເສັດ',
                       style: theme.textTheme.titleSmall),
                   SizedBox(height: 12.h),
                   TextFormField(
                     controller: _headerCtrl,
                     maxLines: 2,
                     decoration: const InputDecoration(
-                      labelText: 'ข้อความส่วนหัว',
-                      hintText: 'เช่น ยินดีต้อนรับ',
+                      labelText: 'ຂໍ້ຄວາມສ່ວນຫົວ',
+                      hintText: 'ເຊັ່ນ ຍິນດີຕ້ອນລັບ',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -138,8 +138,8 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
                     controller: _footerCtrl,
                     maxLines: 2,
                     decoration: const InputDecoration(
-                      labelText: 'ข้อความส่วนท้าย',
-                      hintText: 'เช่น ขอบคุณที่ใช้บริการ',
+                      labelText: 'ຂໍ້ຄວາມສ່ວນທ້າຍ',
+                      hintText: 'ເຊັ່ນ ຂອບໃຈທີ່ໃຊ້ບໍລິການ',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -147,8 +147,8 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
                   TextFormField(
                     controller: _prefixCtrl,
                     decoration: const InputDecoration(
-                      labelText: 'Prefix เลขใบเสร็จ',
-                      hintText: 'เช่น RC',
+                      labelText: 'Prefix ເລກໃບເສັດ',
+                      hintText: 'ເຊັ່ນ RC',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -166,12 +166,12 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('ขนาดกระดาษ', style: theme.textTheme.titleSmall),
+                  Text('ຂະຫນາດເຈ້ຍ', style: theme.textTheme.titleSmall),
                   SizedBox(height: 8.h),
                   SegmentedButton<int>(
                     segments: const [
-                      ButtonSegment(value: 58, label: Text('58 มม.')),
-                      ButtonSegment(value: 80, label: Text('80 มม.')),
+                      ButtonSegment(value: 58, label: Text('58 ມມ.')),
+                      ButtonSegment(value: 80, label: Text('80 ມມ.')),
                     ],
                     selected: {_paperWidth},
                     onSelectionChanged: (v) =>
@@ -189,21 +189,21 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
             child: Column(
               children: [
                 SwitchListTile(
-                  title: const Text('พิมพ์ชื่อร้าน'),
+                  title: const Text('ພິມຊື່ລ້ານ'),
                   value: _printShopName,
                   onChanged: (v) => setState(() => _printShopName = v),
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
-                  title: const Text('พิมพ์โลโก้ร้าน'),
-                  subtitle: const Text('ต้องอัปโหลดโลโก้ก่อน'),
+                  title: const Text('ພິມໂລໂກ້ລ້ານ'),
+                  subtitle: const Text('ຕ້ອງອັບໂຫຼດໂລໂກ້ກ່ອນ'),
                   value: _printLogo,
                   onChanged: (v) => setState(() => _printLogo = v),
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
-                  title: const Text('พิมพ์ QR Code'),
-                  subtitle: const Text('QR ลิงก์ไปยังใบเสร็จออนไลน์'),
+                  title: const Text('ພິມ QR Code'),
+                  subtitle: const Text('QR ລິ້ງໄປຍັງໃບເສັດອອນໄລ'),
                   value: _printQr,
                   onChanged: (v) => setState(() => _printQr = v),
                 ),
@@ -220,7 +220,7 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('ตัวอย่างส่วนหัว/ท้าย',
+                  Text('ຕົວຢ່າງສ່ວນຫົວ/ທ້າຍ',
                       style: theme.textTheme.titleSmall),
                   SizedBox(height: 12.h),
                   Container(
@@ -237,7 +237,7 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         if (_printShopName)
-                          Text('ชื่อร้านค้า',
+                          Text('ຊື່ລ້ານຄ້າ',
                               style: theme.textTheme.titleMedium),
                         if (_headerCtrl.text.isNotEmpty) ...[
                           SizedBox(height: 4.h),
@@ -247,7 +247,7 @@ class _ReceiptSettingsPageState extends ConsumerState<ReceiptSettingsPage> {
                         ],
                         SizedBox(height: 8.h),
                         const Divider(),
-                        Text('- รายการสินค้า -',
+                        Text('- ລາຍການສິນຄ້າ -',
                             style: theme.textTheme.bodySmall),
                         const Divider(),
                         SizedBox(height: 8.h),

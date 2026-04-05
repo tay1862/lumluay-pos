@@ -19,7 +19,7 @@ class CartItemCard extends ConsumerWidget {
         children: [
           _QtyButton(
             icon: Icons.remove,
-            semanticLabel: 'ลดจำนวน ${item.productName}',
+            semanticLabel: 'ຫຼຸດຈຳນວນ ${item.productName}',
             onTap: () => ref.read(cartProvider.notifier).removeItem(item.productId),
           ),
           SizedBox(
@@ -32,7 +32,7 @@ class CartItemCard extends ConsumerWidget {
           ),
           _QtyButton(
             icon: Icons.add,
-            semanticLabel: 'เพิ่มจำนวน ${item.productName}',
+            semanticLabel: 'ເພີ່ມຈຳນວນ ${item.productName}',
             onTap: () => ref.read(cartProvider.notifier).addItem(
                   ProductItem(
                     id: item.productId,
@@ -54,7 +54,7 @@ class CartItemCard extends ConsumerWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  '฿${currencyFmt.format(item.unitPrice)} / ชิ้น',
+                  '₭${currencyFmt.format(item.unitPrice)} / ອັນ',
                   style: TextStyle(fontSize: 11.sp, color: Colors.grey),
                 ),
                 if ((item.note ?? '').trim().isNotEmpty)
@@ -71,12 +71,12 @@ class CartItemCard extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                '฿${currencyFmt.format(item.lineTotal)}',
+                '₭${currencyFmt.format(item.lineTotal)}',
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700),
               ),
               Semantics(
                 button: true,
-                label: 'ลบสินค้า ${item.productName} จากตะกร้า',
+                label: 'ລົບສິນຄ້າ ${item.productName} ອອກຈາກກະຕ່າ',
                 child: InkWell(
                   borderRadius: BorderRadius.circular(16.r),
                   onTap: () => ref.read(cartProvider.notifier).deleteItem(item.productId),

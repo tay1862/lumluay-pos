@@ -60,15 +60,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ตั้งค่า'),
+        title: const Text('ຕັ້ງຄ່າ'),
         bottom: TabBar(
           controller: _tabs,
           isScrollable: true,
           tabs: const [
-            Tab(icon: Icon(Icons.store_outlined), text: 'ร้านค้า'),
-            Tab(icon: Icon(Icons.receipt_outlined), text: 'ภาษี'),
-            Tab(icon: Icon(Icons.people_outline), text: 'ผู้ใช้'),
-            Tab(icon: Icon(Icons.palette_outlined), text: 'ธีม/ภาษา'),
+            Tab(icon: Icon(Icons.store_outlined), text: 'ຮ້ານຄ້າ'),
+            Tab(icon: Icon(Icons.receipt_outlined), text: 'ພາສີ'),
+            Tab(icon: Icon(Icons.people_outline), text: 'ຜູ້ໃຊ້'),
+            Tab(icon: Icon(Icons.palette_outlined), text: 'ທີມ/ພາສາ'),
           ],
         ),
       ),
@@ -140,12 +140,12 @@ class _StoreSettingsTabState extends ConsumerState<_StoreSettingsTab> {
       ref.invalidate(settingsDataProvider);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('บันทึกการตั้งค่าแล้ว')));
+            const SnackBar(content: Text('ບັນທຶກການຕັ້ງຄ່າແລ້ວ')));
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('เกิดข้อผิดพลาด: $e')));
+            .showSnackBar(SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -171,22 +171,22 @@ class _StoreSettingsTabState extends ConsumerState<_StoreSettingsTab> {
           child: ListView(
             padding: EdgeInsets.all(16.w),
             children: [
-              _SectionHeader(title: 'ข้อมูลร้าน'),
+              _SectionHeader(title: 'ຂໍ້ມູນຮ້ານ'),
               TextFormField(
                 controller: _storeNameCtrl,
                 decoration: const InputDecoration(
-                    labelText: 'ชื่อร้าน', prefixIcon: Icon(Icons.storefront)),
-                validator: (v) => v == null || v.isEmpty ? 'กรอกชื่อร้าน' : null,
+                    labelText: 'ຊື່ຮ້ານ', prefixIcon: Icon(Icons.storefront)),
+                validator: (v) => v == null || v.isEmpty ? 'ກະລຸນາໃສ່ຊື່ຮ້ານ' : null,
               ),
               SizedBox(height: 24.h),
-              _SectionHeader(title: 'การเงิน'),
+              _SectionHeader(title: 'ການເງິນ'),
               SwitchListTile(
-                title: const Text('เรียกเก็บภาษี'),
+                title: const Text('ເກັບພາສີ'),
                 value: _taxEnabled,
                 onChanged: (v) => setState(() => _taxEnabled = v),
               ),
               SwitchListTile(
-                title: const Text('เรียกเก็บค่าบริการ'),
+                title: const Text('ເກັບຄ່າບໍລິການ'),
                 value: _serviceChargeEnabled,
                 onChanged: (v) => setState(() => _serviceChargeEnabled = v),
               ),
@@ -197,22 +197,22 @@ class _StoreSettingsTabState extends ConsumerState<_StoreSettingsTab> {
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),
                   decoration: const InputDecoration(
-                    labelText: 'ค่าบริการ (%)',
+                    labelText: 'ຄ່າບໍລິການ (%)',
                     prefixIcon: Icon(Icons.percent),
                   ),
                   validator: (v) {
                     final d = double.tryParse(v ?? '');
                     if (d == null || d < 0 || d > 100) {
-                      return 'กรอกตัวเลข 0–100';
+                      return 'ກະລຸນາໃສ່ຕົວເລກ 0–100';
                     }
                     return null;
                   },
                 ),
               ],
               SizedBox(height: 24.h),
-              _SectionHeader(title: 'การพิมพ์'),
+              _SectionHeader(title: 'ການພິມ'),
               SwitchListTile(
-                title: const Text('พิมพ์ใบเสร็จอัตโนมัติ'),
+                title: const Text('ພິມໃບເສັດອັດຕະໂນມັດ'),
                 value: _receiptPrintEnabled,
                 onChanged: (v) => setState(() => _receiptPrintEnabled = v),
               ),
@@ -220,42 +220,42 @@ class _StoreSettingsTabState extends ConsumerState<_StoreSettingsTab> {
               _SettingsTile(
                 icon: Icons.auto_fix_high_outlined,
                 title: 'Setup Wizard',
-                subtitle: 'ตั้งค่าร้านแบบทีละขั้นตอน (5 ขั้น)',
+                subtitle: 'ຕັ້ງຄ່າຮ້ານແບບທີລະຂັ້ນຕອນ (5 ຂັ້ນ)',
                 onTap: () => context.push('/setup-wizard'),
               ),
               SizedBox(height: 8.h),
               _SettingsTile(
                 icon: Icons.map_outlined,
-                title: 'จัดการโซนโต๊ะ',
-                subtitle: 'CRUD โซน เช่น ชั้น 1, ระเบียง, VIP',
+                title: 'ຈັດການໂຊນໂຕະ',
+                subtitle: 'CRUD ໂຊນ ເຊັ່ນ ຊັ້ນ 1, ລະບຽງ, VIP',
                 onTap: () => context.push('/settings/zones'),
               ),
               SizedBox(height: 8.h),
               _SettingsTile(
                 icon: Icons.backup_outlined,
-                title: 'สำรองข้อมูล',
-                subtitle: 'สร้างและตรวจสอบไฟล์สำรองข้อมูล',
+                title: 'ສໍາຮອງຂໍ້ມູນ',
+                subtitle: 'ສ້າງ ແລະ ກວດສອບໄຟລ໌ສໍາຮອງຂໍ້ມູນ',
                 onTap: () => context.push('/settings/backup'),
               ),
               SizedBox(height: 8.h),
               _SettingsTile(
                 icon: Icons.file_upload_outlined,
-                title: 'นำเข้าข้อมูล',
-                subtitle: 'อัปโหลด CSV เพื่อเติมข้อมูลสินค้า',
+                title: 'ນໍາເຂົ້າຂໍ້ມູນ',
+                subtitle: 'ອັບໂຫຼດ CSV ເພື່ອເພີ່ມຂໍ້ມູນສິນຄ້າ',
                 onTap: () => context.push('/settings/import'),
               ),
               SizedBox(height: 8.h),
               _SettingsTile(
                 icon: Icons.file_download_outlined,
-                title: 'ส่งออกข้อมูล',
-                subtitle: 'ดาวน์โหลดข้อมูลสินค้าและสมาชิกเป็น CSV',
+                title: 'ສົ່ງອອກຂໍ້ມູນ',
+                subtitle: 'ດາວໂຫຼດຂໍ້ມູນສິນຄ້າ ແລະ ສະມາຊິກເປັນ CSV',
                 onTap: () => context.push('/settings/export'),
               ),
               SizedBox(height: 8.h),
               _SettingsTile(
                 icon: Icons.monitor_outlined,
-                title: 'จอลูกค้า',
-                subtitle: 'เปิดหน้าจอแสดงผลฝั่งลูกค้า',
+                title: 'ໜ້າຈໍລູກຄ້າ',
+                subtitle: 'ເປີດໜ້າຈໍສະແດງຜົນຝັ່ງລູກຄ້າ',
                 onTap: () => context.push('/customer-display'),
               ),
               SizedBox(height: 8.h),
@@ -264,9 +264,9 @@ class _StoreSettingsTabState extends ConsumerState<_StoreSettingsTab> {
                 title: 'QR Menu',
                 subtitle: qrMenuLinkAsync.maybeWhen(
                   data: (value) => value == null
-                      ? 'ยังไม่มี tenant slug สำหรับสร้างลิงก์เมนู'
-                      : 'สร้าง QR ให้ลูกค้าเปิดเมนูร้านนี้',
-                  orElse: () => 'กำลังเตรียมลิงก์เมนูสาธารณะ',
+                      ? 'ຍັງບໍ່ມີ tenant slug ສໍາລັບສ້າງລິ້ງເມນູ'
+                      : 'ສ້າງ QR ໃຫ້ລູກຄ້າເປີດເມນູຮ້ານນີ້',
+                  orElse: () => 'ກໍາລັງກຽມລິ້ງເມນູສາທາລະນະ',
                 ),
                 trailing: qrMenuLinkAsync.isLoading
                     ? const SizedBox(
@@ -286,25 +286,25 @@ class _StoreSettingsTabState extends ConsumerState<_StoreSettingsTab> {
               ),
               if (isSuperAdmin) ...[
                 SizedBox(height: 24.h),
-                _SectionHeader(title: 'ระบบส่วนกลาง'),
+                _SectionHeader(title: 'ລະບົບສ່ວນກາງ'),
                 _SettingsTile(
                   icon: Icons.admin_panel_settings_outlined,
-                  title: 'ภาพรวมระบบ',
-                  subtitle: 'ดูสถิติรวมของ tenant, users และ orders',
+                  title: 'ພາບລວມລະບົບ',
+                  subtitle: 'ເບິ່ງສະຖິຕິລວມຂອງ tenant, users ແລະ orders',
                   onTap: () => context.push('/admin/dashboard'),
                 ),
                 SizedBox(height: 8.h),
                 _SettingsTile(
                   icon: Icons.apartment_outlined,
-                  title: 'จัดการ Tenant',
-                  subtitle: 'เปิด/ปิดการใช้งาน tenant และตรวจสอบสถานะ',
+                  title: 'ຈັດການ Tenant',
+                  subtitle: 'ເປີດ/ປິດການໃຊ້ງານ tenant ແລະ ກວດສອບສະຖານະ',
                   onTap: () => context.push('/admin/tenants'),
                 ),
                 SizedBox(height: 8.h),
                 _SettingsTile(
                   icon: Icons.workspace_premium_outlined,
-                  title: 'จัดการแพ็กเกจ',
-                  subtitle: 'สร้างและปิดใช้งาน subscription plans',
+                  title: 'ຈັດການແພັກເກດ',
+                  subtitle: 'ສ້າງ ແລະ ປິດໃຊ້ງານ subscription plans',
                   onTap: () => context.push('/admin/plans'),
                 ),
               ],
@@ -317,7 +317,7 @@ class _StoreSettingsTabState extends ConsumerState<_StoreSettingsTab> {
                         width: 18,
                         child: CircularProgressIndicator(
                             strokeWidth: 2, color: Colors.white))
-                    : const Text('บันทึก'),
+                    : const Text('ບັນທຶກ'),
               ),
             ],
           ),
@@ -347,7 +347,7 @@ class _TaxRatesTab extends ConsumerWidget {
               child: Padding(
                 padding: EdgeInsets.all(24.h),
                 child: const Center(
-                    child: Text('ยังไม่มีอัตราภาษี',
+                    child: Text('ຍັງບໍ່ມີອັດຕາພາສີ',
                         style: TextStyle(color: Colors.black54))),
               ),
             )
@@ -366,7 +366,7 @@ class _TaxRatesTab extends ConsumerWidget {
                     subtitle: Text('${t.rate}%'),
                     trailing: t.isDefault
                         ? Chip(
-                            label: const Text('ค่าเริ่มต้น',
+                        label: const Text('ຄ່າເລີ່ມຕົ້ນ',
                                 style: TextStyle(fontSize: 11)),
                             backgroundColor: Theme.of(context)
                                 .primaryColor
@@ -381,7 +381,7 @@ class _TaxRatesTab extends ConsumerWidget {
           SizedBox(height: 16.h),
           OutlinedButton.icon(
             icon: const Icon(Icons.add),
-            label: const Text('เพิ่มอัตราภาษี'),
+            label: const Text('ເພີ່ມອັດຕາພາສີ'),
             onPressed: () => _showAddTaxDialog(context, ref),
           ),
         ],
@@ -395,13 +395,13 @@ class _TaxRatesTab extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('เพิ่มอัตราภาษี'),
+        title: const Text('ເພີ່ມອັດຕາພາສີ'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: nameCtrl,
-              decoration: const InputDecoration(labelText: 'ชื่อ'),
+              decoration: const InputDecoration(labelText: 'ຊື່'),
             ),
             SizedBox(height: 8.h),
             TextField(
@@ -409,14 +409,14 @@ class _TaxRatesTab extends ConsumerWidget {
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               decoration: const InputDecoration(
-                  labelText: 'อัตรา (%)', suffixText: '%'),
+                  labelText: 'ອັດຕາ (%)', suffixText: '%'),
             ),
           ],
         ),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('ยกเลิก')),
+              child: const Text('ຍົກເລີກ')),
           FilledButton(
             onPressed: () async {
               final rate = double.tryParse(rateCtrl.text);
@@ -431,7 +431,7 @@ class _TaxRatesTab extends ConsumerWidget {
                 if (context.mounted) Navigator.pop(context);
               }
             },
-            child: const Text('บันทึก'),
+            child: const Text('ບັນທຶກ'),
           ),
         ],
       ),
@@ -472,20 +472,20 @@ class _UsersTab extends StatelessWidget {
       children: [
         _SettingsTile(
           icon: Icons.manage_accounts_outlined,
-          title: 'จัดการผู้ใช้งาน',
-          subtitle: 'เพิ่ม ลบ แก้ไข กำหนดสิทธิ์',
+          title: 'ຈັດການຜູ້ໃຊ້ງານ',
+          subtitle: 'ເພີ່ມ ລົບ ແກ້ໄຂ ກໍານົດສິດ',
           onTap: () => context.push('/settings/users'),
         ),
         _SettingsTile(
           icon: Icons.pin_outlined,
-          title: 'ตั้ง PIN ของฉัน',
-          subtitle: 'เปลี่ยน PIN สำหรับเข้าสู่ระบบด่วน',
+          title: 'ຕັ້ງ PIN ຂອງຂ້ອຍ',
+          subtitle: 'ປ່ຽນ PIN ສໍາລັບເຂົ້າລະບົບດ່ວນ',
           onTap: () => context.push('/settings/users'),
         ),
         _SettingsTile(
           icon: Icons.lock_outline,
-          title: 'เปลี่ยนรหัสผ่านของฉัน',
-          subtitle: 'เปลี่ยนรหัสผ่านบัญชีปัจจุบัน',
+          title: 'ປ່ຽນລະຫັດຜ່ານຂອງຂ້ອຍ',
+          subtitle: 'ປ່ຽນລະຫັດຜ່ານບັນຊີປັດຈຸບັນ',
           onTap: () => context.push('/settings/users'),
         ),
       ],
@@ -510,7 +510,7 @@ class _ThemeLanguageTab extends ConsumerWidget {
     return ListView(
       padding: EdgeInsets.all(16.w),
       children: [
-        _SectionHeader(title: 'ธีม'),
+        _SectionHeader(title: 'ທີມ'),
         Card(
           child: RadioGroup<ThemeMode>(
             groupValue: themeMode,
@@ -520,17 +520,17 @@ class _ThemeLanguageTab extends ConsumerWidget {
             child: Column(
               children: [
                 RadioListTile<ThemeMode>(
-                  title: const Text('สว่าง'),
+                  title: const Text('ສະຫວ່າງ'),
                   secondary: const Icon(Icons.light_mode_outlined),
                   value: ThemeMode.light,
                 ),
                 RadioListTile<ThemeMode>(
-                  title: const Text('มืด'),
+                  title: const Text('ມືດ'),
                   secondary: const Icon(Icons.dark_mode_outlined),
                   value: ThemeMode.dark,
                 ),
                 RadioListTile<ThemeMode>(
-                  title: const Text('ตามระบบ'),
+                  title: const Text('ຕາມລະບົບ'),
                   secondary: const Icon(Icons.brightness_auto_outlined),
                   value: ThemeMode.system,
                 ),
@@ -539,7 +539,7 @@ class _ThemeLanguageTab extends ConsumerWidget {
           ),
         ),
         SizedBox(height: 20.h),
-        _SectionHeader(title: 'ภาษา'),
+        _SectionHeader(title: 'ພາສາ'),
         Card(
           child: RadioGroup<String>(
             groupValue: locale,
@@ -568,20 +568,20 @@ class _ThemeLanguageTab extends ConsumerWidget {
           ),
         ),
         SizedBox(height: 20.h),
-        _SectionHeader(title: 'อื่นๆ'),
+        _SectionHeader(title: 'ອື່ນໆ'),
         _SettingsTile(
           icon: Icons.timer_outlined,
-          title: 'ล็อกอัตโนมัติ',
-          subtitle: 'ออกจากระบบเมื่อไม่มีการใช้งาน',
+          title: 'ລັອກອັດຕະໂນມັດ',
+          subtitle: 'ອອກຈາກລະບົບເມື່ອບໍ່ມີການໃຊ້ງານ',
           trailing: DropdownButton<int>(
             value: 15,
             underline: const SizedBox.shrink(),
             items: const [
-              DropdownMenuItem(value: 0, child: Text('ปิด')),
-              DropdownMenuItem(value: 5, child: Text('5 นาที')),
-              DropdownMenuItem(value: 10, child: Text('10 นาที')),
-              DropdownMenuItem(value: 15, child: Text('15 นาที')),
-              DropdownMenuItem(value: 30, child: Text('30 นาที')),
+              DropdownMenuItem(value: 0, child: Text('ປິດ')),
+              DropdownMenuItem(value: 5, child: Text('5 ນາທີ')),
+              DropdownMenuItem(value: 10, child: Text('10 ນາທີ')),
+              DropdownMenuItem(value: 15, child: Text('15 ນາທີ')),
+              DropdownMenuItem(value: 30, child: Text('30 ນາທີ')),
             ],
             onChanged: (_) {},
           ),

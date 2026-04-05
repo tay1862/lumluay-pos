@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class PinDialog extends StatefulWidget {
   const PinDialog({
     super.key,
-    this.title = 'ยืนยัน PIN',
+    this.title = 'ຍືນຍັນ PIN',
     this.subtitle,
     this.pinLength = 4,
     this.verifyPin,
@@ -23,7 +23,7 @@ class PinDialog extends StatefulWidget {
 
   static Future<String?> show(
     BuildContext context, {
-    String title = 'ยืนยัน PIN',
+    String title = 'ຍືນຍັນ PIN',
     String? subtitle,
     int pinLength = 4,
     Future<bool> Function(String pin)? verifyPin,
@@ -73,7 +73,7 @@ class _PinDialogState extends State<PinDialog> {
       Navigator.of(context).pop(_pin);
     } else {
       setState(() {
-        _error = 'PIN ไม่ถูกต้อง';
+        _error = 'PIN ບໍ່ຖືກຕ້ອງ';
         _pin = '';
         _loading = false;
       });
@@ -149,7 +149,7 @@ class _PinDialogState extends State<PinDialog> {
               SizedBox(height: 8.h),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('ยกเลิก'),
+                child: const Text('ຍົກເລີກ'),
               ),
             ],
           ),

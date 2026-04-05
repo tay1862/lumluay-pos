@@ -105,7 +105,7 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('บันทึกไม่สำเร็จ: $e')));
+            .showSnackBar(SnackBar(content: Text('ບັນທຶກບໍ່ສຳເລັດ: $e')));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -139,7 +139,7 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEdit ? 'แก้ไขคูปอง' : 'เพิ่มคูปอง'),
+        title: Text(_isEdit ? 'ແກ້ໄຂຄູປອງ' : 'ເພີ່ມຄູປອງ'),
         actions: [
           if (_saving)
             const Center(
@@ -153,7 +153,7 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
           else
             TextButton(
               onPressed: _save,
-              child: const Text('บันทึก'),
+              child: const Text('ບັນທຶກ'),
             ),
         ],
       ),
@@ -167,12 +167,12 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
               controller: _codeCtrl,
               enabled: !_isEdit,
               decoration: const InputDecoration(
-                  labelText: 'รหัสคูปอง *',
+                  labelText: 'ລະຫັດຄູປອງ *',
                   hintText: 'SUMMER20',
-                  helperText: 'รหัสจะถูกแปลงเป็นตัวพิมพ์ใหญ่'),
+                  helperText: 'ລະຫັດຈະຖືກແປງເປັນຕົວພິມໃຫຍ່'),
               textCapitalization: TextCapitalization.characters,
               validator: (v) =>
-                  v == null || v.trim().isEmpty ? 'กรุณากรอกรหัสคูปอง' : null,
+                  v == null || v.trim().isEmpty ? 'ກະລຸນາກລອກລະຫັດຄູປອງ' : null,
             ),
             SizedBox(height: 12.h),
 
@@ -180,9 +180,9 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
             TextFormField(
               controller: _nameCtrl,
               decoration:
-                  const InputDecoration(labelText: 'ชื่อคูปอง *'),
+                  const InputDecoration(labelText: 'ຊື່ຄູປອງ *'),
               validator: (v) =>
-                  v == null || v.trim().isEmpty ? 'กรุณากรอกชื่อคูปอง' : null,
+                  v == null || v.trim().isEmpty ? 'ກະລຸນາກລອກຊື່ຄູປອງ' : null,
             ),
             SizedBox(height: 12.h),
 
@@ -190,23 +190,23 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
             TextFormField(
               controller: _descCtrl,
               decoration:
-                  const InputDecoration(labelText: 'รายละเอียด'),
+                  const InputDecoration(labelText: 'ລາຍລະອຽດ'),
               maxLines: 2,
             ),
             SizedBox(height: 16.h),
 
             // ─ Type ──────────────────────────────────────────────────────
-            Text('ประเภทส่วนลด',
+            Text('ປະເພດສ່ວນຫຼຸດ',
                 style: theme.textTheme.labelLarge),
             SizedBox(height: 8.h),
             SegmentedButton<CouponType>(
               segments: const [
                 ButtonSegment(
-                    value: CouponType.fixed, label: Text('จำนวนเงิน')),
+                    value: CouponType.fixed, label: Text('ຈຳນວນເງິນ')),
                 ButtonSegment(
-                    value: CouponType.percent, label: Text('เปอร์เซ็นต์')),
+                    value: CouponType.percent, label: Text('ເປີເຊັນ')),
                 ButtonSegment(
-                    value: CouponType.freeItem, label: Text('ของฟรี')),
+                    value: CouponType.freeItem, label: Text('ຂອງຟຣີ')),
               ],
               selected: {_type},
               onSelectionChanged: (s) => setState(() => _type = s.first),
@@ -219,17 +219,17 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 labelText: _type == CouponType.percent
-                    ? 'ส่วนลด (%) *'
-                    : 'ส่วนลด (฿) *',
-                prefixText: _type == CouponType.percent ? null : '฿',
+                    ? 'ສ່ວນຫຼຸດ (%) *'
+                    : 'ສ່ວນຫຼຸດ (₭) *',
+                prefixText: _type == CouponType.percent ? null : '₭',
                 suffixText: _type == CouponType.percent ? '%' : null,
               ),
               validator: (v) {
-                if (v == null || v.trim().isEmpty) return 'กรอกมูลค่าส่วนลด';
+                if (v == null || v.trim().isEmpty) return 'ກລອກມູນຄ່າສ່ວນຫຼຸດ';
                 final n = double.tryParse(v.trim());
-                if (n == null || n <= 0) return 'ต้องเป็นตัวเลขมากกว่า 0';
+                if (n == null || n <= 0) return 'ຕ້ອງເປັນຕົວເລກຫຼາຍກວ່າ 0';
                 if (_type == CouponType.percent && n > 100) {
-                  return 'เปอร์เซ็นต์ต้องไม่เกิน 100';
+                  return 'ເປີເຊັນຕ້ອງບໍ່ເກີນ 100';
                 }
                 return null;
               },
@@ -237,7 +237,7 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
             SizedBox(height: 12.h),
 
             // ─ Conditions ────────────────────────────────────────────────
-            Text('เงื่อนไข', style: theme.textTheme.labelLarge),
+            Text('ເງື່ອນໄຂ', style: theme.textTheme.labelLarge),
             SizedBox(height: 8.h),
             Row(
               children: [
@@ -247,12 +247,12 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     decoration: const InputDecoration(
-                        labelText: 'ยอดขั้นต่ำ (฿)',
-                        prefixText: '฿'),
+                        labelText: 'ຍອດຂັ້ນຕໍ່ຳ (₭)',
+                        prefixText: '₭'),
                     validator: (v) {
                       if (v == null || v.trim().isEmpty) return null;
                       final n = double.tryParse(v.trim());
-                      if (n == null || n < 0) return 'ตัวเลขไม่ถูกต้อง';
+                      if (n == null || n < 0) return 'ຕົວເລກບໍ່ຖືກຕ້ອງ';
                       return null;
                     },
                   ),
@@ -264,12 +264,12 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
                     decoration: const InputDecoration(
-                        labelText: 'ส่วนลดสูงสุด (฿)',
-                        prefixText: '฿'),
+                        labelText: 'ສ່ວນຫຼຸດສູງສຸດ (₭)',
+                        prefixText: '₭'),
                     validator: (v) {
                       if (v == null || v.trim().isEmpty) return null;
                       final n = double.tryParse(v.trim());
-                      if (n == null || n < 0) return 'ตัวเลขไม่ถูกต้อง';
+                      if (n == null || n < 0) return 'ຕົວເລກບໍ່ຖືກຕ້ອງ';
                       return null;
                     },
                   ),
@@ -281,24 +281,24 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
               controller: _usageLimitCtrl,
               keyboardType: TextInputType.number,
               decoration:
-                  const InputDecoration(labelText: 'จำนวนครั้งที่ใช้ได้'),
+                  const InputDecoration(labelText: 'ຈຳນວນຄັ້ງທີ່ໃຊ້ໄດ້'),
               validator: (v) {
                 if (v == null || v.trim().isEmpty) return null;
                 final n = int.tryParse(v.trim());
-                if (n == null || n < 1) return 'ต้องเป็นจำนวนเต็มมากกว่า 0';
+                if (n == null || n < 1) return 'ຕ້ອງເປັນຈຳນວນເຕັມຫຼາຍກວ່າ 0';
                 return null;
               },
             ),
             SizedBox(height: 16.h),
 
             // ─ Dates ─────────────────────────────────────────────────────
-            Text('ระยะเวลา', style: theme.textTheme.labelLarge),
+            Text('ລະຍະເວລາ', style: theme.textTheme.labelLarge),
             SizedBox(height: 8.h),
             Row(
               children: [
                 Expanded(
                   child: _DateField(
-                    label: 'เริ่มต้น',
+                    label: 'ເລີ່ມຕົ້ນ',
                     value: _startsAt,
                     onTap: () => _pickDate(false),
                     onClear: () => setState(() => _startsAt = null),
@@ -307,7 +307,7 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
                 SizedBox(width: 12.w),
                 Expanded(
                   child: _DateField(
-                    label: 'หมดอายุ',
+                    label: 'ໝົດອາຍຸ',
                     value: _expiresAt,
                     onTap: () => _pickDate(true),
                     onClear: () => setState(() => _expiresAt = null),
@@ -321,14 +321,14 @@ class _CouponFormPageState extends ConsumerState<CouponFormPage> {
             SwitchListTile(
               value: _isActive,
               onChanged: (v) => setState(() => _isActive = v),
-              title: const Text('เปิดใช้งาน'),
+              title: const Text('ເປີດໃຊ້ງານ'),
               contentPadding: EdgeInsets.zero,
             ),
             SizedBox(height: 24.h),
 
             FilledButton(
               onPressed: _saving ? null : _save,
-              child: Text(_isEdit ? 'บันทึกการแก้ไข' : 'สร้างคูปอง'),
+              child: Text(_isEdit ? 'ບັນທຶກການແກ້ໄຂ' : 'ສ້າງຄູປອງ'),
             ),
           ],
         ),

@@ -70,7 +70,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('โหลดข้อมูลล้มเหลว: $e')));
+            .showSnackBar(SnackBar(content: Text('ໂຫຼດຂໍ້ມູນລົ້ມເຫຼວ: $e')));
       }
     } finally {
       if (mounted) setState(() => _initialLoading = false);
@@ -100,7 +100,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
       });
       if (!hasValidVariant) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('กรุณาเพิ่มตัวเลือกสินค้าอย่างน้อย 1 รายการ')),
+          const SnackBar(content: Text('ກະລຸນາເພີ່ມຕົວເລືອກສິນຄ້າຢ່າງໜ້ອຍ 1 ລາຍການ')),
         );
         return;
       }
@@ -142,7 +142,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('บันทึกล้มเหลว: $e')));
+            .showSnackBar(SnackBar(content: Text('ບັນທຶກລົ້ມເຫຼວ: $e')));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -211,7 +211,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(vertical: 12.h),
-              child: Text('สแกน Barcode',
+              child: Text('ສະແກນ Barcode',
                   style:
                       TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700)),
             ),
@@ -236,16 +236,16 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('ยืนยันการลบ'),
-        content: Text('ต้องการลบสินค้า "${_nameCtrl.text}" ?'),
+        title: const Text('ຢືນຢັນການລົບ'),
+        content: Text('ຕ້ອງການລົບສິນຄ້າ "${_nameCtrl.text}" ?'),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('ยกเลิก')),
+              child: const Text('ຍົກເລີກ')),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('ลบ'),
+            child: const Text('ລົບ'),
           ),
         ],
       ),
@@ -260,7 +260,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('ลบล้มเหลว: $e')));
+              .showSnackBar(SnackBar(content: Text('ລົບລົ້ມເຫຼວ: $e')));
         }
       }
     }
@@ -272,7 +272,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEdit ? 'แก้ไขสินค้า' : 'เพิ่มสินค้า'),
+        title: Text(_isEdit ? 'ແກ້ໄຂສິນຄ້າ' : 'ເພີ່ມສິນຄ້າ'),
         actions: [
           if (_isEdit)
             IconButton(
@@ -281,7 +281,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
             ),
           TextButton(
             onPressed: _loading ? null : _save,
-            child: Text('บันทึก',
+            child: Text('ບັນທຶກ',
                 style: TextStyle(
                     color: AppColors.primary, fontWeight: FontWeight.w700)),
           ),
@@ -297,31 +297,31 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                     padding: EdgeInsets.all(16.w),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
-                        _SectionHeader('ข้อมูลทั่วไป'),
+                        _SectionHeader('ຂໍ້ມູນທົ່ວໄປ'),
                         SizedBox(height: 8.h),
                         TextFormField(
                           controller: _nameCtrl,
                           decoration: const InputDecoration(
-                              labelText: 'ชื่อสินค้า *',
+                              labelText: 'ຊື່ສິນຄ້າ *',
                               border: OutlineInputBorder()),
                           validator: (v) => v == null || v.trim().isEmpty
-                              ? 'กรุณากรอกชื่อสินค้า'
+                              ? 'ກະລຸນາປ້ອນຊື່ສິນຄ້າ'
                               : null,
                         ),
                         SizedBox(height: 12.h),
                         TextFormField(
                           controller: _priceCtrl,
                           decoration: const InputDecoration(
-                              labelText: 'ราคาตั้งต้น (฿) *',
+                              labelText: 'ລາຄາຕັ້ງຕົ້ນ (₭) *',
                               border: OutlineInputBorder(),
-                              prefixText: '฿ '),
+                              prefixText: '₭ '),
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           validator: (v) {
-                            if (v == null || v.isEmpty) return 'กรุณากรอกราคา';
+                            if (v == null || v.isEmpty) return 'ກະລຸນາປ້ອນລາຄາ';
                             if (double.tryParse(
                                     v.replaceAll(',', '')) ==
-                                null) { return 'ราคาไม่ถูกต้อง'; }
+                                null) { return 'ລາຄາບໍ່ຖືກຕ້ອງ'; }
                             return null;
                           },
                         ),
@@ -329,7 +329,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                         TextFormField(
                           controller: _skuCtrl,
                           decoration: const InputDecoration(
-                              labelText: 'รหัสสินค้า (SKU)',
+                              labelText: 'ລະຫັດສິນຄ້າ (SKU)',
                               border: OutlineInputBorder()),
                         ),
                         SizedBox(height: 12.h),
@@ -349,7 +349,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                             Padding(
                               padding: EdgeInsets.only(top: 4.h),
                               child: IconButton.filledTonal(
-                                tooltip: 'สแกน Barcode',
+                                tooltip: 'ສະແກນ Barcode',
                                 icon: const Icon(Icons.qr_code_scanner),
                                 onPressed: _openBarcodeScanner,
                               ),
@@ -360,13 +360,13 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                         TextFormField(
                           controller: _descCtrl,
                           decoration: const InputDecoration(
-                              labelText: 'คำอธิบาย',
+                              labelText: 'ຄຳອະທິບາຍ',
                               border: OutlineInputBorder()),
                           maxLines: 3,
                         ),
                         SizedBox(height: 20.h),
 
-                        _SectionHeader('หมวดหมู่และประเภท'),
+                        _SectionHeader('ໝວດໝູ່ ແລະ ປະເພດ'),
                         SizedBox(height: 8.h),
                         categoriesAsync.when(
                           loading: () => const LinearProgressIndicator(),
@@ -374,11 +374,11 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                           data: (cats) => DropdownButtonFormField<String?>(
                             initialValue: _selectedCategoryId,
                             decoration: const InputDecoration(
-                                labelText: 'หมวดหมู่',
+                                labelText: 'ໝວດໝູ່',
                                 border: OutlineInputBorder()),
                             items: [
                               const DropdownMenuItem(
-                                  value: null, child: Text('ไม่ระบุ')),
+                                  value: null, child: Text('ບໍ່ລະບຸ')),
                               ...cats.map((c) => DropdownMenuItem(
                                   value: c.id, child: Text(c.name))),
                             ],
@@ -390,16 +390,16 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                         DropdownButtonFormField<String>(
                           initialValue: _productType,
                           decoration: const InputDecoration(
-                              labelText: 'ประเภทสินค้า',
+                              labelText: 'ປະເພດສິນຄ້າ',
                               border: OutlineInputBorder()),
                           items: const [
                             DropdownMenuItem(
-                                value: 'simple', child: Text('ธรรมดา')),
+                                value: 'simple', child: Text('ທຳມະດາ')),
                             DropdownMenuItem(
                                 value: 'variant',
-                                child: Text('มีตัวเลือก')),
+                                child: Text('ມີຕົວເລືອກ')),
                             DropdownMenuItem(
-                                value: 'combo', child: Text('คอมโบ')),
+                                value: 'combo', child: Text('ຄອມໂບ')),
                           ],
                           onChanged: (v) =>
                               setState(() => _productType = v ?? 'simple'),
@@ -409,7 +409,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                           Row(
                             children: [
                               Text(
-                                'ตัวเลือกสินค้า (Variant)',
+                                'ຕົວເລືອກສິນຄ້າ (Variant)',
                                 style: TextStyle(
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w700,
@@ -419,7 +419,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                               OutlinedButton.icon(
                                 onPressed: _addVariant,
                                 icon: const Icon(Icons.add),
-                                label: const Text('เพิ่มตัวเลือก'),
+                                label: const Text('ເພີ່ມຕົວເລືອກ'),
                               ),
                             ],
                           ),
@@ -433,7 +433,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                                 border: Border.all(color: const Color(0xFFE5E7EB)),
                               ),
                               child: Text(
-                                'ยังไม่มีตัวเลือกสินค้า กด "เพิ่มตัวเลือก" เพื่อสร้างเช่น S/M/L',
+                                'ຍັງບໍ່ມີຕົວເລືອກສິນຄ້າ ກົດ "ເພີ່ມຕົວເລືອກ" ເພື່ອສ້າງເຊັ່ນ S/M/L',
                                 style: TextStyle(fontSize: 12.sp, color: Colors.black54),
                               ),
                             ),
@@ -454,7 +454,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                                             child: TextFormField(
                                               controller: v.nameCtrl,
                                               decoration: const InputDecoration(
-                                                labelText: 'ชื่อตัวเลือก *',
+                                                labelText: 'ຊື່ຕົວເລືອກ *',
                                                 border: OutlineInputBorder(),
                                               ),
                                             ),
@@ -476,8 +476,8 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                                               keyboardType:
                                                   const TextInputType.numberWithOptions(decimal: true),
                                               decoration: const InputDecoration(
-                                                labelText: 'ราคา *',
-                                                prefixText: '฿ ',
+                                                labelText: 'ລາຄາ *',
+                                                prefixText: '₭ ',
                                                 border: OutlineInputBorder(),
                                               ),
                                             ),
@@ -501,13 +501,13 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                         ],
                         SizedBox(height: 20.h),
 
-                        _SectionHeader('สถานะ'),
+                        _SectionHeader('ສະຖານະ'),
                         SizedBox(height: 8.h),
                         SwitchListTile.adaptive(
-                          title: Text('เปิดขาย',
+                          title: Text('ເປີດຂາຍ',
                               style: TextStyle(fontSize: 14.sp)),
                           subtitle: Text(
-                            _isActive ? 'สินค้านี้แสดงในหน้าขาย' : 'ซ่อนจากหน้าขาย',
+                            _isActive ? 'ສິນຄ້ານີ້ສະແດງໃນໜ້າຂາຍ' : 'ເຊື່ອງຈາກໜ້າຂາຍ',
                             style: TextStyle(fontSize: 11.sp),
                           ),
                           value: _isActive,
@@ -529,7 +529,7 @@ class _ProductFormPageState extends ConsumerState<ProductFormPage> {
                               ? const CircularProgressIndicator(
                                   color: Colors.white)
                               : Text(
-                                  _isEdit ? 'บันทึกการแก้ไข' : 'เพิ่มสินค้า',
+                                  _isEdit ? 'ບັນທຶກການແກ້ໄຂ' : 'ເພີ່ມສິນຄ້າ',
                                   style: TextStyle(fontSize: 15.sp)),
                         ),
                       ]),

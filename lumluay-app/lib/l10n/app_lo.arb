@@ -19,6 +19,7 @@
   "next": "ຕໍ່ໄປ",
   "back": "ກັບຄືນ",
   "finish": "ສໍາເລັດ",
+  "add": "ເພີ່ມ",
   "save": "ບັນທຶກ",
   "cancel": "ຍົກເລີກ",
   "delete": "ລົບ",
@@ -26,5 +27,54 @@
   "retry": "ລອງໃໝ່",
   "loading": "ກໍາລັງໂຫຼດ...",
   "errorOccurred": "ເກີດຂໍ້ຜິດພາດ",
-  "settings": "ການຕັ້ງຄ່າ"
+  "settings": "ການຕັ້ງຄ່າ",
+  "setupWizardCompleted": "ການຕັ້ງຄ່າເບື້ອງຕົ້ນສໍາເລັດແລ້ວ.",
+  "setupWizardStoreNameRequired": "ກະລຸນາໃສ່ຊື່ຮ້ານ",
+  "setupWizardSeedSampleDataFailed": "ບໍ່ສາມາດເພີ່ມຂໍ້ມູນຕົວຢ່າງໄດ້",
+  "setupWizardStaffInfoIncomplete": "ກະລຸນາໃສ່ຂໍ້ມູນພະນັກງານໃຫ້ຄົບ (ລະຫັດຜ່ານຢ່າງນ້ອຍ 8 ຕົວ)",
+  "setupWizardStepStoreInfo": "ຂໍ້ມູນຮ້ານ",
+  "setupWizardStepCurrencyTax": "ສະກຸນເງິນ ແລະ ພາສີ",
+  "setupWizardStepPrinters": "ເຄື່ອງພິມ",
+  "setupWizardStepProductImport": "ນໍາເຂົ້າສິນຄ້າ",
+  "setupWizardStepCreateStaff": "ສ້າງພະນັກງານ",
+  "setupWizardStepProgress": "ຕັ້ງຄ່າເບື້ອງຕົ້ນ • ຂັ້ນຕອນ {currentStep}/{totalSteps}",
+  "@setupWizardStepProgress": {
+    "placeholders": {
+      "currentStep": {
+        "type": "int"
+      },
+      "totalSteps": {
+        "type": "int"
+      }
+    }
+  },
+  "setupWizardStoreName": "ຊື່ຮ້ານ",
+  "setupWizardOwnerName": "ຊື່ເຈົ້າຂອງ / ຜູ້ດູແລ",
+  "setupWizardPhone": "ເບີໂທ",
+  "setupWizardAddress": "ທີ່ຢູ່",
+  "setupWizardTaxId": "ເລກປະຈໍາຕົວຜູ້ເສຍພາສີ",
+  "setupWizardDefaultCurrency": "ສະກຸນເງິນເລີ່ມຕົ້ນ",
+  "setupWizardVatRate": "VAT",
+  "setupWizardCurrencyThb": "THB - ບາດໄທ",
+  "setupWizardCurrencyLak": "LAK - ກີບລາວ",
+  "setupWizardCurrencyUsd": "USD - ໂດລາສະຫະລັດ",
+  "setupWizardPrinterHint": "ເພີ່ມເຄື່ອງພິມຢ່າງນ້ອຍ 1 ເຄື່ອງ (ຂ້າມໄດ້)",
+  "setupWizardAddPrinter": "ເພີ່ມເຄື່ອງພິມ",
+  "setupWizardPrinterName": "ຊື່ເຄື່ອງພິມ",
+  "setupWizardPrinterType": "ປະເພດ",
+  "setupWizardUseSampleData": "ໃຊ້ຂໍ້ມູນຕົວຢ່າງ (ແນະນໍາ)",
+  "setupWizardUseSampleDataHint": "5 ໝວດ, 20 ສິນຄ້າຕົວຢ່າງສໍາລັບຮ້ານອາຫານ",
+  "setupWizardImportCsv": "ນໍາເຂົ້າ CSV",
+  "setupWizardImportCsvHint": "ຈະຮອງຮັບໃນຂັ້ນຕອນຖັດໄປ",
+  "setupWizardAddLater": "ເພີ່ມພາຍຫຼັງ",
+  "setupWizardUsername": "ຊື່ຜູ້ໃຊ້",
+  "setupWizardDisplayName": "ຊື່ທີ່ສະແດງ",
+  "setupWizardPassword": "ລະຫັດຜ່ານ (8+ ຕົວອັກສອນ)",
+  "setupWizardPinOptional": "PIN (ທາງເລືອກ)",
+  "setupWizardPinHint": "4-6 ຫຼັກ",
+  "setupWizardRole": "ບົດບາດ",
+  "setupWizardRoleCashier": "ແຄດເຊຍ",
+  "setupWizardRoleWaiter": "ພະນັກງານເສີບ",
+  "setupWizardRoleKitchen": "ຄົວ",
+  "setupWizardRoleManager": "ຜູ້ຈັດການ"
 }

@@ -12,10 +12,10 @@ class OrderCard extends ConsumerWidget {
   final OrderSummary order;
 
   (Color, String) _statusStyle() => switch (order.status) {
-        'completed' => (Colors.green, 'เสร็จ'),
-        'voided' => (Colors.red, 'ยกเลิก'),
-        'held' => (Colors.orange, 'พัก'),
-        'open' => (Colors.blue, 'เปิด'),
+        'completed' => (Colors.green, 'ສຳເລັດ'),
+        'voided' => (Colors.red, 'ຍົກເລີກ'),
+        'held' => (Colors.orange, 'ພັກ'),
+        'open' => (Colors.blue, 'ເປີດ'),
         _ => (Colors.grey, order.status),
       };
 
@@ -72,13 +72,13 @@ class OrderCard extends ConsumerWidget {
         [
           if (order.tableName != null) order.tableName!,
           _typeLabel(),
-          '${order.itemCount} รายการ',
+          '${order.itemCount} ລາຍການ',
           fmtTime.format(order.createdAt),
         ].join(' · '),
         style: TextStyle(fontSize: 11.sp, color: Colors.black54),
       ),
       trailing: Text(
-        '฿${fmtMoney.format(order.totalAmount)}',
+        '₭${fmtMoney.format(order.totalAmount)}',
         style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w700,

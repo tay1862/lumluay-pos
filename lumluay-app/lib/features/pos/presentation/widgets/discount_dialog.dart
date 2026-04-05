@@ -157,7 +157,7 @@ class _DiscountDialogState extends ConsumerState<DiscountDialog> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'ส่วนลด',
+                'ສ່ວນຫຼຸດ',
                 style: theme.textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
@@ -169,17 +169,17 @@ class _DiscountDialogState extends ConsumerState<DiscountDialog> {
                 segments: const [
                   ButtonSegment(
                     value: DiscountType.percent,
-                    label: Text('เปอร์เซ็นต์'),
+                    label: Text('ເປີເຊັນ'),
                     icon: Icon(Icons.percent),
                   ),
                   ButtonSegment(
                     value: DiscountType.amount,
-                    label: Text('จำนวนเงิน'),
+                    label: Text('ຈຳນວນເງິນ'),
                     icon: Icon(Icons.money),
                   ),
                   ButtonSegment(
                     value: DiscountType.coupon,
-                    label: Text('คูปอง'),
+                    label: Text('ຄູປອງ'),
                     icon: Icon(Icons.confirmation_number_outlined),
                   ),
                 ],
@@ -208,7 +208,7 @@ class _DiscountDialogState extends ConsumerState<DiscountDialog> {
                         }),
                         onSubmitted: (_) => _validateCoupon(),
                         decoration: InputDecoration(
-                          labelText: 'รหัสคูปอง',
+                          labelText: 'ລະຫັດຄູປອງ',
                           prefixIcon: const Icon(
                               Icons.confirmation_number_outlined),
                           errorText: _couponError,
@@ -230,7 +230,7 @@ class _DiscountDialogState extends ConsumerState<DiscountDialog> {
                                 child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                     color: Colors.white))
-                            : const Text('ตรวจสอบ'),
+                            : const Text('ກວດສອບ'),
                       ),
                     ),
                   ],
@@ -259,7 +259,7 @@ class _DiscountDialogState extends ConsumerState<DiscountDialog> {
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                'ส่วนลด: ฿${_couponResult!.discountAmount.toStringAsFixed(2)}',
+                                'ສ່ວນຫຼຸດ: ₭${_couponResult!.discountAmount.toStringAsFixed(2)}',
                                 style: const TextStyle(color: Colors.green),
                               ),
                             ],
@@ -287,7 +287,7 @@ class _DiscountDialogState extends ConsumerState<DiscountDialog> {
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        _type == DiscountType.percent ? '%' : '฿',
+                        _type == DiscountType.percent ? '%' : '₭',
                         style: theme.textTheme.titleLarge
                             ?.copyWith(color: theme.colorScheme.secondary),
                       ),
@@ -297,7 +297,7 @@ class _DiscountDialogState extends ConsumerState<DiscountDialog> {
                 if (_parsedValue > 0) ...[
                   SizedBox(height: 8.h),
                   Text(
-                    'ส่วนลด: ฿${_discountAmount.toStringAsFixed(2)}',
+                    'ສ່ວນຫຼຸດ: ₭${_discountAmount.toStringAsFixed(2)}',
                     style: TextStyle(
                       color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w500,
@@ -319,14 +319,14 @@ class _DiscountDialogState extends ConsumerState<DiscountDialog> {
                 children: [
                   Expanded(
                     child: AppSecondaryButton(
-                      label: 'ยกเลิก',
+                      label: 'ຍົກເລີກ',
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                   ),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: AppPrimaryButton(
-                      label: 'ยืนยัน',
+                      label: 'ຢືນຢັນ',
                       onPressed: _isValid ? _confirm : null,
                       icon: Icons.check,
                     ),

@@ -50,7 +50,7 @@ class _PrinterSettingsPageState extends ConsumerState<PrinterSettingsPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('โหลดเครื่องพิมพ์ไม่สำเร็จ: $e')),
+          SnackBar(content: Text('ໂຫຼດເຄື່ອງພິມບໍ່ສຳເລັດ: $e')),
         );
       }
     } finally {
@@ -101,11 +101,11 @@ class _PrinterSettingsPageState extends ConsumerState<PrinterSettingsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ตั้งค่าเครื่องพิมพ์'),
+        title: const Text('ຕັ້ງຄ່າເຄື່ອງພິມ'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            tooltip: 'เพิ่มเครื่องพิมพ์',
+            tooltip: 'ເພີ່ມເຄື່ອງພິມ',
             onPressed: () => _showPrinterDialog(context, null),
           ),
         ],
@@ -119,10 +119,10 @@ class _PrinterSettingsPageState extends ConsumerState<PrinterSettingsPage> {
                       size: 64.sp,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.3)),
                   SizedBox(height: 12.h),
-                  Text('ยังไม่มีเครื่องพิมพ์',
+                  Text('ຍັງບໍ່ມີເຄື່ອງພິມ',
                       style: theme.textTheme.titleMedium),
                   SizedBox(height: 4.h),
-                  Text('แตะ + เพื่อเพิ่มเครื่องพิมพ์',
+                  Text('ແຕະ + ເພື່ອເພີ່ມເຄື່ອງພິມ',
                       style: theme.textTheme.bodySmall),
                 ],
               ),
@@ -156,19 +156,19 @@ class _PrinterSettingsPageState extends ConsumerState<PrinterSettingsPage> {
     showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('ลบเครื่องพิมพ์'),
-        content: Text('ต้องการลบ "${printer.name}" ใช่ไหม?'),
+        title: const Text('ລົບເຄື່ອງພິມ'),
+        content: Text('ຕ້ອງການລົບ "${printer.name}" ແມ່ນບໍ?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('ยกเลิก'),
+            child: const Text('ຍົກເລີກ'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: const Text('ลบ'),
+            child: const Text('ລົບ'),
           ),
         ],
       ),
@@ -210,7 +210,7 @@ class _PrinterCard extends StatelessWidget {
             if (printer.isDefault) ...[
               SizedBox(width: 8.w),
               Chip(
-                label: const Text('ค่าเริ่มต้น'),
+                label: const Text('ຄ່າເລີ່ມຕົ້ນ'),
                 labelStyle: TextStyle(fontSize: 10.sp),
                 padding: EdgeInsets.zero,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -226,12 +226,12 @@ class _PrinterCard extends StatelessWidget {
         ),
         trailing: PopupMenuButton<String>(
           itemBuilder: (_) => [
-            const PopupMenuItem(value: 'test', child: Text('ทดสอบพิมพ์')),
-            const PopupMenuItem(value: 'default', child: Text('ตั้งเป็นค่าเริ่มต้น')),
-            const PopupMenuItem(value: 'edit', child: Text('แก้ไข')),
+            const PopupMenuItem(value: 'test', child: Text('ທົດສອບພິມ')),
+            const PopupMenuItem(value: 'default', child: Text('ຕັ້ງເປັນຄ່າເລີ່ມຕົ້ນ')),
+            const PopupMenuItem(value: 'edit', child: Text('ແກ້ໄຂ')),
             PopupMenuItem(
               value: 'delete',
-              child: Text('ลบ',
+              child: Text('ລົບ',
                   style:
                       TextStyle(color: theme.colorScheme.error)),
             ),
@@ -240,7 +240,7 @@ class _PrinterCard extends StatelessWidget {
             switch (action) {
               case 'test':
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('กำลังทดสอบพิมพ์: ${printer.name}')),
+                  SnackBar(content: Text('ກຳລັງທົດສອບພິມ: ${printer.name}')),
                 );
               case 'default':
                 onSetDefault();
@@ -301,8 +301,8 @@ class _PrinterDialogState extends State<_PrinterDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(widget.existing == null
-          ? 'เพิ่มเครื่องพิมพ์'
-          : 'แก้ไขเครื่องพิมพ์'),
+          ? 'ເພີ່ມເຄື່ອງພິມ'
+          : 'ແກ້ໄຂເຄື່ອງພິມ'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -311,7 +311,7 @@ class _PrinterDialogState extends State<_PrinterDialog> {
             TextField(
               controller: _nameCtrl,
               decoration: const InputDecoration(
-                labelText: 'ชื่อเครื่องพิมพ์',
+                labelText: 'ຊື່ເຄື່ອງພິມ',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -319,7 +319,7 @@ class _PrinterDialogState extends State<_PrinterDialog> {
             DropdownButtonFormField<String>(
               initialValue: _type,
               decoration: const InputDecoration(
-                labelText: 'ประเภทการเชื่อมต่อ',
+                labelText: 'ປະເພດການເຊື່ອມຕໍ່',
                 border: OutlineInputBorder(),
               ),
               items: const ['bluetooth', 'usb', 'wifi']
@@ -366,7 +366,7 @@ class _PrinterDialogState extends State<_PrinterDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('ยกเลิก'),
+          child: const Text('ຍົກເລີກ'),
         ),
         FilledButton(
           onPressed: () async {
@@ -383,7 +383,7 @@ class _PrinterDialogState extends State<_PrinterDialog> {
             if (!mounted) return;
             Navigator.of(this.context).pop();
           },
-          child: const Text('บันทึก'),
+          child: const Text('ບັນທຶກ'),
         ),
       ],
     );

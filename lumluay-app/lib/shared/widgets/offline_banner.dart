@@ -29,7 +29,7 @@ class OfflineBanner extends ConsumerWidget {
               SizedBox(width: 8.w),
               Expanded(
                 child: Text(
-                  'ออฟไลน์ — ข้อมูลจะ sync เมื่อกลับมาออนไลน์',
+                  'ອອບໄລນ໌ — ຂໍ້ມູນຈະ sync ເມື່ອກັບມາອອນໄລນ໌',
                   style: TextStyle(
                       color: Colors.white, fontSize: 12.sp),
                 ),

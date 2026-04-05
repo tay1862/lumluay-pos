@@ -77,11 +77,11 @@ class Coupon {
   String get typeLabel {
     switch (type) {
       case CouponType.percent:
-        return 'เปอร์เซ็นต์';
+        return 'ເປີເຊັນ';
       case CouponType.freeItem:
-        return 'ของฟรี';
+        return 'ຂອງຟຣີ';
       case CouponType.fixed:
-        return 'จำนวนเงิน';
+        return 'ຈຳນວນເງິນ';
     }
   }
 

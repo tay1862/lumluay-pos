@@ -32,7 +32,7 @@ class ReportsPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        title: const Text('รายงาน'),
+        title: const Text('ລາຍງານ'),
         actions: [
           TextButton.icon(
             icon: const Icon(Icons.date_range, size: 18),
@@ -63,10 +63,10 @@ class ReportsPage extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _SectionTitle(title: 'รายได้รายวัน', icon: Icons.bar_chart),
+                _SectionTitle(title: 'ລາຍໄດ້ລາຍວັນ', icon: Icons.bar_chart),
                 TextButton(
                   onPressed: () => context.push('/reports/sales'),
-                  child: const Text('ดูทั้งหมด'),
+                  child: const Text('ເບິ່ງທັງໝົດ'),
                 ),
               ],
             ),
@@ -82,10 +82,10 @@ class ReportsPage extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _SectionTitle(title: 'สินค้าขายดี', icon: Icons.star_outline),
+                _SectionTitle(title: 'ສິນຄ້າຂາຍດີ', icon: Icons.star_outline),
                 TextButton(
                   onPressed: () => context.push('/reports/products'),
-                  child: const Text('ดูทั้งหมด'),
+                  child: const Text('ເບິ່ງທັງໝົດ'),
                 ),
               ],
             ),
@@ -130,22 +130,22 @@ class _SummaryRow extends StatelessWidget {
       children: [
         Expanded(
             child: _StatCard(
-                label: 'รายได้รวม',
-                value: '฿${fmt.format(summary.totalRevenue)}',
+                label: 'ລາຍໄດ້ລວມ',
+                value: '₭${fmt.format(summary.totalRevenue)}',
                 icon: Icons.payments_outlined,
                 color: Colors.green)),
         SizedBox(width: 8.w),
         Expanded(
             child: _StatCard(
-                label: 'จำนวนออเดอร์',
+                label: 'ຈຳນວນອໍເດີ',
                 value: '${summary.totalOrders}',
                 icon: Icons.receipt_long_outlined,
                 color: Colors.blue)),
         SizedBox(width: 8.w),
         Expanded(
             child: _StatCard(
-                label: 'เฉลี่ย/ออเดอร์',
-                value: '฿${fmt.format(summary.avgOrderValue)}',
+                label: 'ສະເລຍ/ອໍເດີ',
+                value: '₭${fmt.format(summary.avgOrderValue)}',
                 icon: Icons.trending_up,
                 color: Colors.orange)),
       ],
@@ -202,7 +202,7 @@ class _DailyChart extends StatelessWidget {
       return Card(
         child: Padding(
           padding: EdgeInsets.all(24.h),
-          child: const Center(child: Text('ไม่มีข้อมูล')),
+          child: const Center(child: Text('ບໍ່ມີຂໍ້ມູນ')),
         ),
       );
     }
@@ -227,7 +227,7 @@ class _DailyChart extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        '฿${fmt.format(d.revenue)}',
+                        '₭${fmt.format(d.revenue)}',
                         style: TextStyle(fontSize: 8.sp, color: Colors.black54),
                         textAlign: TextAlign.center,
                       ),
@@ -271,7 +271,7 @@ class _TopProductsList extends StatelessWidget {
       return Card(
         child: Padding(
           padding: EdgeInsets.all(24.h),
-          child: const Center(child: Text('ไม่มีข้อมูล')),
+          child: const Center(child: Text('ບໍ່ມີຂໍ້ມູນ')),
         ),
       );
     }
@@ -316,7 +316,7 @@ class _TopProductsList extends StatelessWidget {
                         style: TextStyle(
                             color: Colors.grey, fontSize: 12.sp)),
                     SizedBox(width: 8.w),
-                    Text('฿${fmtMoney.format(p.revenue)}',
+                    Text('₭${fmtMoney.format(p.revenue)}',
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 13.sp,

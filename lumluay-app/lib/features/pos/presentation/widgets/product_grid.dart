@@ -25,7 +25,7 @@ class ProductGrid extends StatelessWidget {
             Icon(Icons.inventory_2_outlined,
                 size: 48.sp, color: Colors.grey[400]),
             SizedBox(height: 8.h),
-            Text('ไม่มีสินค้า',
+            Text('ບໍ່ມີສິນຄ້າ',
                 style: TextStyle(color: Colors.grey[500], fontSize: 14.sp)),
           ],
         ),
@@ -53,7 +53,7 @@ class ProductGrid extends StatelessWidget {
             : Offset.zero;
         return _ProductCard(
           product: product,
-          priceLabel: '฿${currencyFmt.format(product.price)}',
+          priceLabel: '₭${currencyFmt.format(product.price)}',
           onTap: product.isAvailable
               ? () => onAddRequested(product, tapOrigin)
               : null,
@@ -79,7 +79,7 @@ class _ProductCard extends StatelessWidget {
     return Semantics(
       button: true,
       enabled: !unavailable,
-      label: '${product.name} ราคา $priceLabel',
+      label: '${product.name} ລາຄາ $priceLabel',
       child: Card(
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
@@ -112,7 +112,7 @@ class _ProductCard extends StatelessWidget {
                           color: Colors.black45,
                           alignment: Alignment.center,
                           child: Text(
-                            'หมด',
+                            'ໝົດ',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,

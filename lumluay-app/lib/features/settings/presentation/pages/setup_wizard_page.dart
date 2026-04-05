@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lumluay_pos/l10n/generated/app_localizations.dart';
 import '../../data/settings_repository.dart';
 import '../../data/users_repository.dart';
 
@@ -25,7 +26,7 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
   final _taxIdCtrl = TextEditingController();
 
   // Step 2
-  String _defaultCurrency = 'THB';
+  String _defaultCurrency = 'LAK';
   double _vatRate = 7.0;
 
   // Step 3
@@ -89,6 +90,7 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
 
   Future<void> _next() async {
     if (_saving) return;
+    final l10n = AppLocalizations.of(context);
     setState(() => _saving = true);
     try {
       switch (_step) {
@@ -109,14 +111,14 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
         setState(() => _step += 1);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Setup Wizard เสร็จสมบูรณ์แล้ว')),
+          SnackBar(content: Text(l10n.setupWizardCompleted)),
         );
         context.go('/dashboard');
       }
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+        SnackBar(content: Text('${l10n.errorOccurred}: $e')),
       );
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -125,7 +127,7 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
 
   Future<void> _submitStep1StoreInfo() async {
     if (_storeNameCtrl.text.trim().isEmpty) {
-      throw Exception('กรุณากรอกชื่อร้าน');
+      throw Exception(AppLocalizations.of(context).setupWizardStoreNameRequired);
     }
 
     final repo = ref.read(settingsRepositoryProvider);
@@ -147,7 +149,7 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
     await repo.updateCurrencies(
       CurrencySettings(
         defaultCurrency: _defaultCurrency,
-        enabledCurrencies: [_defaultCurrency, 'THB'],
+        enabledCurrencies: {_defaultCurrency, 'THB'}.toList(),
         decimals: const {'THB': 2, 'LAK': 0, 'USD': 2},
         exchangeRates: const {},
       ),
@@ -174,7 +176,12 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
       final result =
           await ref.read(settingsRepositoryProvider).seedSampleData();
       if (result.skipped) {
-        throw Exception(result.reason ?? 'ไม่สามารถ seed sample data ได้');
+        final l10n = AppLocalizations.of(context);
+        throw Exception(
+          result.reason == null
+              ? l10n.setupWizardSeedSampleDataFailed
+              : '${l10n.setupWizardSeedSampleDataFailed}: ${result.reason}',
+        );
       }
     }
 
@@ -188,7 +195,9 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
     if (_usernameCtrl.text.trim().isEmpty ||
         _displayNameCtrl.text.trim().isEmpty ||
         _passwordCtrl.text.trim().length < 8) {
-      throw Exception('กรอกข้อมูลพนักงานให้ครบ (รหัสผ่านอย่างน้อย 8 ตัว)');
+      throw Exception(
+        AppLocalizations.of(context).setupWizardStaffInfoIncomplete,
+      );
     }
 
     await ref.read(usersRepositoryProvider).createUser({
@@ -202,6 +211,8 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     if (_loading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -209,16 +220,18 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
     }
 
     final stepTitle = [
-      'ข้อมูลร้าน',
-      'สกุลเงินและภาษี',
-      'เครื่องพิมพ์',
-      'นำเข้าสินค้า',
-      'สร้างพนักงาน',
+      l10n.setupWizardStepStoreInfo,
+      l10n.setupWizardStepCurrencyTax,
+      l10n.setupWizardStepPrinters,
+      l10n.setupWizardStepProductImport,
+      l10n.setupWizardStepCreateStaff,
     ][_step];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setup Wizard • ขั้นตอน ${_step + 1}/5'),
+        title: Text(
+          l10n.setupWizardStepProgress(_step + 1, 5),
+        ),
       ),
       body: Column(
         children: [
@@ -241,7 +254,7 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
                   if (_step > 0)
                     OutlinedButton(
                       onPressed: _saving ? null : () => setState(() => _step -= 1),
-                      child: const Text('ย้อนกลับ'),
+                      child: Text(l10n.back),
                     )
                   else
                     const SizedBox.shrink(),
@@ -254,7 +267,7 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
                             height: 18,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                        : Text(_step == 4 ? 'เสร็จสิ้น' : 'ถัดไป'),
+                        : Text(_step == 4 ? l10n.finish : l10n.next),
                   ),
                 ],
               ),
@@ -324,20 +337,38 @@ class _StoreInfoStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
-            TextField(controller: storeNameCtrl, decoration: const InputDecoration(labelText: 'ชื่อร้าน')),
+            TextField(
+              controller: storeNameCtrl,
+              decoration: InputDecoration(labelText: l10n.setupWizardStoreName),
+            ),
             SizedBox(height: 12.h),
-            TextField(controller: ownerNameCtrl, decoration: const InputDecoration(labelText: 'ชื่อเจ้าของ/ผู้ดูแล')),
+            TextField(
+              controller: ownerNameCtrl,
+              decoration: InputDecoration(labelText: l10n.setupWizardOwnerName),
+            ),
             SizedBox(height: 12.h),
-            TextField(controller: phoneCtrl, decoration: const InputDecoration(labelText: 'เบอร์โทร')),
+            TextField(
+              controller: phoneCtrl,
+              decoration: InputDecoration(labelText: l10n.setupWizardPhone),
+            ),
             SizedBox(height: 12.h),
-            TextField(controller: addressCtrl, decoration: const InputDecoration(labelText: 'ที่อยู่'), maxLines: 2),
+            TextField(
+              controller: addressCtrl,
+              decoration: InputDecoration(labelText: l10n.setupWizardAddress),
+              maxLines: 2,
+            ),
             SizedBox(height: 12.h),
-            TextField(controller: taxIdCtrl, decoration: const InputDecoration(labelText: 'เลขผู้เสียภาษี')),
+            TextField(
+              controller: taxIdCtrl,
+              decoration: InputDecoration(labelText: l10n.setupWizardTaxId),
+            ),
           ],
         ),
       ),
@@ -360,6 +391,8 @@ class _CurrencyTaxStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -368,18 +401,27 @@ class _CurrencyTaxStep extends StatelessWidget {
           children: [
             DropdownButtonFormField<String>(
               initialValue: defaultCurrency,
-              items: const [
-                DropdownMenuItem(value: 'THB', child: Text('THB - บาทไทย')),
-                DropdownMenuItem(value: 'LAK', child: Text('LAK - กีบลาว')),
-                DropdownMenuItem(value: 'USD', child: Text('USD - US Dollar')),
+              items: [
+                DropdownMenuItem(
+                  value: 'THB',
+                  child: Text(l10n.setupWizardCurrencyThb),
+                ),
+                DropdownMenuItem(
+                  value: 'LAK',
+                  child: Text(l10n.setupWizardCurrencyLak),
+                ),
+                DropdownMenuItem(
+                  value: 'USD',
+                  child: Text(l10n.setupWizardCurrencyUsd),
+                ),
               ],
               onChanged: (v) {
                 if (v != null) onCurrencyChanged(v);
               },
-              decoration: const InputDecoration(labelText: 'สกุลเงินเริ่มต้น'),
+              decoration: InputDecoration(labelText: l10n.setupWizardDefaultCurrency),
             ),
             SizedBox(height: 16.h),
-            Text('VAT (%) : ${vatRate.toStringAsFixed(1)}'),
+            Text('${l10n.setupWizardVatRate} (%) : ${vatRate.toStringAsFixed(1)}'),
             Slider(
               min: 0,
               max: 20,
@@ -402,13 +444,15 @@ class _PrinterStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('เพิ่มเครื่องพิมพ์อย่างน้อย 1 เครื่อง (ข้ามได้)',
+            Text(l10n.setupWizardPrinterHint,
                 style: Theme.of(context).textTheme.titleSmall),
             SizedBox(height: 12.h),
             ...printers.map(
@@ -430,7 +474,7 @@ class _PrinterStep extends StatelessWidget {
             OutlinedButton.icon(
               onPressed: () => _showAddPrinterDialog(context, printers, onChanged),
               icon: const Icon(Icons.add),
-              label: const Text('เพิ่มเครื่องพิมพ์'),
+              label: Text(l10n.setupWizardAddPrinter),
             ),
           ],
         ),
@@ -451,12 +495,18 @@ class _PrinterStep extends StatelessWidget {
     showDialog<void>(
       context: context,
       builder: (_) => StatefulBuilder(
-        builder: (context, setDialogState) => AlertDialog(
-          title: const Text('เพิ่มเครื่องพิมพ์'),
+        builder: (context, setDialogState) {
+          final l10n = AppLocalizations.of(context);
+
+          return AlertDialog(
+          title: Text(l10n.setupWizardAddPrinter),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'ชื่อเครื่องพิมพ์')),
+              TextField(
+                controller: nameCtrl,
+                decoration: InputDecoration(labelText: l10n.setupWizardPrinterName),
+              ),
               SizedBox(height: 8.h),
               DropdownButtonFormField<String>(
                 initialValue: type,
@@ -468,7 +518,7 @@ class _PrinterStep extends StatelessWidget {
                 onChanged: (v) {
                   if (v != null) setDialogState(() => type = v);
                 },
-                decoration: const InputDecoration(labelText: 'ประเภท'),
+                decoration: InputDecoration(labelText: l10n.setupWizardPrinterType),
               ),
               if (type == 'wifi') ...[
                 SizedBox(height: 8.h),
@@ -479,7 +529,7 @@ class _PrinterStep extends StatelessWidget {
             ],
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('ยกเลิก')),
+            TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
             FilledButton(
               onPressed: () {
                 final name = nameCtrl.text.trim();
@@ -497,10 +547,11 @@ class _PrinterStep extends StatelessWidget {
                 onChanged();
                 Navigator.pop(context);
               },
-              child: const Text('เพิ่ม'),
+              child: Text(l10n.add),
             ),
           ],
-        ),
+        );
+        },
       ),
     );
   }
@@ -517,6 +568,8 @@ class _ProductImportStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -529,17 +582,17 @@ class _ProductImportStep extends StatelessWidget {
             children: [
               RadioListTile<String>(
                 value: 'sample',
-                title: const Text('ใช้ข้อมูลตัวอย่าง (แนะนำ)'),
-                subtitle: const Text('5 หมวดหมู่, 20 สินค้า ตัวอย่างสำหรับร้านอาหาร'),
+                title: Text(l10n.setupWizardUseSampleData),
+                subtitle: Text(l10n.setupWizardUseSampleDataHint),
               ),
               RadioListTile<String>(
                 value: 'csv',
-                title: const Text('นำเข้า CSV'),
-                subtitle: const Text('จะรองรับขั้นถัดไป'),
+                title: Text(l10n.setupWizardImportCsv),
+                subtitle: Text(l10n.setupWizardImportCsvHint),
               ),
               RadioListTile<String>(
                 value: 'later',
-                title: const Text('เพิ่มทีหลัง'),
+                title: Text(l10n.setupWizardAddLater),
               ),
             ],
           ),
@@ -568,27 +621,57 @@ class _CreateStaffStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
-            TextField(controller: usernameCtrl, decoration: const InputDecoration(labelText: 'Username')),
+            TextField(
+              controller: usernameCtrl,
+              decoration: InputDecoration(labelText: l10n.setupWizardUsername),
+            ),
             SizedBox(height: 12.h),
-            TextField(controller: displayNameCtrl, decoration: const InputDecoration(labelText: 'ชื่อที่แสดง')),
+            TextField(
+              controller: displayNameCtrl,
+              decoration: InputDecoration(labelText: l10n.setupWizardDisplayName),
+            ),
             SizedBox(height: 12.h),
-            TextField(controller: passwordCtrl, obscureText: true, decoration: const InputDecoration(labelText: 'รหัสผ่าน (8+ ตัวอักษร)')),
+            TextField(
+              controller: passwordCtrl,
+              obscureText: true,
+              decoration: InputDecoration(labelText: l10n.setupWizardPassword),
+            ),
             SizedBox(height: 12.h),
-            TextField(controller: pinCtrl, decoration: const InputDecoration(labelText: 'PIN (ตัวเลือก)', hintText: '4-6 หลัก')),
+            TextField(
+              controller: pinCtrl,
+              decoration: InputDecoration(
+                labelText: l10n.setupWizardPinOptional,
+                hintText: l10n.setupWizardPinHint,
+              ),
+            ),
             SizedBox(height: 12.h),
             DropdownButtonFormField<String>(
               initialValue: role,
-              decoration: const InputDecoration(labelText: 'บทบาท'),
-              items: const [
-                DropdownMenuItem(value: 'cashier', child: Text('Cashier')),
-                DropdownMenuItem(value: 'waiter', child: Text('Waiter')),
-                DropdownMenuItem(value: 'kitchen', child: Text('Kitchen')),
-                DropdownMenuItem(value: 'manager', child: Text('Manager')),
+              decoration: InputDecoration(labelText: l10n.setupWizardRole),
+              items: [
+                DropdownMenuItem(
+                  value: 'cashier',
+                  child: Text(l10n.setupWizardRoleCashier),
+                ),
+                DropdownMenuItem(
+                  value: 'waiter',
+                  child: Text(l10n.setupWizardRoleWaiter),
+                ),
+                DropdownMenuItem(
+                  value: 'kitchen',
+                  child: Text(l10n.setupWizardRoleKitchen),
+                ),
+                DropdownMenuItem(
+                  value: 'manager',
+                  child: Text(l10n.setupWizardRoleManager),
+                ),
               ],
               onChanged: (v) {
                 if (v != null) onRoleChanged(v);

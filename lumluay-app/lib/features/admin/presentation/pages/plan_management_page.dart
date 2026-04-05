@@ -38,8 +38,8 @@ class PlanManagementPage extends ConsumerWidget {
                 child: ListTile(
                   title: Text(plan.name),
                   subtitle: Text(
-                    '฿${plan.monthlyPrice.toStringAsFixed(0)}/month'
-                    '${plan.yearlyPrice != null ? " · ฿${plan.yearlyPrice!.toStringAsFixed(0)}/year" : ""}',
+                    '₭${plan.monthlyPrice.toStringAsFixed(0)}/month'
+                    '${plan.yearlyPrice != null ? " · ₭${plan.yearlyPrice!.toStringAsFixed(0)}/year" : ""}',
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,

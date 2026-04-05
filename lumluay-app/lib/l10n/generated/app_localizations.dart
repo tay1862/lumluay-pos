@@ -172,6 +172,12 @@ abstract class AppLocalizations {
   /// **'Finish'**
   String get finish;
 
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
@@ -219,6 +225,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get settings;
+
+  /// No description provided for @setupWizardCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup wizard completed.'**
+  String get setupWizardCompleted;
+
+  /// No description provided for @setupWizardStoreNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a store name'**
+  String get setupWizardStoreNameRequired;
+
+  /// No description provided for @setupWizardSeedSampleDataFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not seed sample data'**
+  String get setupWizardSeedSampleDataFailed;
+
+  /// No description provided for @setupWizardStaffInfoIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the staff information (password must be at least 8 characters)'**
+  String get setupWizardStaffInfoIncomplete;
+
+  /// No description provided for @setupWizardStepStoreInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Store Information'**
+  String get setupWizardStepStoreInfo;
+
+  /// No description provided for @setupWizardStepCurrencyTax.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency and Tax'**
+  String get setupWizardStepCurrencyTax;
+
+  /// No description provided for @setupWizardStepPrinters.
+  ///
+  /// In en, this message translates to:
+  /// **'Printers'**
+  String get setupWizardStepPrinters;
+
+  /// No description provided for @setupWizardStepProductImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Products'**
+  String get setupWizardStepProductImport;
+
+  /// No description provided for @setupWizardStepCreateStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Staff'**
+  String get setupWizardStepCreateStaff;
+
+  /// No description provided for @setupWizardStepProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup Wizard • Step {currentStep}/{totalSteps}'**
+  String setupWizardStepProgress(int currentStep, int totalSteps);
+
+  /// No description provided for @setupWizardStoreName.
+  ///
+  /// In en, this message translates to:
+  /// **'Store Name'**
+  String get setupWizardStoreName;
+
+  /// No description provided for @setupWizardOwnerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner / Administrator'**
+  String get setupWizardOwnerName;
+
+  /// No description provided for @setupWizardPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get setupWizardPhone;
+
+  /// No description provided for @setupWizardAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get setupWizardAddress;
+
+  /// No description provided for @setupWizardTaxId.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax ID'**
+  String get setupWizardTaxId;
+
+  /// No description provided for @setupWizardDefaultCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Default Currency'**
+  String get setupWizardDefaultCurrency;
+
+  /// No description provided for @setupWizardVatRate.
+  ///
+  /// In en, this message translates to:
+  /// **'VAT'**
+  String get setupWizardVatRate;
+
+  /// No description provided for @setupWizardCurrencyThb.
+  ///
+  /// In en, this message translates to:
+  /// **'THB - Thai Baht'**
+  String get setupWizardCurrencyThb;
+
+  /// No description provided for @setupWizardCurrencyLak.
+  ///
+  /// In en, this message translates to:
+  /// **'LAK - Lao Kip'**
+  String get setupWizardCurrencyLak;
+
+  /// No description provided for @setupWizardCurrencyUsd.
+  ///
+  /// In en, this message translates to:
+  /// **'USD - US Dollar'**
+  String get setupWizardCurrencyUsd;
+
+  /// No description provided for @setupWizardPrinterHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one printer (optional)'**
+  String get setupWizardPrinterHint;
+
+  /// No description provided for @setupWizardAddPrinter.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Printer'**
+  String get setupWizardAddPrinter;
+
+  /// No description provided for @setupWizardPrinterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer Name'**
+  String get setupWizardPrinterName;
+
+  /// No description provided for @setupWizardPrinterType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get setupWizardPrinterType;
+
+  /// No description provided for @setupWizardUseSampleData.
+  ///
+  /// In en, this message translates to:
+  /// **'Use sample data (recommended)'**
+  String get setupWizardUseSampleData;
+
+  /// No description provided for @setupWizardUseSampleDataHint.
+  ///
+  /// In en, this message translates to:
+  /// **'5 categories, 20 sample products for restaurants'**
+  String get setupWizardUseSampleDataHint;
+
+  /// No description provided for @setupWizardImportCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Import CSV'**
+  String get setupWizardImportCsv;
+
+  /// No description provided for @setupWizardImportCsvHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Will be supported in the next step'**
+  String get setupWizardImportCsvHint;
+
+  /// No description provided for @setupWizardAddLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Add later'**
+  String get setupWizardAddLater;
+
+  /// No description provided for @setupWizardUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get setupWizardUsername;
+
+  /// No description provided for @setupWizardDisplayName.
+  ///
+  /// In en, this message translates to:
+  /// **'Display Name'**
+  String get setupWizardDisplayName;
+
+  /// No description provided for @setupWizardPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password (8+ characters)'**
+  String get setupWizardPassword;
+
+  /// No description provided for @setupWizardPinOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN (optional)'**
+  String get setupWizardPinOptional;
+
+  /// No description provided for @setupWizardPinHint.
+  ///
+  /// In en, this message translates to:
+  /// **'4-6 digits'**
+  String get setupWizardPinHint;
+
+  /// No description provided for @setupWizardRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get setupWizardRole;
+
+  /// No description provided for @setupWizardRoleCashier.
+  ///
+  /// In en, this message translates to:
+  /// **'Cashier'**
+  String get setupWizardRoleCashier;
+
+  /// No description provided for @setupWizardRoleWaiter.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiter'**
+  String get setupWizardRoleWaiter;
+
+  /// No description provided for @setupWizardRoleKitchen.
+  ///
+  /// In en, this message translates to:
+  /// **'Kitchen'**
+  String get setupWizardRoleKitchen;
+
+  /// No description provided for @setupWizardRoleManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Manager'**
+  String get setupWizardRoleManager;
 }
 
 class _AppLocalizationsDelegate

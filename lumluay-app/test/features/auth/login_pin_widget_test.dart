@@ -87,12 +87,12 @@ void main() {
       ),
     );
 
-    await tester.tap(find.text('เข้าสู่ระบบ'));
+    await tester.tap(find.text('ເຂົ້າສູ່ລະບົບ'));
     await tester.pump();
 
-    expect(find.text('กรุณากรอกรหัสร้านค้า'), findsOneWidget);
-    expect(find.text('กรุณากรอกชื่อผู้ใช้'), findsOneWidget);
-    expect(find.text('กรุณากรอกรหัสผ่าน'), findsOneWidget);
+    expect(find.text('ກະລຸນາປ້ອນລະຫັດຮ້ານຄ້າ'), findsOneWidget);
+    expect(find.text('ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້'), findsOneWidget);
+    expect(find.text('ກະລຸນາປ້ອນລະຫັດຜ່ານ'), findsOneWidget);
   });
 
   testWidgets('PinLockPage renders pin prompt', (tester) async {
@@ -108,7 +108,7 @@ void main() {
       ),
     );
 
-    expect(find.text('กรุณาใส่ PIN'), findsOneWidget);
+    expect(find.text('ກະລຸນາໃສ່ PIN'), findsOneWidget);
     expect(find.text('1'), findsOneWidget);
     expect(find.byIcon(Icons.backspace_outlined), findsOneWidget);
   });

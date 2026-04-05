@@ -73,11 +73,11 @@ class ModifierGroupManagementPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('กลุ่มตัวเลือกสินค้า'),
+        title: const Text('ກຸ່ມຕົວເລືອກສິນຄ້າ'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            tooltip: 'เพิ่มกลุ่มตัวเลือก',
+            tooltip: 'ເພີ່ມກຸ່ມຕົວເລືອກ',
             onPressed: () => _showGroupDialog(context, ref, null),
           ),
         ],
@@ -90,11 +90,11 @@ class ModifierGroupManagementPage extends ConsumerWidget {
             children: [
               Icon(Icons.error_outline, size: 48.sp),
               SizedBox(height: 8.h),
-              Text('เกิดข้อผิดพลาด: $e'),
+              Text('ເກີດຂໍ້ຜິດພາດ: $e'),
               SizedBox(height: 8.h),
               FilledButton.tonal(
                 onPressed: () => ref.invalidate(modifierGroupsListProvider),
-                child: const Text('ลองใหม่'),
+                child: const Text('ລອງໃໝ່'),
               ),
             ],
           ),
@@ -109,14 +109,14 @@ class ModifierGroupManagementPage extends ConsumerWidget {
                       size: 64.sp,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.3)),
                   SizedBox(height: 12.h),
-                  Text('ยังไม่มีกลุ่มตัวเลือก',
+                  Text('ຍັງບໍ່ມີກຸ່ມຕົວເລືອກ',
                       style: theme.textTheme.titleMedium),
                   SizedBox(height: 4.h),
-                  const Text('เช่น ระดับความเผ็ด, ขนาดถ้วย, ท็อปปิ้ง'),
+                  const Text('ເຊັ່ນ ລະດັບຄວາມເຜັດ, ຂະໜາດຈອກ, ທ໇ອບປິ້ງ'),
                   SizedBox(height: 16.h),
                   FilledButton.icon(
                     icon: const Icon(Icons.add),
-                    label: const Text('เพิ่มกลุ่มตัวเลือก'),
+                    label: const Text('ເພີ່ມກຸ່ມຕົວເລືອກ'),
                     onPressed: () => _showGroupDialog(context, ref, null),
                   ),
                 ],
@@ -162,7 +162,7 @@ class ModifierGroupManagementPage extends ConsumerWidget {
       builder: (_) => StatefulBuilder(
         builder: (ctx, setDialogState) => AlertDialog(
           title: Text(
-              existing == null ? 'เพิ่มกลุ่มตัวเลือก' : 'แก้ไขกลุ่มตัวเลือก'),
+              existing == null ? 'ເພີ່ມກຸ່ມຕົວເລືອກ' : 'ແກ້ໄຂກຸ່ມຕົວເລືອກ'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -172,21 +172,21 @@ class ModifierGroupManagementPage extends ConsumerWidget {
                   controller: nameCtrl,
                   autofocus: true,
                   decoration: const InputDecoration(
-                    labelText: 'ชื่อกลุ่มตัวเลือก',
-                    hintText: 'เช่น ระดับความเผ็ด',
+                    labelText: 'ຊື່ກຸ່ມຕົວເລືອກ',
+                    hintText: 'ເຊັ່ນ ລະດັບຄວາມເຜັດ',
                     border: OutlineInputBorder(),
                   ),
                 ),
                 SizedBox(height: 12.h),
                 SwitchListTile(
-                  title: const Text('บังคับเลือก'),
-                  subtitle: const Text('ลูกค้าต้องเลือกก่อนสั่ง'),
+                  title: const Text('ບັງຄັບເລືອກ'),
+                  subtitle: const Text('ລູກຄ້າຕ້ອງເລືອກກ່ອນສັ່ງ'),
                   value: isRequired,
                   onChanged: (v) => setDialogState(() => isRequired = v),
                   contentPadding: EdgeInsets.zero,
                 ),
                 SwitchListTile(
-                  title: const Text('เลือกได้หลายอย่าง'),
+                  title: const Text('ເລືອກໄດ້ຫຼາຍຢ່າງ'),
                   value: isMultiple,
                   onChanged: (v) => setDialogState(() => isMultiple = v),
                   contentPadding: EdgeInsets.zero,
@@ -199,7 +199,7 @@ class ModifierGroupManagementPage extends ConsumerWidget {
                           controller: minCtrl,
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
-                            labelText: 'เลือกขั้นต่ำ',
+                            labelText: 'ເລືອກຂັ້ນຕ່ຳ',
                             border: OutlineInputBorder(),
                           ),
                         ),
@@ -210,7 +210,7 @@ class ModifierGroupManagementPage extends ConsumerWidget {
                           controller: maxCtrl,
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
-                            labelText: 'เลือกสูงสุด',
+                            labelText: 'ເລືອກສູງສຸດ',
                             border: OutlineInputBorder(),
                           ),
                         ),
@@ -224,7 +224,7 @@ class ModifierGroupManagementPage extends ConsumerWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('ยกเลิก'),
+              child: const Text('ຍົກເລີກ'),
             ),
             FilledButton(
               onPressed: () async {
@@ -251,12 +251,12 @@ class ModifierGroupManagementPage extends ConsumerWidget {
                 } catch (e) {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+                      SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
                     );
                   }
                 }
               },
-              child: const Text('บันทึก'),
+              child: const Text('ບັນທຶກ'),
             ),
           ],
         ),
@@ -280,7 +280,7 @@ class ModifierGroupManagementPage extends ConsumerWidget {
       builder: (_) => StatefulBuilder(
         builder: (ctx, setDialogState) => AlertDialog(
           title:
-              Text(existing == null ? 'เพิ่มตัวเลือก' : 'แก้ไขตัวเลือก'),
+              Text(existing == null ? 'ເພີ່ມຕົວເລືອກ' : 'ແກ້ໄຂຕົວເລືອກ'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -288,8 +288,8 @@ class ModifierGroupManagementPage extends ConsumerWidget {
                 controller: nameCtrl,
                 autofocus: true,
                 decoration: const InputDecoration(
-                  labelText: 'ชื่อตัวเลือก',
-                  hintText: 'เช่น เผ็ดน้อย',
+                  labelText: 'ຊື່ຕົວເລືອກ',
+                  hintText: 'ເຊັ່ນ ເຜັດໜ້ອຍ',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -299,15 +299,15 @@ class ModifierGroupManagementPage extends ConsumerWidget {
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 decoration: const InputDecoration(
-                  labelText: 'บวกราคา (บาท)',
+                  labelText: 'ບວກລາຄາ (ກີບ)',
                   hintText: '0',
                   border: OutlineInputBorder(),
-                  prefixText: '+ ฿',
+                  prefixText: '+ ₭',
                 ),
               ),
               SizedBox(height: 4.h),
               SwitchListTile(
-                title: const Text('ตัวเลือกเริ่มต้น'),
+                title: const Text('ຕົວເລືອກເລີ່ມຕົ້ນ'),
                 value: isDefault,
                 onChanged: (v) => setDialogState(() => isDefault = v),
                 contentPadding: EdgeInsets.zero,
@@ -317,7 +317,7 @@ class ModifierGroupManagementPage extends ConsumerWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('ยกเลิก'),
+              child: const Text('ຍົກເລີກ'),
             ),
             FilledButton(
               onPressed: () async {
@@ -341,12 +341,12 @@ class ModifierGroupManagementPage extends ConsumerWidget {
                 } catch (e) {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+                      SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
                     );
                   }
                 }
               },
-              child: const Text('บันทึก'),
+              child: const Text('ບັນທຶກ'),
             ),
           ],
         ),
@@ -361,20 +361,20 @@ class ModifierGroupManagementPage extends ConsumerWidget {
     showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('ลบกลุ่มตัวเลือก'),
+        title: const Text('ລົບກຸ່ມຕົວເລືອກ'),
         content: Text(
-            'ต้องการลบกลุ่มตัวเลือก "${group.name}" และตัวเลือกทั้งหมดใช่ไหม?'),
+            'ຕ້ອງການລົບກຸ່ມຕົວເລືອກ "${group.name}" ແລະຕົວເລືອກທັງໝົດແມ່ນບໍ?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('ยกเลิก'),
+            child: const Text('ຍົກເລີກ'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: const Text('ลบ'),
+            child: const Text('ລົບ'),
           ),
         ],
       ),
@@ -386,7 +386,7 @@ class ModifierGroupManagementPage extends ConsumerWidget {
       } catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+            SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
           );
         }
       }
@@ -398,19 +398,19 @@ class ModifierGroupManagementPage extends ConsumerWidget {
     showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('ลบตัวเลือก'),
-        content: Text('ต้องการลบตัวเลือก "${option.name}" ใช่ไหม?'),
+        title: const Text('ລົບຕົວເລືອກ'),
+        content: Text('ຕ້ອງການລົບຕົວເລືອກ "${option.name}" ແມ່ນບໍ?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('ยกเลิก'),
+            child: const Text('ຍົກເລີກ'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: const Text('ลบ'),
+            child: const Text('ລົບ'),
           ),
         ],
       ),
@@ -424,7 +424,7 @@ class ModifierGroupManagementPage extends ConsumerWidget {
       } catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+            SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
           );
         }
       }
@@ -471,26 +471,26 @@ class _ModifierGroupCard extends StatelessWidget {
               children: [
                 if (group.isRequired)
                   _Badge(
-                    label: 'บังคับ',
+                    label: 'ບັງຄັບ',
                     color: theme.colorScheme.error,
                   ),
                 if (group.isRequired && group.isMultiple)
                   SizedBox(width: 4.w),
                 if (group.isMultiple)
                   _Badge(
-                    label: 'หลายรายการ',
+                    label: 'ຫຼາຍລາຍການ',
                     color: theme.colorScheme.secondary,
                   ),
               ],
             ),
             trailing: PopupMenuButton<String>(
               itemBuilder: (_) => [
-                const PopupMenuItem(value: 'edit', child: Text('แก้ไขกลุ่ม')),
+                const PopupMenuItem(value: 'edit', child: Text('ແກ້ໄຂກຸ່ມ')),
                 const PopupMenuItem(
-                    value: 'add', child: Text('เพิ่มตัวเลือก')),
+                    value: 'add', child: Text('ເພີ່ມຕົວເລືອກ')),
                 PopupMenuItem(
                   value: 'delete',
-                  child: Text('ลบกลุ่ม',
+                  child: Text('ລົບກຸ່ມ',
                       style: TextStyle(color: theme.colorScheme.error)),
                 ),
               ],
@@ -512,7 +512,7 @@ class _ModifierGroupCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 12.h),
               child: Text(
-                'ยังไม่มีตัวเลือก — แตะ "เพิ่มตัวเลือก" เพื่อเพิ่ม',
+                'ຍັງບໍ່ມີຕົວເລືອກ — ແຕະ "ເພີ່ມຕົວເລືອກ" ເພື່ອເພີ່ມ',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
@@ -533,7 +533,7 @@ class _ModifierGroupCard extends StatelessWidget {
                         color: theme.colorScheme.onSurface.withValues(alpha: 0.4)),
                 title: Text(opt.name),
                 subtitle: opt.priceAdjustment > 0
-                    ? Text('+฿${opt.priceAdjustment.toStringAsFixed(2)}')
+                    ? Text('+₭${opt.priceAdjustment.toStringAsFixed(2)}')
                     : null,
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -560,7 +560,7 @@ class _ModifierGroupCard extends StatelessWidget {
             child: TextButton.icon(
               onPressed: onAddOption,
               icon: Icon(Icons.add, size: 16.sp),
-              label: const Text('เพิ่มตัวเลือก'),
+              label: const Text('ເພີ່ມຕົວເລືອກ'),
             ),
           ),
         ],

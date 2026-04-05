@@ -23,18 +23,18 @@ class _CategoryManagementPageState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('จัดการหมวดหมู่'),
+        title: const Text('ຈັດການໝວດໝູ່'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            tooltip: 'เพิ่มหมวดหมู่',
+            tooltip: 'ເພີ່ມໝວດໝູ່',
             onPressed: () => _showCategoryDialog(context, null),
           ),
         ],
       ),
       body: categoriesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('เกิดข้อผิดพลาด: $e')),
+        error: (e, _) => Center(child: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
         data: (categories) {
           _localList ??= List.from(categories);
           final list = _localList!;
@@ -48,10 +48,10 @@ class _CategoryManagementPageState
                       size: 64.sp,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.3)),
                   SizedBox(height: 12.h),
-                  Text('ยังไม่มีหมวดหมู่',
+                  Text('ຍັງບໍ່ມີໝວດໝູ່',
                       style: theme.textTheme.titleMedium),
                   SizedBox(height: 4.h),
-                  Text('แตะ + เพื่อเพิ่มหมวดหมู่',
+                  Text('ແຕະ + ເພື່ອເພີ່ມໝວດໝູ່',
                       style: theme.textTheme.bodySmall),
                 ],
               ),
@@ -73,7 +73,7 @@ class _CategoryManagementPageState
                         color: theme.colorScheme.primary),
                     SizedBox(width: 8.w),
                     Text(
-                      'ลากเพื่อเปลี่ยนลำดับ',
+                      'ລາກເພື່ອປ່ຽນລຳດັບ',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.primary,
                       ),
@@ -121,7 +121,7 @@ class _CategoryManagementPageState
                           ],
                         ),
                         title: Text(cat.name),
-                        subtitle: Text('ลำดับ: ${cat.sortOrder}'),
+                        subtitle: Text('ລຳດັບ: ${cat.sortOrder}'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -165,7 +165,7 @@ class _CategoryManagementPageState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('เกิดข้อผิดพลาดในการบันทึกลำดับ: $e')),
+          SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດໃນການບັນທຶກລຳດັບ: $e')),
         );
       }
     } finally {
@@ -181,19 +181,19 @@ class _CategoryManagementPageState
       context: context,
       builder: (_) => AlertDialog(
         title:
-            Text(existing == null ? 'เพิ่มหมวดหมู่' : 'แก้ไขหมวดหมู่'),
+            Text(existing == null ? 'ເພີ່ມໝວດໝູ່' : 'ແກ້ໄຂໝວດໝູ່'),
         content: TextField(
           controller: nameCtrl,
           autofocus: true,
           decoration: const InputDecoration(
-            labelText: 'ชื่อหมวดหมู่',
+            labelText: 'ຊື່ໝວດໝູ່',
             border: OutlineInputBorder(),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ยกเลิก'),
+            child: const Text('ຍົກເລີກ'),
           ),
           FilledButton(
             onPressed: () async {
@@ -202,7 +202,7 @@ class _CategoryManagementPageState
               Navigator.pop(context);
               await _saveCategory(existing, name);
             },
-            child: const Text('บันทึก'),
+            child: const Text('ບັນທຶກ'),
           ),
         ],
       ),
@@ -223,7 +223,7 @@ class _CategoryManagementPageState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+          SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
         );
       }
     }
@@ -233,20 +233,20 @@ class _CategoryManagementPageState
     showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('ลบหมวดหมู่'),
+        title: const Text('ລົບໝວດໝູ່'),
         content: Text(
-            'ต้องการลบหมวดหมู่ "${cat.name}" ใช่ไหม?\n\nสินค้าในหมวดหมู่นี้จะยังคงอยู่ แต่ไม่มีหมวดหมู่'),
+            'ຕ້ອງການລົບໝວດໝູ່ "${cat.name}" ແມ່ນບໍ?\n\nສິນຄ້າໃນໝວດໝູ່ນີ້ຈະຍັງຄົງຢູ່ ແຕ່ບໍ່ມີໝວດໝູ່'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('ยกเลิก'),
+            child: const Text('ຍົກເລີກ'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: const Text('ลบ'),
+            child: const Text('ລົບ'),
           ),
         ],
       ),
@@ -259,7 +259,7 @@ class _CategoryManagementPageState
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(this.context).showSnackBar(
-            SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+            SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
           );
         }
       }

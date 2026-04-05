@@ -15,11 +15,11 @@ class ShiftsPage extends ConsumerWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('กะการทำงาน'),
+          title: const Text('ກະການເຮັດວຽກ'),
           bottom: const TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.timer_outlined), text: 'กะปัจจุบัน'),
-              Tab(icon: Icon(Icons.history), text: 'ประวัติกะ'),
+              Tab(icon: Icon(Icons.timer_outlined), text: 'ກະປັດຈຸບັນ'),
+              Tab(icon: Icon(Icons.history), text: 'ປະຫວັດກະ'),
             ],
           ),
         ),
@@ -71,7 +71,7 @@ class _OpenShiftPanelState extends ConsumerState<_OpenShiftPanel> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('เกิดข้อผิดพลาด: $e')));
+            .showSnackBar(SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -92,13 +92,13 @@ class _OpenShiftPanelState extends ConsumerState<_OpenShiftPanel> {
                   size: 56.sp, color: Colors.green),
               SizedBox(height: 16.h),
               Text(
-                'ยังไม่ได้เปิดกะ',
+                'ຍັງບໍ່ໄດ້ເປີດກະ',
                 style: TextStyle(
                     fontSize: 18.sp, fontWeight: FontWeight.w700),
               ),
               SizedBox(height: 8.h),
               Text(
-                'กรอกยอดเงินเปิดกะ แล้วกดเปิดกะ',
+                'ປ້ອນຍອດເງິນເປີດກະ ແລ້ວກົດເປີດກະ',
                 style: TextStyle(
                     fontSize: 13.sp, color: Colors.black54),
               ),
@@ -108,9 +108,9 @@ class _OpenShiftPanelState extends ConsumerState<_OpenShiftPanel> {
                 keyboardType: const TextInputType.numberWithOptions(
                     decimal: true),
                 decoration: const InputDecoration(
-                  labelText: 'ยอดเงินเปิดกะ (บาท)',
+                  labelText: 'ຍອດເງິນເປີດກະ (ກີບ)',
                   prefixIcon: Icon(Icons.payments_outlined),
-                  prefixText: '฿ ',
+                  prefixText: '₭ ',
                 ),
                 textAlign: TextAlign.right,
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700),
@@ -120,7 +120,7 @@ class _OpenShiftPanelState extends ConsumerState<_OpenShiftPanel> {
                 width: double.infinity,
                 child: FilledButton.icon(
                   icon: const Icon(Icons.play_arrow),
-                  label: const Text('เปิดกะ'),
+                  label: const Text('ເປີດກະ'),
                   onPressed: _loading ? null : _openShift,
                   style: FilledButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -163,17 +163,17 @@ class _ActiveShiftPanelState extends ConsumerState<_ActiveShiftPanel> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('ปิดกะ'),
+        title: const Text('ປິດກະ'),
         content: Text(
-            'ยืนยันปิดกะด้วยยอดเงิน ฿${NumberFormat('#,##0.00').format(cash)}?'),
+            'ຢືນຢັນປິດກະດ້ວຍຍອດເງິນ ₭${NumberFormat('#,##0.00').format(cash)}?'),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('ยกเลิก')),
+              child: const Text('ຍົກເລີກ')),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('ปิดกะ'),
+            child: const Text('ປິດກະ'),
           ),
         ],
       ),
@@ -188,7 +188,7 @@ class _ActiveShiftPanelState extends ConsumerState<_ActiveShiftPanel> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('เกิดข้อผิดพลาด: $e')));
+            .showSnackBar(SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -223,13 +223,13 @@ class _ActiveShiftPanelState extends ConsumerState<_ActiveShiftPanel> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('กะเปิดอยู่',
+                      Text('ກະເປີດຢູ່',
                           style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w700,
                               color: Colors.green[800])),
                       Text(
-                          'เริ่ม ${durFmt.format(shift.openedAt)} · ผ่านมา $hours ชม. $minutes น.',
+                          'ເລີ່ມ ${durFmt.format(shift.openedAt)} · ຜ່ານມາ $hours ຊມ. $minutes ນ.',
                           style: TextStyle(
                               fontSize: 12.sp,
                               color: Colors.green[700])),
@@ -247,21 +247,21 @@ class _ActiveShiftPanelState extends ConsumerState<_ActiveShiftPanel> {
           children: [
             Expanded(
                 child: _ShiftStatCard(
-                    label: 'เงินเปิดกะ',
-                    value: '฿${fmt.format(shift.openingCash)}',
+                    label: 'ເງິນເປີດກະ',
+                    value: '₭${fmt.format(shift.openingCash)}',
                     icon: Icons.account_balance_wallet_outlined)),
             SizedBox(width: 8.w),
             Expanded(
                 child: _ShiftStatCard(
-                    label: 'ยอดขาย',
+                    label: 'ຍອດຂາຍ',
                     value: shift.totalSales != null
-                        ? '฿${fmt.format(shift.totalSales!)}'
+                        ? '₭${fmt.format(shift.totalSales!)}'
                         : '-',
                     icon: Icons.trending_up)),
             SizedBox(width: 8.w),
             Expanded(
                 child: _ShiftStatCard(
-                    label: 'ออเดอร์',
+                    label: 'ອໍເດີ',
                     value: shift.totalOrders != null
                         ? '${shift.totalOrders}'
                         : '-',
@@ -271,7 +271,7 @@ class _ActiveShiftPanelState extends ConsumerState<_ActiveShiftPanel> {
         SizedBox(height: 24.h),
 
         // Close shift
-        Text('ปิดกะ',
+        Text('ປິດກະ',
             style: TextStyle(
                 fontSize: 15.sp, fontWeight: FontWeight.w700)),
         SizedBox(height: 8.h),
@@ -280,9 +280,9 @@ class _ActiveShiftPanelState extends ConsumerState<_ActiveShiftPanel> {
           keyboardType:
               const TextInputType.numberWithOptions(decimal: true),
           decoration: const InputDecoration(
-            labelText: 'ยอดเงินนับได้ (บาท)',
+            labelText: 'ຍອດເງິນນັບໄດ້ (ກີບ)',
             prefixIcon: Icon(Icons.payments_outlined),
-            prefixText: '฿ ',
+            prefixText: '₭ ',
           ),
           textAlign: TextAlign.right,
           style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
@@ -292,7 +292,7 @@ class _ActiveShiftPanelState extends ConsumerState<_ActiveShiftPanel> {
           width: double.infinity,
           child: FilledButton.icon(
             icon: const Icon(Icons.lock_outlined),
-            label: const Text('ปิดกะ'),
+            label: const Text('ປິດກະ'),
             onPressed: _loading ? null : _closeShift,
             style: FilledButton.styleFrom(
                 backgroundColor: Colors.red,
@@ -345,7 +345,7 @@ class _ShiftHistoryTab extends ConsumerWidget {
       data: (shifts) {
         if (shifts.isEmpty) {
           return const Center(
-              child: Text('ไม่มีประวัติกะ',
+              child: Text('ບໍ່ມີປະຫວັດກະ',
                   style: TextStyle(color: Colors.black54)));
         }
         final fmt = NumberFormat('#,##0.00');
@@ -373,7 +373,7 @@ class _ShiftHistoryTab extends ConsumerWidget {
                 style: TextStyle(fontSize: 12.sp),
               ),
               subtitle: Text(
-                '${s.openedByName} · เงินเปิด ฿${fmt.format(s.openingCash)}',
+                '${s.openedByName} · ເງິນເປີດ ₭${fmt.format(s.openingCash)}',
                 style: TextStyle(fontSize: 11.sp, color: Colors.black54),
               ),
               trailing: s.totalSales != null
@@ -381,11 +381,11 @@ class _ShiftHistoryTab extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text('฿${fmt.format(s.totalSales!)}',
+                        Text('₭${fmt.format(s.totalSales!)}',
                             style: TextStyle(
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.w700)),
-                        Text('${s.totalOrders ?? 0} ออเดอร์',
+                        Text('${s.totalOrders ?? 0} ອໍເດີ',
                             style: TextStyle(
                                 fontSize: 10.sp, color: Colors.black45)),
                       ],

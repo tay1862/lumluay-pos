@@ -16,11 +16,11 @@ class CouponsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('คูปอง'),
+        title: const Text('ຄູປອງ'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            tooltip: 'เพิ่มคูปอง',
+            tooltip: 'ເພີ່ມຄູປອງ',
             onPressed: () => context.push('/coupons/new'),
           ),
         ],
@@ -30,9 +30,9 @@ class CouponsPage extends ConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             child: SegmentedButton<bool?>(
               segments: const [
-                ButtonSegment(value: null, label: Text('ทั้งหมด')),
-                ButtonSegment(value: true, label: Text('ใช้งาน')),
-                ButtonSegment(value: false, label: Text('หมดอายุ')),
+                ButtonSegment(value: null, label: Text('ທັງໝົດ')),
+                ButtonSegment(value: true, label: Text('ໃຊ້ງານ')),
+                ButtonSegment(value: false, label: Text('ໝົດອາຍຸ')),
               ],
               selected: {filter},
               onSelectionChanged: (s) =>
@@ -59,7 +59,7 @@ class CouponsPage extends ConsumerWidget {
                   Icon(Icons.confirmation_number_outlined,
                       size: 56.sp, color: Colors.black26),
                   SizedBox(height: 12.h),
-                  const Text('ยังไม่มีคูปอง',
+                  const Text('ຍັງບໍ່ມີຄູປອງ',
                       style: TextStyle(color: Colors.black54)),
                 ],
               ),
@@ -94,16 +94,16 @@ class CouponsPage extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('ลบคูปอง'),
-        content: Text('ต้องการลบคูปอง "${coupon.code}" ใช่หรือไม่?'),
+        title: const Text('ລົບຄູປອງ'),
+        content: Text('ຕ້ອງການລົບຄູປອງ "${coupon.code}" ໃຊ່ຫຼືບໍ່?'),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('ยกเลิก')),
+              child: const Text('ຍົກເລີກ')),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('ลบ'),
+            child: const Text('ລົບ'),
           ),
         ],
       ),
@@ -117,7 +117,7 @@ class CouponsPage extends ConsumerWidget {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('ลบไม่สำเร็จ: $e')));
+            .showSnackBar(SnackBar(content: Text('ລົບບໍ່ສຳເລັດ: $e')));
       }
     }
   }
@@ -166,7 +166,7 @@ class _CouponTile extends StatelessWidget {
               Clipboard.setData(ClipboardData(text: coupon.code));
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                    content: Text('คัดลอกรหัสคูปองแล้ว'),
+                    content: Text('ຄັດລອກລະຫັດຄູປອງແລ້ວ'),
                     duration: Duration(seconds: 1)),
               );
             },
@@ -184,7 +184,7 @@ class _CouponTile extends StatelessWidget {
               _Chip(
                 label: coupon.type == CouponType.percent
                     ? '${fmt.format(coupon.value)}%'
-                    : '฿${fmt.format(coupon.value)}',
+                    : '₭${fmt.format(coupon.value)}',
                 color: theme.colorScheme.secondaryContainer,
               ),
               SizedBox(width: 4.w),
@@ -205,8 +205,8 @@ class _CouponTile extends StatelessWidget {
             SizedBox(height: 2.h),
             Text(
               coupon.isExpired
-                  ? 'หมดอายุ ${DateFormat('dd/MM/yy').format(coupon.expiresAt!)}'
-                  : 'หมดอายุ ${DateFormat('dd/MM/yy').format(coupon.expiresAt!)}',
+                  ? 'ໝົດອາຍຸ ${DateFormat('dd/MM/yy').format(coupon.expiresAt!)}'
+                  : 'ໝົດອາຍຸ ${DateFormat('dd/MM/yy').format(coupon.expiresAt!)}',
               style: TextStyle(
                   fontSize: 11.sp,
                   color: coupon.isExpired ? Colors.red : Colors.black54),
@@ -220,10 +220,10 @@ class _CouponTile extends StatelessWidget {
           if (v == 'delete') onDelete();
         },
         itemBuilder: (_) => const [
-          PopupMenuItem(value: 'edit', child: Text('แก้ไข')),
+          PopupMenuItem(value: 'edit', child: Text('ແກ້ໄຂ')),
           PopupMenuItem(
               value: 'delete',
-              child: Text('ลบ', style: TextStyle(color: Colors.red))),
+              child: Text('ລົບ', style: TextStyle(color: Colors.red))),
         ],
       ),
       isThreeLine: true,

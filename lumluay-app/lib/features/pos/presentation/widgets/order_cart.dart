@@ -15,7 +15,7 @@ class OrderCart extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currencyCode = ref.watch(currencyCodeProvider).maybeWhen(
       data: (c) => c,
-      orElse: () => 'THB',
+      orElse: () => 'LAK',
     );
     String fmt(double v) => CurrencyText.format(v, currency: currencyCode);
 
@@ -38,7 +38,7 @@ class OrderCart extends ConsumerWidget {
                 const Icon(Icons.receipt_long, color: Colors.white, size: 18),
                 SizedBox(width: 8.w),
                 Text(
-                  'รายการสั่ง',
+                  'ລາຍການສັ່ງ',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15.sp,
@@ -50,7 +50,7 @@ class OrderCart extends ConsumerWidget {
                   TextButton(
                     onPressed: () =>
                         ref.read(cartProvider.notifier).clear(),
-                    child: Text('ล้าง',
+                    child: Text('ລ້າງ',
                         style:
                             TextStyle(color: Colors.white70, fontSize: 12.sp)),
                   ),
@@ -94,7 +94,7 @@ class OrderCart extends ConsumerWidget {
                         Icon(Icons.shopping_cart_outlined,
                             size: 48.sp, color: Colors.grey[300]),
                         SizedBox(height: 8.h),
-                        Text('ยังไม่มีรายการ',
+                        Text('ຍັງບໍ່ມີລາຍການ',
                             style: TextStyle(
                                 color: Colors.grey[400], fontSize: 14.sp)),
                       ],
@@ -124,17 +124,17 @@ class OrderCart extends ConsumerWidget {
             child: Column(
               children: [
                 _TotalRow(
-                    label: 'รวมก่อนส่วนลด',
+                    label: 'ລວມກ່ອນສ່ວນຫຼຸດ',
                     value: fmt(cart.subtotal)),
                 if (cart.discountAmount > 0)
                   _TotalRow(
-                    label: 'ส่วนลด',
+                    label: 'ສ່ວນຫຼຸດ',
                     value: '-${fmt(cart.discountAmount)}',
                     valueColor: Colors.red,
                   ),
                 const Divider(height: 12),
                 _TotalRow(
-                  label: 'ยอดรวม',
+                  label: 'ຍອດລວມ',
                   value: fmt(cart.total),
                   isTotal: true,
                 ),
@@ -145,7 +145,7 @@ class OrderCart extends ConsumerWidget {
                     onPressed: cart.isEmpty ? null : onCheckout,
                     icon: const Icon(Icons.payment),
                     label: Text(
-                        'ชำระเงิน (${cart.itemCount} รายการ)',
+                        'ຊຳລະເງິນ (${cart.itemCount} ລາຍການ)',
                         style: TextStyle(fontSize: 15.sp)),
                   ),
                 ),
@@ -271,7 +271,7 @@ class _MemberRow extends ConsumerWidget {
             SizedBox(width: 8.w),
             Expanded(
               child: Text(
-                hasMember ? (cart.memberName ?? cart.memberId!) : 'เพิ่มสมาชิก',
+                hasMember ? (cart.memberName ?? cart.memberId!) : 'ເພີ່ມສະມາຊິກ',
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: hasMember ? Colors.green[800] : Colors.black38,

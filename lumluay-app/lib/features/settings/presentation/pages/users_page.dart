@@ -14,16 +14,16 @@ class UsersPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F7),
-      appBar: AppBar(title: const Text('จัดการผู้ใช้')),
+      appBar: AppBar(title: const Text('ຈັດການຜູ້ໃຊ້')),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showUserDialog(context, ref),
         icon: const Icon(Icons.person_add_outlined),
-        label: const Text('เพิ่มผู้ใช้'),
+        label: const Text('ເພີ່ມຜູ້ໃຊ້'),
         backgroundColor: AppColors.primary,
       ),
       body: usersAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('เกิดข้อผิดพลาด: $e')),
+        error: (e, _) => Center(child: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
         data: (users) {
           if (users.isEmpty) {
             return const Center(
@@ -32,7 +32,7 @@ class UsersPage extends ConsumerWidget {
                 children: [
                   Icon(Icons.people_outline, size: 64, color: Colors.black26),
                   SizedBox(height: 12),
-                  Text('ยังไม่มีผู้ใช้งาน',
+                  Text('ຍັງບໍ່ມີຜູ້ໃຊ້ງານ',
                       style: TextStyle(color: Colors.black45)),
                 ],
               ),
@@ -143,7 +143,7 @@ class _UserCard extends ConsumerWidget {
                           color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(6.r),
                         ),
-                        child: Text('ปิดใช้งาน',
+                        child: Text('ປິດໃຊ້ງານ',
                             style: TextStyle(
                                 fontSize: 9.sp,
                                 color: Colors.grey.shade600)),
@@ -168,7 +168,7 @@ class _UserCard extends ConsumerWidget {
                 child: Row(children: [
                   Icon(Icons.edit_outlined, size: 18),
                   SizedBox(width: 8),
-                  Text('แก้ไข'),
+                  Text('ແກ້ໄຂ'),
                 ]),
               ),
               const PopupMenuItem(
@@ -176,7 +176,7 @@ class _UserCard extends ConsumerWidget {
                 child: Row(children: [
                   Icon(Icons.pin_outlined, size: 18),
                   SizedBox(width: 8),
-                  Text('ตั้ง PIN'),
+                  Text('ຕັ້ງ PIN'),
                 ]),
               ),
               const PopupMenuItem(
@@ -184,7 +184,7 @@ class _UserCard extends ConsumerWidget {
                 child: Row(children: [
                   Icon(Icons.lock_outline, size: 18),
                   SizedBox(width: 8),
-                  Text('เปลี่ยนรหัสผ่าน'),
+                  Text('ປ່ຽນລະຫັດຜ່ານ'),
                 ]),
               ),
               PopupMenuItem(
@@ -196,7 +196,7 @@ class _UserCard extends ConsumerWidget {
                     color: user.isActive ? Colors.orange : Colors.green,
                   ),
                   const SizedBox(width: 8),
-                  Text(user.isActive ? 'ระงับการใช้งาน' : 'เปิดใช้งาน'),
+                  Text(user.isActive ? 'ລະງັບການໃຊ້ງານ' : 'ເປີດໃຊ້ງານ'),
                 ]),
               ),
               const PopupMenuItem(
@@ -204,7 +204,7 @@ class _UserCard extends ConsumerWidget {
                 child: Row(children: [
                   Icon(Icons.delete_outline, size: 18, color: Colors.red),
                   SizedBox(width: 8),
-                  Text('ลบผู้ใช้', style: TextStyle(color: Colors.red)),
+                  Text('ລົບຜູ້ໃຊ້', style: TextStyle(color: Colors.red)),
                 ]),
               ),
             ],
@@ -241,17 +241,17 @@ class _UserCard extends ConsumerWidget {
         final ok = await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: const Text('ยืนยันการลบ'),
-            content: Text('ต้องการลบผู้ใช้ "${user.displayName}" ?'),
+            title: const Text('ຢືນຢັນການລົບ'),
+            content: Text('ຕ້ອງການລົບຜູ້ໃຊ້ "${user.displayName}" ຫຼືບໍ?'),
             actions: [
               TextButton(
                   onPressed: () => Navigator.pop(ctx, false),
-                  child: const Text('ยกเลิก')),
+                  child: const Text('ຍົກເລີກ')),
               FilledButton(
                 style:
                     FilledButton.styleFrom(backgroundColor: Colors.red),
                 onPressed: () => Navigator.pop(ctx, true),
-                child: const Text('ลบ'),
+                child: const Text('ລົບ'),
               ),
             ],
           ),
@@ -283,15 +283,15 @@ class _UserCard extends ConsumerWidget {
   String _roleName(String role) {
     switch (role) {
       case 'owner':
-        return 'เจ้าของ';
+        return 'ເຈົ້າຂອງ';
       case 'manager':
-        return 'ผู้จัดการ';
+        return 'ຜູ້ຈັດການ';
       case 'cashier':
-        return 'แคชเชียร์';
+        return 'ແຄດເຊຍ';
       case 'waiter':
-        return 'พนักงาน';
+        return 'ພະນັກງານ';
       case 'kitchen':
-        return 'ครัว';
+        return 'ຄົວ';
       default:
         return role;
     }
@@ -371,7 +371,7 @@ class _UserFormDialogState extends ConsumerState<_UserFormDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(_isEdit ? 'แก้ไขผู้ใช้' : 'เพิ่มผู้ใช้ใหม่'),
+      title: Text(_isEdit ? 'ແກ້ໄຂຜູ້ໃຊ້' : 'ເພີ່ມຜູ້ໃຊ້ໃໝ່'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -379,14 +379,14 @@ class _UserFormDialogState extends ConsumerState<_UserFormDialog> {
             TextField(
               controller: _displayNameCtrl,
               decoration: const InputDecoration(
-                  labelText: 'ชื่อแสดง *',
+                  labelText: 'ຊື່ສະແດງ *',
                   border: OutlineInputBorder()),
             ),
             SizedBox(height: 10.h),
             TextField(
               controller: _usernameCtrl,
               decoration: const InputDecoration(
-                  labelText: 'ชื่อผู้ใช้ *',
+                  labelText: 'ຊື່ຜູ້ໃຊ້ *',
                   border: OutlineInputBorder()),
               readOnly: _isEdit,
             ),
@@ -395,7 +395,7 @@ class _UserFormDialogState extends ConsumerState<_UserFormDialog> {
               TextField(
                 controller: _passwordCtrl,
                 decoration: const InputDecoration(
-                    labelText: 'รหัสผ่าน *',
+                    labelText: 'ລະຫັດຜ່ານ *',
                     border: OutlineInputBorder()),
                 obscureText: true,
               ),
@@ -404,23 +404,23 @@ class _UserFormDialogState extends ConsumerState<_UserFormDialog> {
             DropdownButtonFormField<String>(
               initialValue: _role,
               decoration: const InputDecoration(
-                  labelText: 'ตำแหน่ง',
+                  labelText: 'ຕຳແໜ່ງ',
                   border: OutlineInputBorder()),
               items: const [
-                DropdownMenuItem(value: 'owner', child: Text('เจ้าของ')),
+                DropdownMenuItem(value: 'owner', child: Text('ເຈົ້າຂອງ')),
                 DropdownMenuItem(
-                    value: 'manager', child: Text('ผู้จัดการ')),
+                    value: 'manager', child: Text('ຜູ້ຈັດການ')),
                 DropdownMenuItem(
-                    value: 'cashier', child: Text('แคชเชียร์')),
+                    value: 'cashier', child: Text('ແຄດເຊຍ')),
                 DropdownMenuItem(
-                    value: 'waiter', child: Text('พนักงาน')),
-                DropdownMenuItem(value: 'kitchen', child: Text('ครัว')),
+                    value: 'waiter', child: Text('ພະນັກງານ')),
+                DropdownMenuItem(value: 'kitchen', child: Text('ຄົວ')),
               ],
               onChanged: (v) => setState(() => _role = v ?? 'cashier'),
             ),
             SizedBox(height: 8.h),
             SwitchListTile.adaptive(
-              title: const Text('เปิดใช้งาน'),
+              title: const Text('ເປີດໃຊ້ງານ'),
               value: _isActive,
               onChanged: (v) => setState(() => _isActive = v),
               contentPadding: EdgeInsets.zero,
@@ -431,7 +431,7 @@ class _UserFormDialogState extends ConsumerState<_UserFormDialog> {
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ยกเลิก')),
+            child: const Text('ຍົກເລີກ')),
         FilledButton(
           onPressed: _loading ? null : _save,
           style:
@@ -441,7 +441,7 @@ class _UserFormDialogState extends ConsumerState<_UserFormDialog> {
                   dimension: 18,
                   child: CircularProgressIndicator(
                       color: Colors.white, strokeWidth: 2))
-              : const Text('บันทึก'),
+              : const Text('ບັນທຶກ'),
         ),
       ],
     );
@@ -478,7 +478,7 @@ class _SetPinDialogState extends ConsumerState<_SetPinDialog> {
       if (mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('ตั้ง PIN สำเร็จแล้ว')));
+            const SnackBar(content: Text('ຕັ້ງ PIN ສໍາເລັດແລ້ວ')));
       }
     } catch (e) {
       if (mounted) {
@@ -493,11 +493,11 @@ class _SetPinDialogState extends ConsumerState<_SetPinDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('ตั้ง PIN'),
+      title: const Text('ຕັ້ງ PIN'),
       content: TextField(
         controller: _pinCtrl,
         decoration: const InputDecoration(
-            labelText: 'PIN (4-6 หลัก)',
+            labelText: 'PIN (4-6 ຫຼັກ)',
             border: OutlineInputBorder()),
         obscureText: true,
         keyboardType: TextInputType.number,
@@ -506,11 +506,11 @@ class _SetPinDialogState extends ConsumerState<_SetPinDialog> {
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ยกเลิก')),
+            child: const Text('ຍົກເລີກ')),
         FilledButton(
           onPressed: _loading ? null : _save,
           style: FilledButton.styleFrom(backgroundColor: AppColors.primary),
-          child: const Text('บันทึก'),
+          child: const Text('ບັນທຶກ'),
         ),
       ],
     );
@@ -553,7 +553,7 @@ class _ChangePasswordDialogState
       if (mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('เปลี่ยนรหัสผ่านสำเร็จ')));
+            const SnackBar(content: Text('ປ່ຽນລະຫັດຜ່ານສໍາເລັດ')));
       }
     } catch (e) {
       if (mounted) {
@@ -568,14 +568,14 @@ class _ChangePasswordDialogState
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('เปลี่ยนรหัสผ่าน'),
+      title: const Text('ປ່ຽນລະຫັດຜ່ານ'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: _currentCtrl,
             decoration: const InputDecoration(
-                labelText: 'รหัสผ่านปัจจุบัน',
+                labelText: 'ລະຫັດຜ່ານປັດຈຸບັນ',
                 border: OutlineInputBorder()),
             obscureText: true,
           ),
@@ -583,7 +583,7 @@ class _ChangePasswordDialogState
           TextField(
             controller: _newCtrl,
             decoration: const InputDecoration(
-                labelText: 'รหัสผ่านใหม่ (อย่างน้อย 6 ตัว)',
+                labelText: 'ລະຫັດຜ່ານໃໝ່ (ຢ່າງນ້ອຍ 6 ຕົວ)',
                 border: OutlineInputBorder()),
             obscureText: true,
           ),
@@ -592,11 +592,11 @@ class _ChangePasswordDialogState
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ยกเลิก')),
+            child: const Text('ຍົກເລີກ')),
         FilledButton(
           onPressed: _loading ? null : _save,
           style: FilledButton.styleFrom(backgroundColor: AppColors.primary),
-          child: const Text('บันทึก'),
+          child: const Text('ບັນທຶກ'),
         ),
       ],
     );

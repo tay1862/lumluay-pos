@@ -18,7 +18,7 @@ void main() {
       ),
     );
 
-    expect(find.text('ไม่มีสินค้า'), findsOneWidget);
+    expect(find.text('ບໍ່ມີສິນຄ້າ'), findsOneWidget);
   });
 
   testWidgets('ProductGrid tap triggers add callback', (tester) async {

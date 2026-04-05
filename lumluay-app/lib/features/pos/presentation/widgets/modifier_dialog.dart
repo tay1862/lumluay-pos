@@ -174,7 +174,7 @@ class _ModifierDialogState extends ConsumerState<ModifierDialog> {
   void _confirm(List<ModifierGroup> groups) {
     if (!_validate(groups)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('กรุณาเลือกตัวเลือกที่จำเป็น')),
+        const SnackBar(content: Text('ກະລຸນາເລືອກຕົວເລືອກທີ່ຈຳເປັນ')),
       );
       return;
     }
@@ -274,7 +274,7 @@ class _ModifierDialogState extends ConsumerState<ModifierDialog> {
                             fontWeight: FontWeight.w800,
                             fontSize: 16.sp)),
                     Text(
-                      '฿ ${_fmt.format(widget.product.price)}',
+                      '₭ ${_fmt.format(widget.product.price)}',
                       style: TextStyle(
                           color: AppColors.primary, fontSize: 13.sp),
                     ),
@@ -330,7 +330,7 @@ class _ModifierDialogState extends ConsumerState<ModifierDialog> {
               TextField(
                 controller: _noteCtrl,
                 decoration: InputDecoration(
-                  labelText: 'หมายเหตุ (ไม่บังคับ)',
+                  labelText: 'ໝາຍເຫດ (ບໍ່ບັງຄັບ)',
                   prefixIcon: const Icon(Icons.notes_outlined),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.r)),
@@ -359,11 +359,11 @@ class _ModifierDialogState extends ConsumerState<ModifierDialog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('รวม',
+                    Text('ລວມ',
                         style: TextStyle(
                             fontSize: 11.sp, color: Colors.black45)),
                     Text(
-                      '฿ ${_fmt.format(total)}',
+                      '₭ ${_fmt.format(total)}',
                       style: TextStyle(
                           fontWeight: FontWeight.w800,
                           fontSize: 20.sp,
@@ -375,7 +375,7 @@ class _ModifierDialogState extends ConsumerState<ModifierDialog> {
               FilledButton.icon(
                 onPressed: () => _confirm(groups),
                 icon: const Icon(Icons.add_shopping_cart),
-                label: const Text('เพิ่มลงตะกร้า'),
+                label: const Text('ເພີ່ມລົງຕະກ້າ'),
                 style: FilledButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   minimumSize: Size(160.w, 48.h),
@@ -422,7 +422,7 @@ class _ModifierGroupSection extends StatelessWidget {
                   color: Colors.red.shade50,
                   borderRadius: BorderRadius.circular(4.r),
                 ),
-                child: Text('จำเป็น',
+                child: Text('ຈຳເປັນ',
                     style: TextStyle(
                         fontSize: 9.sp, color: Colors.red.shade400)),
               ),
@@ -497,7 +497,7 @@ class _OptionTile extends StatelessWidget {
             ),
             if (option.priceAdjustment != 0)
               Text(
-                '${option.priceAdjustment > 0 ? '+' : ''}฿${fmt.format(option.priceAdjustment)}',
+                '${option.priceAdjustment > 0 ? '+' : ''}₭${fmt.format(option.priceAdjustment)}',
                 style: TextStyle(
                     fontSize: 12.sp,
                     color: option.priceAdjustment > 0

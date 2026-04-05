@@ -23,7 +23,7 @@ class ProductsReportPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('รายงานสินค้า'),
+        title: const Text('ລາຍງານສິນຄ້າ'),
         actions: [
           TextButton.icon(
             icon: const Icon(Icons.date_range, size: 18),
@@ -53,7 +53,7 @@ class ProductsReportPage extends ConsumerWidget {
                     Icon(Icons.inventory_2_outlined,
                         size: 48.sp, color: Colors.black26),
                     SizedBox(height: 12.h),
-                    const Text('ไม่มีข้อมูลสินค้าในช่วงนี้',
+                    const Text('ບໍ່ມີຂໍ້ມູນສິນຄ້າໃນຊ່ວງນີ້',
                         style: TextStyle(color: Colors.black54)),
                   ],
                 ),
@@ -74,13 +74,13 @@ class ProductsReportPage extends ConsumerWidget {
                 Row(
                   children: [
                     _SummaryTile(
-                        label: 'รายได้รวม',
-                        value: '฿${fmtMoney.format(totalRev)}',
+                        label: 'ລາຍໄດ້ລວມ',
+                        value: '₭${fmtMoney.format(totalRev)}',
                         icon: Icons.payments_outlined,
                         color: Colors.green),
                     SizedBox(width: 8.w),
                     _SummaryTile(
-                        label: 'จำนวนขาย',
+                        label: 'ຈຳນວນຂາຍ',
                         value: fmtQty.format(totalQty),
                         icon: Icons.shopping_cart_outlined,
                         color: Colors.blue),
@@ -89,7 +89,7 @@ class ProductsReportPage extends ConsumerWidget {
                 SizedBox(height: 16.h),
 
                 // ── Products table ───────────────────────────────────────
-                Text('สินค้าขายดี Top ${products.length}',
+                Text('ສິນຄ້າຂາຍດີ Top ${products.length}',
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium
@@ -121,20 +121,20 @@ class ProductsReportPage extends ConsumerWidget {
                                         fontSize: 12.sp,
                                         color: Colors.black54))),
                             Expanded(
-                                child: Text('สินค้า',
+                                child: Text('ສິນຄ້າ',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 13.sp))),
                             SizedBox(
                                 width: 52.w,
-                                child: Text('จำนวน',
+                                child: Text('ຈຳນວນ',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 12.sp))),
                             SizedBox(
                                 width: 90.w,
-                                child: Text('รายได้',
+                                child: Text('ລາຍໄດ້',
                                     textAlign: TextAlign.right,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
@@ -193,7 +193,7 @@ class ProductsReportPage extends ConsumerWidget {
                                     SizedBox(
                                         width: 90.w,
                                         child: Text(
-                                          '฿${fmtMoney.format(p.revenue)}',
+                                          '₭${fmtMoney.format(p.revenue)}',
                                           textAlign: TextAlign.right,
                                           style: TextStyle(
                                               fontSize: 13.sp,

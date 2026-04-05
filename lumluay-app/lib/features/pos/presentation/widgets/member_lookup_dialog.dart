@@ -40,7 +40,7 @@ class _MemberLookupDialogState extends ConsumerState<MemberLookupDialog> {
                   const Icon(Icons.person_search_outlined),
                   SizedBox(width: 8.w),
                   Text(
-                    'ค้นหาสมาชิก',
+                    'ຄົ້ນຫາສະມາຊິກ',
                     style: TextStyle(
                         fontSize: 16.sp, fontWeight: FontWeight.w700),
                   ),
@@ -61,7 +61,7 @@ class _MemberLookupDialogState extends ConsumerState<MemberLookupDialog> {
                 controller: _searchCtrl,
                 autofocus: true,
                 decoration: InputDecoration(
-                  hintText: 'ค้นหาชื่อ หรือเบอร์โทร…',
+                  hintText: 'ຄົ້ນຫາຊື່ ຫຼືເບີໂທລ…',
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: _query.isNotEmpty
                       ? IconButton(
@@ -98,7 +98,7 @@ class _MemberLookupDialogState extends ConsumerState<MemberLookupDialog> {
                     SizedBox(width: 6.w),
                     Expanded(
                       child: Text(
-                        'ผูกกับ: ${ref.watch(cartProvider).memberName ?? cartMemberId}',
+                        'ຜູກກັບ: ${ref.watch(cartProvider).memberName ?? cartMemberId}',
                         style: TextStyle(
                             fontSize: 12.sp, color: Colors.green[700]),
                       ),
@@ -111,7 +111,7 @@ class _MemberLookupDialogState extends ConsumerState<MemberLookupDialog> {
                       style: TextButton.styleFrom(
                           foregroundColor: Colors.red,
                           visualDensity: VisualDensity.compact),
-                      child: const Text('ยกเลิก'),
+                      child: const Text('ຍົກເລີກ'),
                     ),
                   ],
                 ),
@@ -125,7 +125,7 @@ class _MemberLookupDialogState extends ConsumerState<MemberLookupDialog> {
                 loading: () =>
                     const Center(child: CircularProgressIndicator()),
                 error: (e, _) =>
-                    Center(child: Text('เกิดข้อผิดพลาด: $e')),
+                    Center(child: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
                 data: (members) {
                   if (members.isEmpty) {
                     return Center(
@@ -137,8 +137,8 @@ class _MemberLookupDialogState extends ConsumerState<MemberLookupDialog> {
                           SizedBox(height: 8.h),
                           Text(
                             _query.isEmpty
-                                ? 'ยังไม่มีสมาชิก'
-                                : 'ไม่พบสมาชิก "$_query"',
+                                ? 'ຍັງບໍ່ມີສະມາຊິກ'
+                                : 'ບໍ່ພົບສະມາຊິກ "$_query"',
                             style: TextStyle(
                                 color: Colors.grey[500], fontSize: 13.sp),
                           ),

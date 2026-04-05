@@ -16,10 +16,10 @@ class NotificationsPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F7),
       appBar: AppBar(
-        title: const Text('การแจ้งเตือน'),
+        title: const Text('ການແຈ້ງເຕືອນ'),
         actions: [
           FilterChip(
-            label: const Text('ยังไม่ได้อ่าน'),
+            label: const Text('ຍັງບໍ່ໄດ້ອ່ານ'),
             selected: unreadOnly,
             onSelected: (v) =>
                 ref.read(notificationsUnreadOnlyProvider.notifier).state = v,
@@ -35,7 +35,7 @@ class NotificationsPage extends ConsumerWidget {
                   children: [
                     Icon(Icons.done_all, size: 18),
                     SizedBox(width: 8),
-                    Text('อ่านทั้งหมด'),
+                    Text('ອ່ານທັງໝົດ'),
                   ],
                 ),
               ),
@@ -53,7 +53,7 @@ class NotificationsPage extends ConsumerWidget {
       ),
       body: notificationsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('เกิดข้อผิดพลาด: $e')),
+        error: (e, _) => Center(child: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
         data: (notifications) {
           if (notifications.isEmpty) {
             return Center(
@@ -64,7 +64,7 @@ class NotificationsPage extends ConsumerWidget {
                       size: 64, color: Colors.black26),
                   SizedBox(height: 12.h),
                   Text(
-                    unreadOnly ? 'ไม่มีแจ้งเตือนที่ยังไม่ได้อ่าน' : 'ยังไม่มีการแจ้งเตือน',
+                    unreadOnly ? 'ບໍ່ມີແຈ້ງເຕືອນທີ່ຍັງບໍ່ໄດ້ອ່ານ' : 'ຍັງບໍ່ມີການແຈ້ງເຕືອນ',
                     style: const TextStyle(color: Colors.black45),
                   ),
                 ],

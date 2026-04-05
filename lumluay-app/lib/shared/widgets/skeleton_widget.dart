@@ -175,8 +175,8 @@ class SkeletonProductGrid extends StatelessWidget {
 /// ```dart
 /// EmptyStateWidget(
 ///   icon: Icons.inventory_2_outlined,
-///   message: 'ไม่มีสินค้า',
-///   actionLabel: 'เพิ่มสินค้า',
+///   message: 'ບໍ່ມີສິນຄ້າ',
+///   actionLabel: 'ເພີ່ມສິນຄ້າ',
 ///   onAction: () { ... },
 /// )
 /// ```
@@ -251,14 +251,14 @@ class EmptyStateWidget extends StatelessWidget {
 ///
 /// ```dart
 /// ErrorStateWidget(
-///   message: 'ไม่สามารถโหลดข้อมูลได้',
+///   message: 'ບໍ່ສາມາດໂຫຼດຂໍ້ມູນໄດ້',
 ///   onRetry: () { ref.invalidate(myProvider); },
 /// )
 /// ```
 class ErrorStateWidget extends StatelessWidget {
   const ErrorStateWidget({
     super.key,
-    this.message = 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
+    this.message = 'ເກີດຂໍ້ຜິດພາດ ກະລຸນາລອງໃໝ່ອີກຄັ້ງ',
     this.detail,
     this.onRetry,
   });
@@ -299,7 +299,7 @@ class ErrorStateWidget extends StatelessWidget {
               OutlinedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh_rounded),
-                label: const Text('ลองใหม่'),
+                label: const Text('ລອງໃໝ່'),
                 style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
                 ),

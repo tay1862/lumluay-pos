@@ -12,15 +12,15 @@ class AutoLockSettingsPage extends ConsumerWidget {
     final theme = Theme.of(context);
 
     const options = [
-      (0, 'ปิด', 'ไม่ล็อกอัตโนมัติ'),
-      (5, '5 นาที', 'ล็อกหลังไม่มีการใช้งาน 5 นาที'),
-      (10, '10 นาที', 'ล็อกหลังไม่มีการใช้งาน 10 นาที'),
-      (15, '15 นาที', 'ล็อกหลังไม่มีการใช้งาน 15 นาที'),
-      (30, '30 นาที', 'ล็อกหลังไม่มีการใช้งาน 30 นาที'),
+      (0, 'ປິດ', 'ບໍ່ລັອກອັດຕະໂນມັດ'),
+      (5, '5 ນາທີ', 'ລັອກຫຼັງບໍ່ມີການໃຊ້ງານ 5 ນາທີ'),
+      (10, '10 ນາທີ', 'ລັອກຫຼັງບໍ່ມີການໃຊ້ງານ 10 ນາທີ'),
+      (15, '15 ນາທີ', 'ລັອກຫຼັງບໍ່ມີການໃຊ້ງານ 15 ນາທີ'),
+      (30, '30 ນາທີ', 'ລັອກຫຼັງບໍ່ມີການໃຊ້ງານ 30 ນາທີ'),
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('การล็อกอัตโนมัติ')),
+      appBar: AppBar(title: const Text('ການລັອກອັດຕະໂນມັດ')),
       body: ListView(
         padding: EdgeInsets.all(16.w),
         children: [
@@ -37,7 +37,7 @@ class AutoLockSettingsPage extends ConsumerWidget {
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
-                      'เมื่อไม่มีการใช้งานตามเวลาที่กำหนด แอปจะล็อกและต้องใส่ PIN เพื่อเข้าใช้งานอีกครั้ง',
+                      'ເມື່ອບໍ່ມີການໃຊ້ງານຕາມເວລາທີ່ກຳນົດ ແອັບຈະລັອກແລະຕ້ອງໃສ່ PIN ເພື່ອເຂົ້າໃຊ້ງານອີກຄັ້ງ',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.primary,
                       ),
@@ -50,7 +50,7 @@ class AutoLockSettingsPage extends ConsumerWidget {
           SizedBox(height: 16.h),
 
           // ── Options ───────────────────────────────────────────────
-          Text('ระยะเวลาล็อก', style: theme.textTheme.titleSmall),
+          Text('ລະຍະເວລາລັອກ', style: theme.textTheme.titleSmall),
           SizedBox(height: 8.h),
           Card(
             child: Column(
@@ -96,8 +96,8 @@ class AutoLockSettingsPage extends ConsumerWidget {
                           SnackBar(
                             content: Text(
                               minutes == 0
-                                  ? 'ปิดการล็อกอัตโนมัติแล้ว'
-                                  : 'ตั้งการล็อกอัตโนมัติ $label แล้ว',
+                                  ? 'ປິດການລັອກອັດຕະໂນມັດແລ້ວ'
+                                  : 'ຕັ້ງການລັອກອັດຕະໂນມັດ $label ແລ້ວ',
                             ),
                             duration: const Duration(seconds: 2),
                           ),
@@ -122,7 +122,7 @@ class AutoLockSettingsPage extends ConsumerWidget {
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
-                        'จะล็อกอัตโนมัติหลังไม่มีการใช้งาน $currentMinutes นาที',
+                        'ຈະລັອກອັດຕະໂນມັດຫຼັງບໍ່ມີການໃຊ້ງານ $currentMinutes ນາທີ',
                         style: theme.textTheme.bodySmall,
                       ),
                     ),

@@ -78,13 +78,13 @@ class KitchenPage extends ConsumerWidget {
               Icon(Icons.error_outline, color: Colors.red[300], size: 48.sp),
               SizedBox(height: 12.h),
               Text(
-                'ไม่สามารถโหลดข้อมูลได้',
+                'ບໍ່ສາມາດໂຫຼດຂໍ້ມູນໄດ້',
                 style: TextStyle(color: Colors.white60, fontSize: 14.sp),
               ),
               SizedBox(height: 8.h),
               FilledButton(
                 onPressed: () => ref.invalidate(kitchenTicketsProvider(station)),
-                child: const Text('ลองใหม่'),
+                child: const Text('ລອງໃໝ່'),
               ),
             ],
           ),
@@ -99,7 +99,7 @@ class KitchenPage extends ConsumerWidget {
                       color: Colors.green[400], size: 64.sp),
                   SizedBox(height: 16.h),
                   Text(
-                    'ไม่มีรายการรอ',
+                    'ບໍ່ມີລາຍການລໍ',
                     style: TextStyle(color: Colors.white60, fontSize: 18.sp),
                   ),
                 ],
@@ -163,7 +163,7 @@ class _StationFilter extends ConsumerWidget {
           Padding(
             padding: EdgeInsets.only(right: 6.w),
             child: FilterChip(
-              label: const Text('ทั้งหมด'),
+              label: const Text('ທັງໝົດ'),
               selected: selected == null,
               onSelected: (_) =>
                   ref.read(_selectedStationProvider.notifier).state = null,

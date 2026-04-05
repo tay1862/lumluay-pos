@@ -33,10 +33,10 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
   String? _error;
   Map<String, dynamic>? _result;
   String? _orderId;
-  String _currency = 'THB';
+  String _currency = 'LAK';
   double _remaining = 0;
-  List<String> _enabledCurrencies = const ['THB'];
-  Map<String, double> _exchangeRates = const {'THB': 1};
+  List<String> _enabledCurrencies = const ['LAK'];
+  Map<String, double> _exchangeRates = const {'LAK': 1};
   final List<_PaymentEntry> _payments = [];
 
   @override
@@ -53,10 +53,10 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
       if (!mounted) return;
       setState(() {
         _enabledCurrencies = settings.enabledCurrencies.isEmpty
-            ? const ['THB']
+            ? const ['LAK']
             : settings.enabledCurrencies.map((c) => c.toUpperCase()).toList();
         _exchangeRates = {
-          'THB': 1,
+          'LAK': 1,
           ...settings.exchangeRates.map((k, v) => MapEntry(k.toUpperCase(), v)),
         };
         if (!_enabledCurrencies.contains(_currency)) {
@@ -79,12 +79,12 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
   }
 
   double get activeRate {
-    if (_currency == 'THB') return 1;
+    if (_currency == 'LAK') return 1;
     return _exchangeRates[_currency] ?? 1;
   }
 
   double get baseAmount {
-    if (_currency == 'THB') return amount;
+    if (_currency == 'LAK') return amount;
     final rate = activeRate;
     if (rate <= 0) return amount;
     return amount / rate;
@@ -119,12 +119,12 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
 
     try {
       if (amount <= 0) {
-        throw Exception('กรุณาใส่จำนวนเงินที่ถูกต้อง');
+        throw Exception('ກະລຸນາໃສ່ຈຳນວນເງິນທີ່ຖືກຕ້ອງ');
       }
 
       final method = ref.read(_payMethodProvider);
       if (method == 'cash' && received < amount) {
-        throw Exception('จำนวนรับเงินต้องไม่น้อยกว่ายอดชำระ');
+        throw Exception('ຈຳນວນລັບເງິນຕ້ອງບໍ່ນ້ອຍກວ່າຍອດຊຳລະ');
       }
 
       final orderId = await _ensureOrder();
@@ -135,7 +135,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
         amount: amount,
         method: _mapBackendMethod(method),
         currency: _currency,
-        exchangeRate: _currency == 'THB' ? null : activeRate,
+        exchangeRate: _currency == 'LAK' ? null : activeRate,
         received: method == 'cash' ? received : null,
         reference: _referenceCtrl.text,
       );
@@ -170,7 +170,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
         _receivedCtrl.clear();
         _referenceCtrl.clear();
         if (_remaining > 0) {
-          final nextAmount = _currency == 'THB' ? _remaining : (_remaining * activeRate);
+          final nextAmount = _currency == 'LAK' ? _remaining : (_remaining * activeRate);
           _amountCtrl.text = nextAmount.toStringAsFixed(2);
         }
       });
@@ -190,7 +190,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
 
     try {
       if (_remaining > 0.0001) {
-        throw Exception('ยอดชำระยังไม่ครบ');
+        throw Exception('ຍອດຊຳລະຍັງບໍ່ຄົບ');
       }
 
       final orderId = await _ensureOrder();
@@ -350,7 +350,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                   constraints: const BoxConstraints(),
                 ),
                 SizedBox(width: 8.w),
-                Text('ชำระเงิน',
+                Text('ຊຳລະເງິນ',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.sp,
@@ -374,12 +374,12 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                     ),
                     child: Column(
                       children: [
-                        Text('ยอดรวมบิล',
+                        Text('ຍອດລວມບິນ',
                             style: TextStyle(
                                 color: Colors.grey[600], fontSize: 13.sp)),
                         SizedBox(height: 4.h),
                         Text(
-                          '฿${currencyFmt.format(widget.cart.total)}',
+                          '₭${currencyFmt.format(widget.cart.total)}',
                           style: TextStyle(
                             fontSize: 32.sp,
                             fontWeight: FontWeight.w900,
@@ -399,12 +399,12 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                     child: Row(
                       children: [
                         Text(
-                          'คงเหลือ',
+                          'ຄົງເຫຼືອ',
                           style: TextStyle(fontSize: 13.sp, color: Colors.orange[800]),
                         ),
                         const Spacer(),
                         Text(
-                          '฿${currencyFmt.format(_remaining)}',
+                          '₭${currencyFmt.format(_remaining)}',
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w800,
@@ -417,7 +417,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                   SizedBox(height: 16.h),
 
                   // Payment method tabs
-                  Text('วิธีชำระเงิน',
+                  Text('ວິທີຊຳລະເງິນ',
                       style: TextStyle(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w600,
@@ -428,7 +428,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                     children: [
                       _PayMethodChip(
                           value: 'cash',
-                          label: 'เงินสด',
+                          label: 'ເງິນສົດ',
                           icon: Icons.payments_outlined,
                           selected: method),
                       _PayMethodChip(
@@ -438,7 +438,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                           selected: method),
                       _PayMethodChip(
                           value: 'transfer',
-                          label: 'โอนเงิน',
+                          label: 'ໂອນເງິນ',
                           icon: Icons.account_balance,
                           selected: method),
                       _PayMethodChip(
@@ -467,7 +467,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
 
                   // Cash received (only for cash)
                   if (method == 'cash') ...[
-                    Text('รับเงินมา',
+                    Text('ລັບເງິນມາ',
                         style: TextStyle(
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w600,
@@ -483,7 +483,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                       ],
                       onChanged: (_) => setState(() {}),
                       decoration: const InputDecoration(
-                        prefixText: '฿ ',
+                        prefixText: '₭ ',
                         hintText: '0.00',
                       ),
                       style: TextStyle(
@@ -503,7 +503,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                         final amount =
                             v is double ? v : (v as int).toDouble();
                         return ActionChip(
-                          label: Text('฿${currencyFmt.format(amount)}',
+                          label: Text('₭${currencyFmt.format(amount)}',
                               style: TextStyle(fontSize: 12.sp)),
                           onPressed: () {
                             _receivedCtrl.text =
@@ -524,7 +524,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                   ],
 
                   if (method != 'cash') ...[
-                    Text('เลขอ้างอิง (ถ้ามี)',
+                    Text('ເລກອ້າງອີງ (ຖ້າມີ)',
                         style: TextStyle(
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w600,
@@ -570,7 +570,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                               child: const CircularProgressIndicator(strokeWidth: 2),
                             )
                           : const Icon(Icons.add_circle_outline),
-                      label: const Text('เพิ่มการชำระ'),
+                      label: const Text('ເພີ່ມການຊຳລະ'),
                     ),
                   ),
                 ),
@@ -581,7 +581,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
                     child: FilledButton.icon(
                       onPressed: _processing || _remaining > 0 ? null : _completePayment,
                       icon: const Icon(Icons.check_circle_outline),
-                      label: const Text('ปิดบิล'),
+                      label: const Text('ປິດບິນ'),
                     ),
                   ),
                 ),
@@ -641,7 +641,7 @@ class _MultiCurrencyInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('สกุลเงินและยอดชำระ',
+        Text('ສະກຸນເງິນແລະຍອດຊຳລະ',
             style: TextStyle(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w600,
@@ -673,7 +673,7 @@ class _MultiCurrencyInput extends StatelessWidget {
                 ],
                 onChanged: onAmountChanged,
                 decoration: const InputDecoration(
-                  labelText: 'จำนวนเงิน',
+                  labelText: 'ຈຳນວນເງິນ',
                 ),
               ),
             ),
@@ -681,9 +681,9 @@ class _MultiCurrencyInput extends StatelessWidget {
         ),
         SizedBox(height: 6.h),
         Text(
-          selectedCurrency == 'THB'
-              ? 'คิดเป็นฐาน: ฿${fmt.format(convertedBaseAmount)}'
-              : 'Rate: $rate | คิดเป็น THB: ฿${fmt.format(convertedBaseAmount)}',
+          selectedCurrency == 'LAK'
+              ? 'ຄິດເປັນຖານ: ₭${fmt.format(convertedBaseAmount)}'
+              : 'Rate: $rate | ຄິດເປັນ LAK: ₭${fmt.format(convertedBaseAmount)}',
           style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
         ),
       ],
@@ -698,9 +698,9 @@ class _SplitBillPanel extends StatelessWidget {
 
   String _methodLabel(String method) {
     return switch (method) {
-      'cash' => 'เงินสด',
+      'cash' => 'ເງິນສົດ',
       'qr' => 'QR',
-      'transfer' => 'โอน',
+      'transfer' => 'ໂອນ',
       'wallet' => 'E-Wallet',
       _ => method,
     };
@@ -721,10 +721,10 @@ class _SplitBillPanel extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('การชำระเงิน (Split Bill)',
+              Text('ການຊຳລະເງິນ (Split Bill)',
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13.sp)),
               const Spacer(),
-              Text('คงเหลือ ฿${fmt.format(remaining)}',
+              Text('ຄົງເຫຼືອ ₭${fmt.format(remaining)}',
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 12.sp,
@@ -733,7 +733,7 @@ class _SplitBillPanel extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           if (payments.isEmpty)
-            Text('ยังไม่มีรายการชำระ', style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]))
+            Text('ຍັງບໍ່ມີລາຍການຊຳລະ', style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]))
           else
             ...payments.map(
               (p) => Padding(
@@ -783,7 +783,7 @@ class _ChangeDisplay extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            'รับ ${currency.toUpperCase()} ${fmt.format(received)} | ทอน',
+            'ລັບ ${currency.toUpperCase()} ${fmt.format(received)} | ທອນ',
             style: TextStyle(fontSize: 13.sp, color: Colors.green[700]),
           ),
           const Spacer(),
@@ -846,29 +846,29 @@ class _SuccessView extends StatelessWidget {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('ตัวอย่างใบเสร็จ'),
+        title: const Text('ຕົວຢ່າງໃບເສັດ'),
         content: SizedBox(
           width: 360,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('บิล: ${result['orderId'] ?? '-'}'),
+                Text('ບິນ: ${result['orderId'] ?? '-'}'),
                 const SizedBox(height: 8),
                 ...cart.items.map((item) => Padding(
                       padding: const EdgeInsets.only(bottom: 6),
                       child: Row(
                         children: [
                           Expanded(child: Text('${item.productName} x${item.quantity}')),
-                          Text('฿${currencyFmt.format(item.lineTotal)}'),
+                          Text('₭${currencyFmt.format(item.lineTotal)}'),
                         ],
                       ),
                     )),
                 const Divider(),
                 Row(
                   children: [
-                    const Expanded(child: Text('รวมสุทธิ')),
-                    Text('฿${currencyFmt.format((result['total'] as num?)?.toDouble() ?? 0)}'),
+                    const Expanded(child: Text('ລວມສຸດທິ')),
+                    Text('₭${currencyFmt.format((result['total'] as num?)?.toDouble() ?? 0)}'),
                   ],
                 ),
               ],
@@ -878,7 +878,7 @@ class _SuccessView extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('ปิด'),
+            child: const Text('ປິດ'),
           ),
         ],
       ),
@@ -902,20 +902,20 @@ class _SuccessView extends StatelessWidget {
               Icon(Icons.check_circle,
                   color: Colors.green, size: 72.sp),
               SizedBox(height: 16.h),
-              Text('ชำระเงินสำเร็จ',
+              Text('ຊຳລະເງິນສຳເລັດ',
                   style: TextStyle(
                       fontSize: 22.sp, fontWeight: FontWeight.w700)),
               SizedBox(height: 8.h),
-                Text('บิล: ${result['orderId'] ?? '-'}',
+                Text('ບິນ: ${result['orderId'] ?? '-'}',
                   style: TextStyle(fontSize: 14.sp, color: Colors.grey[700])),
                 SizedBox(height: 8.h),
-                Text('ยอดรวม ฿${currencyFmt.format(total)}',
+                Text('ຍອດລວມ ₭${currencyFmt.format(total)}',
                   style: TextStyle(fontSize: 15.sp, color: Colors.black87)),
-                Text('รับชำระ ฿${currencyFmt.format(paid)}',
+                Text('ລັບຊຳລະ ₭${currencyFmt.format(paid)}',
                   style: TextStyle(fontSize: 15.sp, color: Colors.black87)),
               if (change > 0)
                 Text(
-                  'ทอนเงิน ฿${currencyFmt.format(change)}',
+                  'ທອນເງິນ ₭${currencyFmt.format(change)}',
                   style: TextStyle(
                       fontSize: 16.sp, color: Colors.green[700]),
                 ),
@@ -928,13 +928,13 @@ class _SuccessView extends StatelessWidget {
                       _showReceiptPreview(context);
                     },
                     icon: const Icon(Icons.receipt),
-                    label: const Text('ดูใบเสร็จ'),
+                    label: const Text('ເບິ່ງໃບເສັດ'),
                   ),
                   SizedBox(width: 12.w),
                   FilledButton.icon(
                     onPressed: onDone,
                     icon: const Icon(Icons.add_shopping_cart),
-                    label: const Text('รายการใหม่'),
+                    label: const Text('ລາຍການໃໝ່'),
                   ),
                 ],
               ),

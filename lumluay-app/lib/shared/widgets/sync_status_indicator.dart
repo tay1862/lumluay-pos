@@ -29,11 +29,11 @@ class SyncStatusIndicator extends ConsumerWidget {
 
     if (!isOnline) {
       dotColor = Theme.of(context).colorScheme.error;
-      label = 'ออฟไลน์';
+      label = 'ອອບໄລນ໌';
       trailingWidget = null;
     } else if (syncState.isSyncing) {
       dotColor = Theme.of(context).colorScheme.primary;
-      label = 'กำลังซิงค์...';
+      label = 'ກຳລັງຊິງຄ໌...';
       trailingWidget = SizedBox(
         width: 12.w,
         height: 12.w,
@@ -41,15 +41,15 @@ class SyncStatusIndicator extends ConsumerWidget {
       );
     } else if (syncState.hasError) {
       dotColor = Colors.orange;
-      label = 'ซิงค์ล้มเหลว';
+      label = 'ຊິງຄ໌ລົ້ມເຫຼວ';
       trailingWidget = null;
     } else if (syncState.pendingCount > 0) {
       dotColor = Colors.orange;
-      label = 'รอซิงค์ ${syncState.pendingCount}';
+      label = 'ລໍຊິງຄ໌ ${syncState.pendingCount}';
       trailingWidget = null;
     } else {
       dotColor = Colors.green;
-      label = syncState.lastSyncAt != null ? 'ซิงค์แล้ว' : 'ออนไลน์';
+      label = syncState.lastSyncAt != null ? 'ຊິງຄ໌ແລ້ວ' : 'ອອນໄລນ໌';
       trailingWidget = null;
     }
 

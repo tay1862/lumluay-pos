@@ -19,6 +19,7 @@
   "next": "Next",
   "back": "Back",
   "finish": "Finish",
+  "add": "Add",
   "save": "Save",
   "cancel": "Cancel",
   "delete": "Delete",
@@ -26,5 +27,54 @@
   "retry": "Retry",
   "loading": "Loading...",
   "errorOccurred": "An error occurred",
-  "settings": "Settings"
+  "settings": "Settings",
+  "setupWizardCompleted": "Setup wizard completed.",
+  "setupWizardStoreNameRequired": "Please enter a store name",
+  "setupWizardSeedSampleDataFailed": "Could not seed sample data",
+  "setupWizardStaffInfoIncomplete": "Complete the staff information (password must be at least 8 characters)",
+  "setupWizardStepStoreInfo": "Store Information",
+  "setupWizardStepCurrencyTax": "Currency and Tax",
+  "setupWizardStepPrinters": "Printers",
+  "setupWizardStepProductImport": "Import Products",
+  "setupWizardStepCreateStaff": "Create Staff",
+  "setupWizardStepProgress": "Setup Wizard • Step {currentStep}/{totalSteps}",
+  "@setupWizardStepProgress": {
+    "placeholders": {
+      "currentStep": {
+        "type": "int"
+      },
+      "totalSteps": {
+        "type": "int"
+      }
+    }
+  },
+  "setupWizardStoreName": "Store Name",
+  "setupWizardOwnerName": "Owner / Administrator",
+  "setupWizardPhone": "Phone Number",
+  "setupWizardAddress": "Address",
+  "setupWizardTaxId": "Tax ID",
+  "setupWizardDefaultCurrency": "Default Currency",
+  "setupWizardVatRate": "VAT",
+  "setupWizardCurrencyThb": "THB - Thai Baht",
+  "setupWizardCurrencyLak": "LAK - Lao Kip",
+  "setupWizardCurrencyUsd": "USD - US Dollar",
+  "setupWizardPrinterHint": "Add at least one printer (optional)",
+  "setupWizardAddPrinter": "Add Printer",
+  "setupWizardPrinterName": "Printer Name",
+  "setupWizardPrinterType": "Type",
+  "setupWizardUseSampleData": "Use sample data (recommended)",
+  "setupWizardUseSampleDataHint": "5 categories, 20 sample products for restaurants",
+  "setupWizardImportCsv": "Import CSV",
+  "setupWizardImportCsvHint": "Will be supported in the next step",
+  "setupWizardAddLater": "Add later",
+  "setupWizardUsername": "Username",
+  "setupWizardDisplayName": "Display Name",
+  "setupWizardPassword": "Password (8+ characters)",
+  "setupWizardPinOptional": "PIN (optional)",
+  "setupWizardPinHint": "4-6 digits",
+  "setupWizardRole": "Role",
+  "setupWizardRoleCashier": "Cashier",
+  "setupWizardRoleWaiter": "Waiter",
+  "setupWizardRoleKitchen": "Kitchen",
+  "setupWizardRoleManager": "Manager"
 }

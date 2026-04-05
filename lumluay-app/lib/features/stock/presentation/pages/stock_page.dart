@@ -19,11 +19,11 @@ class StockPage extends ConsumerWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('สต็อกสินค้า'),
+          title: const Text('ສະຕ໇ອກສິນຄ້າ'),
           bottom: const TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.inventory_2_outlined), text: 'ภาพรวม'),
-              Tab(icon: Icon(Icons.history), text: 'ความเคลื่อนไหว'),
+              Tab(icon: Icon(Icons.inventory_2_outlined), text: 'ພາບລວມ'),
+              Tab(icon: Icon(Icons.history), text: 'ຄວາມເຄື່ອນໄຫວ'),
             ],
           ),
           actions: [
@@ -47,11 +47,11 @@ class StockPage extends ConsumerWidget {
                       EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                   child: Row(
                     children: [
-                      _FilterChip(label: 'ทั้งหมด', value: 'all', groupValue: filter),
+                      _FilterChip(label: 'ທັງໝົດ', value: 'all', groupValue: filter),
                       SizedBox(width: 8.w),
-                      _FilterChip(label: 'ใกล้หมด', value: 'low', groupValue: filter),
+                      _FilterChip(label: 'ໃກ້ໝົດ', value: 'low', groupValue: filter),
                       SizedBox(width: 8.w),
-                      _FilterChip(label: 'หมด', value: 'out', groupValue: filter),
+                      _FilterChip(label: 'ໝົດ', value: 'out', groupValue: filter),
                     ],
                   ),
                 ),
@@ -68,10 +68,10 @@ class StockPage extends ConsumerWidget {
                         return Center(
                           child: Text(
                             filter == 'low'
-                                ? 'ไม่มีสินค้าใกล้หมด'
+                                ? 'ບໍ່ມີສິນຄ້າໃກ້ໝົດ'
                                 : filter == 'out'
-                                    ? 'ไม่มีสินค้าหมด'
-                                    : 'ไม่มีข้อมูลสต็อก',
+                                    ? 'ບໍ່ມີສິນຄ້າໝົດ'
+                                    : 'ບໍ່ມີຂໍ້ມູນສະຕ໇ອກ',
                             style:
                                 const TextStyle(color: Colors.black54),
                           ),
@@ -95,7 +95,7 @@ class StockPage extends ConsumerWidget {
         ),
         floatingActionButton: FloatingActionButton.extended(
           icon: const Icon(Icons.tune),
-          label: const Text('ปรับสต็อก'),
+          label: const Text('ປັບສະຕ໇ອກ'),
           onPressed: () => _showAdjustDialog(context, ref),
         ),
       ),
@@ -143,9 +143,9 @@ class _StockItemTile extends StatelessWidget {
       };
 
   String _statusLabel() => switch (item.status) {
-        'out' => 'หมด',
-        'low' => 'ใกล้หมด',
-        _ => 'ปกติ',
+        'out' => 'ໝົດ',
+        'low' => 'ໃກ້ໝົດ',
+        _ => 'ປົກກະຕິ',
       };
 
   @override
@@ -201,7 +201,7 @@ class _MovementsTab extends ConsumerWidget {
       data: (movements) {
         if (movements.isEmpty) {
           return const Center(
-              child: Text('ไม่มีประวัติ', style: TextStyle(color: Colors.black54)));
+              child: Text('ບໍ່ມີປະຫວັດ', style: TextStyle(color: Colors.black54)));
         }
         final dateFmt = DateFormat('d MMM yy HH:mm');
         return ListView.separated(
@@ -261,11 +261,11 @@ class _MovementsTab extends ConsumerWidget {
   }
 
   String _typeLabel(String type) => switch (type) {
-        'purchase' => 'รับเข้า (ซื้อ)',
-        'sale' => 'ขายออก',
-        'adjustment' => 'ปรับปรุง',
-        'damage' => 'เสียหาย',
-        'initial' => 'ตั้งต้น',
+        'purchase' => 'ຮັບເຂົ້າ (ຊື້)',
+        'sale' => 'ຂາຍອອກ',
+        'adjustment' => 'ປັບປຸງ',
+        'damage' => 'ເສຍຫາຍ',
+        'initial' => 'ຕັ້ງຕົ້ນ',
         _ => type,
       };
 }
@@ -312,7 +312,7 @@ class _AdjustStockDialogState extends ConsumerState<_AdjustStockDialog> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('เกิดข้อผิดพลาด: $e')));
+            .showSnackBar(SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -323,7 +323,7 @@ class _AdjustStockDialogState extends ConsumerState<_AdjustStockDialog> {
   Widget build(BuildContext context) {
     final stockAsync = ref.watch(stockListProvider);
     return AlertDialog(
-      title: const Text('ปรับสต็อก'),
+      title: const Text('ປັບສະຕ໇ອກ'),
       content: SizedBox(
         width: 320.w,
         child: Column(
@@ -332,10 +332,10 @@ class _AdjustStockDialogState extends ConsumerState<_AdjustStockDialog> {
             // Product selector
             stockAsync.when(
               loading: () => const CircularProgressIndicator(),
-              error: (_, __) => const Text('ไม่สามารถโหลดสินค้า'),
+              error: (_, __) => const Text('ບໍ່ສາມາດໂຫຼດສິນຄ້າ'),
               data: (items) => DropdownButtonFormField<StockItem>(
                 initialValue: _selectedItem,
-                hint: const Text('เลือกสินค้า'),
+                hint: const Text('ເລືອກສິນຄ້າ'),
                 items: items
                     .map((i) => DropdownMenuItem(
                           value: i,
@@ -345,7 +345,7 @@ class _AdjustStockDialogState extends ConsumerState<_AdjustStockDialog> {
                     .toList(),
                 onChanged: (v) => setState(() => _selectedItem = v),
                 decoration:
-                    const InputDecoration(labelText: 'สินค้า'),
+                    const InputDecoration(labelText: 'ສິນຄ້າ'),
               ),
             ),
             SizedBox(height: 8.h),
@@ -353,13 +353,13 @@ class _AdjustStockDialogState extends ConsumerState<_AdjustStockDialog> {
             DropdownButtonFormField<String>(
               initialValue: _type,
               items: const [
-                DropdownMenuItem(value: 'purchase', child: Text('รับเข้า (ซื้อ)')),
-                DropdownMenuItem(value: 'adjustment', child: Text('ปรับปรุง')),
-                DropdownMenuItem(value: 'damage', child: Text('เสียหาย')),
-                DropdownMenuItem(value: 'initial', child: Text('ตั้งต้น')),
+                DropdownMenuItem(value: 'purchase', child: Text('ຮັບເຂົ້າ (ຊື້)')),
+                DropdownMenuItem(value: 'adjustment', child: Text('ປັບປຸງ')),
+                DropdownMenuItem(value: 'damage', child: Text('ເສຍຫາຍ')),
+                DropdownMenuItem(value: 'initial', child: Text('ຕັ້ງຕົ້ນ')),
               ],
               onChanged: (v) => setState(() => _type = v!),
-              decoration: const InputDecoration(labelText: 'ประเภท'),
+              decoration: const InputDecoration(labelText: 'ປະເພດ'),
             ),
             SizedBox(height: 8.h),
             // Quantity
@@ -368,12 +368,12 @@ class _AdjustStockDialogState extends ConsumerState<_AdjustStockDialog> {
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true, signed: true),
               decoration: const InputDecoration(
-                  labelText: 'จำนวน (+ เพิ่ม / - ลด)'),
+                  labelText: 'ຈຳນວນ (+ ເພີ່ມ / - ຫຼຸດ)'),
             ),
             SizedBox(height: 8.h),
             TextFormField(
               controller: _noteCtrl,
-              decoration: const InputDecoration(labelText: 'หมายเหตุ'),
+              decoration: const InputDecoration(labelText: 'ໝາຍເຫດ'),
             ),
           ],
         ),
@@ -381,7 +381,7 @@ class _AdjustStockDialogState extends ConsumerState<_AdjustStockDialog> {
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('ยกเลิก')),
+            child: const Text('ຍົກເລີກ')),
         FilledButton(
           onPressed: _saving ? null : _save,
           child: _saving
@@ -390,7 +390,7 @@ class _AdjustStockDialogState extends ConsumerState<_AdjustStockDialog> {
                   width: 16,
                   child:
                       CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-              : const Text('บันทึก'),
+              : const Text('ບັນທຶກ'),
         ),
       ],
     );

@@ -33,9 +33,9 @@ class KitchenOrderCard extends StatelessWidget {
 
   String? get _nextLabel {
     return switch (order.status) {
-      KitchenStatus.pending => 'รับออเดอร์',
-      KitchenStatus.preparing => 'ทำเสร็จแล้ว',
-      KitchenStatus.ready => 'เสิร์ฟแล้ว',
+      KitchenStatus.pending => 'ຮັບອໍເດີ',
+      KitchenStatus.preparing => 'ທຳເສັດແລ້ວ',
+      KitchenStatus.ready => 'ເສີບແລ້ວ',
       _ => null,
     };
   }

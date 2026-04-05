@@ -12,11 +12,11 @@ class OrdersPage extends ConsumerWidget {
   const OrdersPage({super.key});
 
   static const _statuses = [
-    ('all', 'ทั้งหมด'),
-    ('open', 'เปิด'),
-    ('completed', 'เสร็จ'),
-    ('held', 'พัก'),
-    ('voided', 'ยกเลิก'),
+    ('all', 'ທັງໝົດ'),
+    ('open', 'ເປີດ'),
+    ('completed', 'ສຳເລັດ'),
+    ('held', 'ພັກ'),
+    ('voided', 'ຍົກເລີກ'),
   ];
 
   @override
@@ -26,7 +26,7 @@ class OrdersPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ประวัติออเดอร์'),
+        title: const Text('ປະຫວັດອໍເດີ'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -63,7 +63,7 @@ class OrdersPage extends ConsumerWidget {
         data: (orders) {
           if (orders.isEmpty) {
             return const Center(
-              child: Text('ไม่มีออเดอร์',
+              child: Text('ບໍ່ມີອໍເດີ',
                   style: TextStyle(color: Colors.black54)),
             );
           }
@@ -92,13 +92,13 @@ class OrderDetailPage extends ConsumerWidget {
     final detailAsync = ref.watch(orderDetailProvider(orderId));
     return Scaffold(
       appBar: AppBar(
-        title: const Text('รายละเอียดออเดอร์'),
+        title: const Text('ລາຍລະອຽດອໍເດີ'),
         actions: [
           // ── 15.3.4 Reprint ────────────────────────────────────────────
           detailAsync.whenOrNull(
             data: (order) => IconButton(
               icon: const Icon(Icons.print_outlined),
-              tooltip: 'พิมพ์ใหม่',
+              tooltip: 'ພິມໃໝ່',
               onPressed: () => _printReceipt(context, order),
             ),
           ) ??
@@ -126,17 +126,17 @@ class OrderDetailPage extends ConsumerWidget {
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
                 pw.Center(
-                  child: pw.Text('ใบเสร็จ',
+                  child: pw.Text('ໃບຮັບເງິນ',
                       style: pw.TextStyle(
                           fontSize: 18,
                           fontWeight: pw.FontWeight.bold)),
                 ),
                 pw.SizedBox(height: 4),
-                pw.Text('เลขที่: ${order.receiptNumber}'),
+                pw.Text('ເລກທີ: ${order.receiptNumber}'),
                 pw.Text(
-                    'วันที่: ${DateFormat('dd/MM/yyyy HH:mm').format(order.createdAt)}'),
+                    'ວັນທີ: ${DateFormat('dd/MM/yyyy HH:mm').format(order.createdAt)}'),
                 if (order.tableName != null)
-                  pw.Text('โต๊ะ: ${order.tableName}'),
+                  pw.Text('ໂຕະ: ${order.tableName}'),
                 pw.Divider(),
                 ...order.items.map(
                   (item) => pw.Row(
@@ -146,7 +146,7 @@ class OrderDetailPage extends ConsumerWidget {
                       pw.Expanded(
                           child: pw.Text(
                               '${item.quantity}× ${item.productName}')),
-                      pw.Text('฿${fmtMoney.format(item.lineTotal)}'),
+                      pw.Text('₭${fmtMoney.format(item.lineTotal)}'),
                     ],
                   ),
                 ),
@@ -154,10 +154,10 @@ class OrderDetailPage extends ConsumerWidget {
                 pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: [
-                    pw.Text('รวม',
+                    pw.Text('ລວມ',
                         style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold)),
-                    pw.Text('฿${fmtMoney.format(order.totalAmount)}',
+                    pw.Text('₭${fmtMoney.format(order.totalAmount)}',
                         style: pw.TextStyle(
                             fontWeight: pw.FontWeight.bold)),
                   ],
@@ -205,10 +205,10 @@ class _OrderDetailBody extends ConsumerWidget {
                 ),
                 SizedBox(height: 8.h),
                 if (order.tableName != null)
-                  _InfoRow(label: 'โต๊ะ', value: order.tableName!),
+                  _InfoRow(label: 'ໂຕະ', value: order.tableName!),
                 if (order.memberName != null)
-                  _InfoRow(label: 'สมาชิก', value: order.memberName!),
-                _InfoRow(label: 'เวลา', value: fmtTime.format(order.createdAt)),
+                  _InfoRow(label: 'ສະມາຊິກ', value: order.memberName!),
+                _InfoRow(label: 'ເວລາ', value: fmtTime.format(order.createdAt)),
               ],
             ),
           ),
@@ -216,7 +216,7 @@ class _OrderDetailBody extends ConsumerWidget {
         SizedBox(height: 12.h),
 
         // Items
-        Text('รายการ',
+        Text('ລາຍການ',
             style: TextStyle(
                 fontSize: 15.sp, fontWeight: FontWeight.w700)),
         SizedBox(height: 6.h),
@@ -243,7 +243,7 @@ class _OrderDetailBody extends ConsumerWidget {
                             color: Colors.black54,
                             fontStyle: FontStyle.italic))
                     : null,
-                trailing: Text('฿${fmtMoney.format(item.lineTotal)}',
+                trailing: Text('₭${fmtMoney.format(item.lineTotal)}',
                     style: TextStyle(
                         fontSize: 13.sp, fontWeight: FontWeight.w600)),
               );
@@ -258,26 +258,26 @@ class _OrderDetailBody extends ConsumerWidget {
             padding: EdgeInsets.all(16.w),
             child: Column(
               children: [
-                _TotalRow(label: 'ยอดรวมก่อนส่วนลด',
-                    value: '฿${fmtMoney.format(order.subtotal)}'),
+                _TotalRow(label: 'ຍອດລວມກ່ອນສ່ວນຫຼຸດ',
+                    value: '₭${fmtMoney.format(order.subtotal)}'),
                 if (order.discountAmount > 0)
                   _TotalRow(
-                      label: 'ส่วนลด',
-                      value: '-฿${fmtMoney.format(order.discountAmount)}',
+                      label: 'ສ່ວນຫຼຸດ',
+                      value: '-₭${fmtMoney.format(order.discountAmount)}',
                       valueColor: Colors.red),
                 if (order.taxAmount > 0)
                   _TotalRow(
-                      label: 'ภาษี',
-                      value: '฿${fmtMoney.format(order.taxAmount)}'),
+                      label: 'ພາສີ',
+                      value: '₭${fmtMoney.format(order.taxAmount)}'),
                 if (order.serviceChargeAmount > 0)
                   _TotalRow(
-                      label: 'ค่าบริการ',
+                      label: 'ຄ່າບໍລິການ',
                       value:
-                          '฿${fmtMoney.format(order.serviceChargeAmount)}'),
+                          '₭${fmtMoney.format(order.serviceChargeAmount)}'),
                 const Divider(),
                 _TotalRow(
-                    label: 'ยอดสุทธิ',
-                    value: '฿${fmtMoney.format(order.totalAmount)}',
+                    label: 'ຍອດສຸດທິ',
+                    value: '₭${fmtMoney.format(order.totalAmount)}',
                     bold: true),
               ],
             ),
@@ -287,7 +287,7 @@ class _OrderDetailBody extends ConsumerWidget {
         // Payments
         if (order.payments.isNotEmpty) ...[
           SizedBox(height: 12.h),
-          Text('การชำระเงิน',
+          Text('ການຊຳລະເງິນ',
               style: TextStyle(
                   fontSize: 15.sp, fontWeight: FontWeight.w700)),
           SizedBox(height: 6.h),
@@ -306,7 +306,7 @@ class _OrderDetailBody extends ConsumerWidget {
                   title: Text(_methodLabel(p['method'] as String? ?? ''),
                       style: TextStyle(fontSize: 13.sp)),
                   trailing: Text(
-                      '฿${fmtMoney.format((p['amount'] as num?)?.toDouble() ?? 0)}',
+                      '₭${fmtMoney.format((p['amount'] as num?)?.toDouble() ?? 0)}',
                       style: TextStyle(
                           fontSize: 13.sp, fontWeight: FontWeight.w600)),
                 );
@@ -322,7 +322,7 @@ class _OrderDetailBody extends ConsumerWidget {
             width: double.infinity,
             child: OutlinedButton.icon(
               icon: const Icon(Icons.undo_rounded, color: Colors.red),
-              label: const Text('คืนเงิน / Refund',
+              label: const Text('ຄືນເງິນ / Refund',
                   style: TextStyle(color: Colors.red)),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: Colors.red),
@@ -353,10 +353,10 @@ class _OrderDetailBody extends ConsumerWidget {
       };
 
   String _methodLabel(String method) => switch (method) {
-        'cash' => 'เงินสด',
+        'cash' => 'ເງິນສົດ',
         'qr_promptpay' => 'QR PromptPay',
-        'card' => 'บัตร',
-        'transfer' => 'โอน',
+        'card' => 'ບັດ',
+        'transfer' => 'ໂອນ',
         'wallet' => 'Wallet',
         _ => method,
       };
@@ -398,13 +398,13 @@ class _RefundDialogState extends ConsumerState<_RefundDialog> {
       if (mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('คืนเงินสำเร็จ')),
+          const SnackBar(content: Text('ຄືນເງິນສຳເລັດ')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('เกิดข้อผิดพลาด: $e')));
+            .showSnackBar(SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -414,20 +414,20 @@ class _RefundDialogState extends ConsumerState<_RefundDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('คืนเงิน'),
+      title: const Text('ຄືນເງິນ'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: _reasonCtrl,
-            decoration: const InputDecoration(labelText: 'เหตุผล'),
+            decoration: const InputDecoration(labelText: 'ເຫດຜົນ'),
             maxLines: 2,
           ),
           SizedBox(height: 8.h),
           TextField(
             controller: _amountCtrl,
             decoration: const InputDecoration(
-                labelText: 'จำนวนเงิน (เว้นว่างเพื่อคืนเต็ม)'),
+                labelText: 'ຈຳນວນເງິນ (ເວັ້ນວ່າງເພື່ອຄືນເຕັມ)'),
             keyboardType:
                 const TextInputType.numberWithOptions(decimal: true),
           ),
@@ -436,7 +436,7 @@ class _RefundDialogState extends ConsumerState<_RefundDialog> {
       actions: [
         TextButton(
             onPressed: _loading ? null : () => Navigator.pop(context),
-            child: const Text('ยกเลิก')),
+            child: const Text('ຍົກເລີກ')),
         FilledButton(
           onPressed: _loading ? null : _submit,
           style: FilledButton.styleFrom(backgroundColor: Colors.red),
@@ -446,7 +446,7 @@ class _RefundDialogState extends ConsumerState<_RefundDialog> {
                   height: 18,
                   child: CircularProgressIndicator(
                       color: Colors.white, strokeWidth: 2))
-              : const Text('ยืนยันคืนเงิน'),
+              : const Text('ຢືນຢັນຄືນເງິນ'),
         ),
       ],
     );
@@ -463,10 +463,10 @@ class _StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (color, label) = switch (status) {
-      'completed' => (Colors.green, 'เสร็จ'),
-      'voided' => (Colors.red, 'ยกเลิก'),
-      'held' => (Colors.orange, 'พัก'),
-      'open' => (Colors.blue, 'เปิด'),
+      'completed' => (Colors.green, 'ສຳເລັດ'),
+      'voided' => (Colors.red, 'ຍົກເລີກ'),
+      'held' => (Colors.orange, 'ພັກ'),
+      'open' => (Colors.blue, 'ເປີດ'),
       _ => (Colors.grey, status),
     };
     return Container(

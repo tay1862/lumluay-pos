@@ -14,7 +14,7 @@ class MembersPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('สมาชิก'),
+        title: const Text('ສະມາຊິກ'),
         actions: [
           IconButton(
             icon: const Icon(Icons.person_add_outlined),
@@ -46,7 +46,7 @@ class MembersPage extends ConsumerWidget {
                       size: 56.sp, color: Colors.black26),
                   SizedBox(height: 12.h),
                   Text(
-                    search.isNotEmpty ? 'ไม่พบสมาชิก "$search"' : 'ยังไม่มีสมาชิก',
+                    search.isNotEmpty ? 'ບໍ່ພົບສະມາຊິກ "$search"' : 'ຍັງບໍ່ມີສະມາຊິກ',
                     style:
                         const TextStyle(color: Colors.black54),
                   ),
@@ -87,18 +87,18 @@ class MembersPage extends ConsumerWidget {
           final confirmed = await showDialog<bool>(
             context: context,
             builder: (_) => AlertDialog(
-              title: const Text('ลบสมาชิก'),
+              title: const Text('ລົບສະມາຊິກ'),
               content:
-                  Text('ต้องการลบ "${member.name}" ใช่หรือไม่?'),
+                  Text('ຕ້ອງການລົບ "${member.name}" ແມ່ນບໍ?'),
               actions: [
                 TextButton(
                     onPressed: () => Navigator.pop(context, false),
-                    child: const Text('ยกเลิก')),
+                    child: const Text('ຍົກເລີກ')),
                 FilledButton(
                   style: FilledButton.styleFrom(
                       backgroundColor: Colors.red),
                   onPressed: () => Navigator.pop(context, true),
-                  child: const Text('ลบ'),
+                  child: const Text('ລົບ'),
                 ),
               ],
             ),
@@ -146,7 +146,7 @@ class _SearchFieldState extends State<_SearchField> {
   Widget build(BuildContext context) => TextField(
         controller: _ctrl,
         decoration: InputDecoration(
-          hintText: 'ค้นหาชื่อ / เบอร์โทร',
+          hintText: 'ຄົ້ນຫາຊື່ / ເບີໂທລ',
           prefixIcon: const Icon(Icons.search),
           suffixIcon: _ctrl.text.isNotEmpty
               ? IconButton(
@@ -201,10 +201,10 @@ class _MemberTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text('฿${fmtMoney.format(member.totalSpent)}',
+          Text('₭${fmtMoney.format(member.totalSpent)}',
               style: TextStyle(
                   fontSize: 13.sp, fontWeight: FontWeight.w700)),
-          Text('${member.totalVisits} ครั้ง',
+          Text('${member.totalVisits} ຄັ້ງ',
               style: TextStyle(fontSize: 10.sp, color: Colors.black45)),
         ],
       ),
@@ -274,15 +274,15 @@ class _MemberDetailSheet extends StatelessWidget {
           Row(
             children: [
               _StatBox(
-                  label: 'ยอดรวม',
-                  value: '฿${fmtMoney.format(member.totalSpent)}'),
+                  label: 'ຍອດລວມ',
+                  value: '₭${fmtMoney.format(member.totalSpent)}'),
               SizedBox(width: 12.w),
               _StatBox(
-                  label: 'จำนวนครั้ง',
+                  label: 'ຈຳນວນຄັ້ງ',
                   value: '${member.totalVisits}'),
               SizedBox(width: 12.w),
               _StatBox(
-                  label: 'สมาชิกตั้งแต่',
+                  label: 'ສະມາຊິກຕັ້ງແຕ່',
                   value: member.createdAt != null
                       ? dateFmt.format(member.createdAt!)
                       : '-'),
@@ -294,7 +294,7 @@ class _MemberDetailSheet extends StatelessWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   icon: const Icon(Icons.edit_outlined),
-                  label: const Text('แก้ไข'),
+                  label: const Text('ແກ້ໄຂ'),
                   onPressed: onEdit,
                 ),
               ),
@@ -302,7 +302,7 @@ class _MemberDetailSheet extends StatelessWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   icon: const Icon(Icons.delete_outline),
-                  label: const Text('ลบ'),
+                  label: const Text('ລົບ'),
                   style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.red),
                   onPressed: onDelete,
@@ -398,7 +398,7 @@ class _MemberFormDialogState extends ConsumerState<_MemberFormDialog> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('เกิดข้อผิดพลาด: $e')));
+            .showSnackBar(SnackBar(content: Text('ເກີດຂໍ້ຜິດພາດ: $e')));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -408,7 +408,7 @@ class _MemberFormDialogState extends ConsumerState<_MemberFormDialog> {
   @override
   Widget build(BuildContext context) => AlertDialog(
         title:
-            Text(widget.member == null ? 'เพิ่มสมาชิก' : 'แก้ไขสมาชิก'),
+            Text(widget.member == null ? 'ເພີ່ມສະມາຊິກ' : 'ແກ້ໄຂສະມາຊິກ'),
         content: Form(
           key: _formKey,
           child: SizedBox(
@@ -419,17 +419,17 @@ class _MemberFormDialogState extends ConsumerState<_MemberFormDialog> {
                 TextFormField(
                   controller: _nameCtrl,
                   decoration: const InputDecoration(
-                      labelText: 'ชื่อ *',
+                      labelText: 'ຊື່ *',
                       prefixIcon: Icon(Icons.person_outline)),
                   validator: (v) =>
-                      v == null || v.isEmpty ? 'กรอกชื่อ' : null,
+                      v == null || v.isEmpty ? 'ກລອກຊື່' : null,
                 ),
                 SizedBox(height: 8.h),
                 TextFormField(
                   controller: _phoneCtrl,
                   keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
-                      labelText: 'เบอร์โทร',
+                      labelText: 'ເບີໂທລ',
                       prefixIcon: Icon(Icons.phone_outlined)),
                 ),
                 SizedBox(height: 8.h),
@@ -437,7 +437,7 @@ class _MemberFormDialogState extends ConsumerState<_MemberFormDialog> {
                   controller: _emailCtrl,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                      labelText: 'อีเมล',
+                      labelText: 'ອີເມລ',
                       prefixIcon: Icon(Icons.email_outlined)),
                 ),
               ],
@@ -447,7 +447,7 @@ class _MemberFormDialogState extends ConsumerState<_MemberFormDialog> {
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('ยกเลิก')),
+              child: const Text('ຍົກເລີກ')),
           FilledButton(
             onPressed: _saving ? null : _save,
             child: _saving
@@ -456,7 +456,7 @@ class _MemberFormDialogState extends ConsumerState<_MemberFormDialog> {
                     width: 16,
                     child: CircularProgressIndicator(
                         strokeWidth: 2, color: Colors.white))
-                : const Text('บันทึก'),
+                : const Text('ບັນທຶກ'),
           ),
         ],
       );

@@ -56,8 +56,8 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('ชำระเงิน'), findsOneWidget);
-    expect(find.text('ยอดรวมบิล'), findsOneWidget);
-    expect(find.text('คงเหลือ'), findsOneWidget);
+    expect(find.text('ຊຳລະເງິນ'), findsOneWidget);
+    expect(find.text('ຍອດລວມບິນ'), findsOneWidget);
+    expect(find.text('ຄົງເຫຼືອ'), findsOneWidget);
   });
 }

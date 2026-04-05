@@ -12,12 +12,12 @@ class ThemeSettingsPage extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('ตั้งค่าธีม')),
+      appBar: AppBar(title: const Text('ຕັ້ງຄ່າທີມ')),
       body: ListView(
         padding: EdgeInsets.all(16.w),
         children: [
           Text(
-            'เลือกรูปแบบสีของแอป',
+            'ເລືອກລູບແບບສີຂອງແອັບ',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
@@ -30,8 +30,8 @@ class ThemeSettingsPage extends ConsumerWidget {
               children: [
                 _ThemeOptionTile(
                   icon: Icons.brightness_auto_outlined,
-                  title: 'ตามระบบ',
-                  subtitle: 'เปลี่ยนตามการตั้งค่าของอุปกรณ์',
+                  title: 'ຕາມລະບົບ',
+                  subtitle: 'ປ່ຽນຕາມການຕັ້ງຄ່າຂອງອຸປະກອນ',
                   value: AppThemeMode.system,
                   groupValue: currentMode,
                   onChanged: (v) =>
@@ -40,8 +40,8 @@ class ThemeSettingsPage extends ConsumerWidget {
                 const Divider(height: 1),
                 _ThemeOptionTile(
                   icon: Icons.light_mode_outlined,
-                  title: 'โหมดสว่าง',
-                  subtitle: 'พื้นหลังสีขาว',
+                  title: 'ໂໝດສະຫວ່າງ',
+                  subtitle: 'ພື້ນຫຼັງສີຂາວ',
                   value: AppThemeMode.light,
                   groupValue: currentMode,
                   onChanged: (v) =>
@@ -50,8 +50,8 @@ class ThemeSettingsPage extends ConsumerWidget {
                 const Divider(height: 1),
                 _ThemeOptionTile(
                   icon: Icons.dark_mode_outlined,
-                  title: 'โหมดมืด',
-                  subtitle: 'พื้นหลังสีเข้ม ถนอมสายตา',
+                  title: 'ໂໝດມືດ',
+                  subtitle: 'ພື້ນຫຼັງສີເຂັ້ມ ຖະຫນອມສາຍຕາ',
                   value: AppThemeMode.dark,
                   groupValue: currentMode,
                   onChanged: (v) =>
@@ -64,7 +64,7 @@ class ThemeSettingsPage extends ConsumerWidget {
           SizedBox(height: 24.h),
 
           // ── Preview ───────────────────────────────────────────────
-          Text('ตัวอย่าง', style: theme.textTheme.titleSmall),
+          Text('ຕົວຢ່າງ', style: theme.textTheme.titleSmall),
           SizedBox(height: 8.h),
           _ThemePreview(theme: theme),
         ],
@@ -147,7 +147,7 @@ class _ThemePreview extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.r),
             ),
             child: Text(
-              'แถบด้านบน',
+              'ແຖບດ້ານເທິງ',
               style: TextStyle(
                 color: theme.colorScheme.onPrimary,
                 fontSize: 12.sp,
@@ -161,7 +161,7 @@ class _ThemePreview extends StatelessWidget {
               Expanded(
                 child: _FakeCard(
                   color: theme.colorScheme.primaryContainer,
-                  label: 'การ์ด',
+                  label: 'ກາດ',
                   theme: theme,
                 ),
               ),
@@ -169,7 +169,7 @@ class _ThemePreview extends StatelessWidget {
               Expanded(
                 child: _FakeCard(
                   color: theme.colorScheme.secondaryContainer,
-                  label: 'ข้อมูล',
+                  label: 'ຂໍ້ມູນ',
                   theme: theme,
                 ),
               ),

@@ -46,7 +46,7 @@ class TrainingModePage extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('โหมดฝึกอบรม')),
+      appBar: AppBar(title: const Text('ໂໝດຝຶກອົບລົມ')),
       body: ListView(
         padding: EdgeInsets.all(16.w),
         children: [
@@ -79,7 +79,7 @@ class TrainingModePage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        isTraining ? 'โหมดฝึกอบรมเปิดอยู่' : 'โหมดฝึกอบรมปิดอยู่',
+                        isTraining ? 'ໂໝດຝຶກອົບລົມເປີດຢູ່' : 'ໂໝດຝຶກອົບລົມປິດຢູ່',
                         style: theme.textTheme.titleSmall?.copyWith(
                           color: isTraining ? Colors.orange.shade800 : null,
                           fontWeight: FontWeight.bold,
@@ -87,8 +87,8 @@ class TrainingModePage extends ConsumerWidget {
                       ),
                       Text(
                         isTraining
-                            ? 'ข้อมูลทุกอย่างจะถูกทำเครื่องหมายว่าเป็นการฝึกอบรม'
-                            : 'แอปทำงานในโหมดปกติ',
+                            ? 'ຂໍ້ມູນທຸກຢ່າງຈະຖືກເຣັດເຄື່ອງໝາຍວ່າເປັນການຝຶກອົບລົມ'
+                            : 'ແອັບເຣັດວຽກໃນໂໝດປົກກະຕິ',
                         style: theme.textTheme.bodySmall,
                       ),
                     ],
@@ -107,8 +107,8 @@ class TrainingModePage extends ConsumerWidget {
                 Icons.school,
                 color: isTraining ? Colors.orange : null,
               ),
-              title: const Text('เปิดโหมดฝึกอบรม'),
-              subtitle: const Text('สำหรับฝึกพนักงานใหม่'),
+              title: const Text('ເປີດໂໝດຝຶກອົບລົມ'),
+              subtitle: const Text('ສຳລັບຝຶກພະນັກງານໃໝ່'),
               value: isTraining,
               activeThumbColor: Colors.orange,
               onChanged: (value) async {
@@ -117,25 +117,25 @@ class TrainingModePage extends ConsumerWidget {
                   final confirmed = await showDialog<bool>(
                     context: context,
                     builder: (_) => AlertDialog(
-                      title: const Text('เปิดโหมดฝึกอบรม?'),
+                      title: const Text('ເປີດໂໝດຝຶກອົບລົມ?'),
                       content: const Text(
-                        'ในโหมดนี้:\n'
-                        '• ออเดอร์และการชำระเงินจะถูกทำเครื่องหมาย "ฝึกอบรม"\n'
-                        '• ข้อมูลจะไม่กระทบกับรายงานยอดขายจริง\n'
-                        '• เหมาะสำหรับฝึกพนักงานใหม่\n\n'
-                        'ต้องการเปิดโหมดฝึกอบรมใช่ไหม?',
+                        'ໃນໂໝດນີ້:\n'
+                        '• ອໍເດີແລະການຊຳລະເງິນຈະຖືກເຣັດເຄື່ອງໝາຍ "ຝຶກອົບລົມ"\n'
+                        '• ຂໍ້ມູນຈະບໍ່ກະທົບກັບລາຍງານຍອດຂາຍຈິງ\n'
+                        '• ເໝາະສົມສຳລັບຝຶກພະນັກງານໃໝ່\n\n'
+                        'ຕ້ອງການເປີດໂໝດຝຶກອົບລົມແມ່ນບໍ?',
                       ),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context, false),
-                          child: const Text('ยกเลิก'),
+                          child: const Text('ຍົກເລີກ'),
                         ),
                         FilledButton(
                           style: FilledButton.styleFrom(
                             backgroundColor: Colors.orange,
                           ),
                           onPressed: () => Navigator.pop(context, true),
-                          child: const Text('เปิดโหมดฝึกอบรม'),
+                          child: const Text('ເປີດໂໝດຝຶກອົບລົມ'),
                         ),
                       ],
                     ),
@@ -158,27 +158,27 @@ class TrainingModePage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('โหมดฝึกอบรมคืออะไร?',
+                  Text('ໂໝດຝຶກອົບລົມຄືອຫຍັງ?',
                       style: theme.textTheme.titleSmall),
                   SizedBox(height: 8.h),
                   _BulletPoint(
                     icon: Icons.check_circle_outline,
-                    text: 'ฝึกพนักงานใหม่โดยไม่กระทบข้อมูลจริง',
+                    text: 'ຝຶກພະນັກງານໃໝ່ໂດຍບໍ່ກະທົບຂໍ້ມູນຈິງ',
                     theme: theme,
                   ),
                   _BulletPoint(
                     icon: Icons.check_circle_outline,
-                    text: 'สร้างออเดอร์ทดลองได้อย่างปลอดภัย',
+                    text: 'ສ້າງອໍເດີທົດລອງໄດ້ຢ່າງປອດໄພ',
                     theme: theme,
                   ),
                   _BulletPoint(
                     icon: Icons.check_circle_outline,
-                    text: 'ยอดขายและรายงานจะแยกออกจากข้อมูลจริง',
+                    text: 'ຍອດຂາຍແລະລາຍງານຈະແຍກອອກຈາກຂໍ້ມູນຈິງ',
                     theme: theme,
                   ),
                   _BulletPoint(
                     icon: Icons.warning_amber_outlined,
-                    text: 'ข้อมูลฝึกอบรมไม่สามารถนำมาคิดเงินจริงได้',
+                    text: 'ຂໍ້ມູນຝຶກອົບລົມບໍ່ສາມາດນຳມາຄິດເງິນຈິງໄດ້',
                     theme: theme,
                     color: Colors.orange,
                   ),

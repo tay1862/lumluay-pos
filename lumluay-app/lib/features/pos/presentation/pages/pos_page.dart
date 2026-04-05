@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/services/sound_player_util.dart';
 import '../../../products/data/products_repository.dart';
 import '../../data/pos_repository.dart';
@@ -211,7 +212,7 @@ class _PosPageState extends ConsumerState<PosPage>
     final authState = ref.watch(authProvider);
     final userName = authState is AuthAuthenticated
         ? authState.user.displayName
-        : 'ระบบ';
+        : 'ລະບົບ';
     final now = DateTime.now();
     final formatter = DateFormat('EEE d MMM y  HH:mm');
 
@@ -360,36 +361,70 @@ class _PosHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      height: 56.h,
-      color: Theme.of(context).colorScheme.primary,
+      height: 60.h,
+      decoration: BoxDecoration(
+        gradient: isDark ? AppColors.darkHeroGradient : AppColors.primaryGradient,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.18),
+            blurRadius: 12,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
         children: [
-          Text(
-            'LUMLUAY POS',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 1,
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(AppRadius.sm),
+            ),
+            child: Text(
+              'LUMLUAY',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1.5,
+              ),
             ),
           ),
-          SizedBox(width: 16.w),
+          SizedBox(width: 14.w),
           Expanded(
             child: Text(
               dateTime,
-              style: TextStyle(color: Colors.white70, fontSize: 13.sp),
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.85),
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-          Chip(
-            avatar: const Icon(Icons.person, size: 16, color: Colors.white),
-            label: Text(
-              userName,
-              style: const TextStyle(color: Colors.white, fontSize: 12),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(AppRadius.pill),
             ),
-            backgroundColor: Colors.white24,
-            side: BorderSide.none,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.person_rounded, size: 16.sp, color: Colors.white),
+                SizedBox(width: 6.w),
+                Text(
+                  userName,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(width: 10.w),
           AnimatedScale(
@@ -398,32 +433,27 @@ class _PosHeader extends StatelessWidget {
             scale: cartScale,
             child: Container(
               key: cartIconKey,
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
               decoration: BoxDecoration(
-                color: Colors.white24,
-                borderRadius: BorderRadius.circular(14.r),
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(AppRadius.pill),
+                border: Border.all(color: Colors.white.withOpacity(0.25)),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.shopping_cart, color: Colors.white, size: 16),
+                  Icon(Icons.shopping_bag_rounded, color: Colors.white, size: 16.sp),
                   SizedBox(width: 6.w),
                   Text(
                     '$cartItemCount',
                     style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 13.sp,
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-          SizedBox(width: 8.w),
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
-            tooltip: 'ออกจากระบบ',
-            onPressed: () {},
           ),
         ],
       ),
@@ -439,19 +469,32 @@ class _CategoryStrip extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final categoriesAsync = ref.watch(categoriesProvider);
     final selected = ref.watch(selectedCategoryProvider);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      height: 50.h,
-      color: Colors.white,
+      height: 52.h,
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.surfaceDark : AppColors.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: isDark ? AppColors.borderDark : AppColors.borderLight,
+          ),
+        ),
+      ),
       child: categoriesAsync.when(
-        loading: () => const Center(child: LinearProgressIndicator()),
+        loading: () => Center(
+          child: LinearProgressIndicator(
+            color: AppColors.primary,
+            backgroundColor: AppColors.primarySoft,
+          ),
+        ),
         error: (_, __) => const SizedBox(),
         data: (cats) => ListView(
           scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
           children: [
             _CategoryChip(
-              label: 'ทั้งหมด',
+              label: 'ທັງໝົດ',
               isSelected: selected == null,
               onTap: () =>
                   ref.read(selectedCategoryProvider.notifier).state = null,
@@ -482,18 +525,39 @@ class _CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: EdgeInsets.only(right: 8.w),
-      child: FilterChip(
-        label: Text(label),
-        selected: isSelected,
-        onSelected: (_) => onTap(),
-        selectedColor: Theme.of(context).colorScheme.primary,
-        labelStyle: TextStyle(
-          color: isSelected ? Colors.white : Colors.black87,
-          fontSize: 13.sp,
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+          decoration: BoxDecoration(
+            gradient: isSelected ? AppColors.primaryGradient : null,
+            color: isSelected
+                ? null
+                : isDark
+                    ? AppColors.surfaceVariantDark
+                    : AppColors.surfaceVariant,
+            borderRadius: BorderRadius.circular(AppRadius.pill),
+            boxShadow: isSelected ? AppShadows.primaryGlow(0.15) : null,
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontFamily: 'Sarabun',
+              fontSize: 13.sp,
+              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+              color: isSelected
+                  ? Colors.white
+                  : isDark
+                      ? AppColors.textSecondaryDark
+                      : AppColors.textSecondary,
+            ),
+          ),
         ),
-        showCheckmark: false,
       ),
     );
   }
@@ -523,16 +587,16 @@ class _ProductSectionState extends ConsumerState<_ProductSection> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('ระบุราคา ${product.name}'),
+          title: Text('ລະບຸລາຄາ ${product.name}'),
           content: TextField(
             controller: ctrl,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: const InputDecoration(prefixText: '฿ ', hintText: '0.00'),
+            decoration: const InputDecoration(prefixText: '₭ ', hintText: '0.00'),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('ยกเลิก'),
+              child: const Text('ຍົກເລີກ'),
             ),
             FilledButton(
               onPressed: () {
@@ -540,7 +604,7 @@ class _ProductSectionState extends ConsumerState<_ProductSection> {
                 if (parsed == null || parsed <= 0) return;
                 Navigator.of(context).pop(parsed);
               },
-              child: const Text('ยืนยัน'),
+              child: const Text('ຢືນຢັນ'),
             ),
           ],
         );
@@ -579,7 +643,7 @@ class _ProductSectionState extends ConsumerState<_ProductSection> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(vertical: 12.h),
-              child: Text('สแกน Barcode',
+              child: Text('ສະແກນ Barcode',
                   style:
                       TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700)),
             ),
@@ -616,7 +680,7 @@ class _ProductSectionState extends ConsumerState<_ProductSection> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('ไม่พบสินค้าสำหรับ barcode: $code'),
+          content: Text('ບໍ່ພົບສິນຄ້າສຳລັບ barcode: $code'),
           duration: const Duration(seconds: 2),
         ),
       );
@@ -632,7 +696,7 @@ class _ProductSectionState extends ConsumerState<_ProductSection> {
 
     return productsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('เกิดข้อผิดพลาด: $e')),
+      error: (e, _) => Center(child: Text('ເກີດຂໍ້ຜິດພາດ: $e')),
       data: (products) {
         final q = query.trim().toLowerCase();
         final filtered = q.isEmpty
@@ -703,7 +767,7 @@ class _ProductToolsBar extends StatelessWidget {
               onChanged: onQueryChanged,
               decoration: InputDecoration(
                 isDense: true,
-                hintText: 'ค้นหาสินค้า / SKU / Barcode',
+                hintText: 'ຄົ້ນຫາສິນຄ້າ / SKU / Barcode',
                 prefixIcon: const Icon(Icons.search),
               ),
             ),
@@ -712,15 +776,15 @@ class _ProductToolsBar extends StatelessWidget {
           // 17.2.4 Camera barcode scan button
           IconButton.filledTonal(
             onPressed: onScanPressed,
-            tooltip: 'สแกน Barcode',
+            tooltip: 'ສະແກນ Barcode',
             icon: const Icon(Icons.qr_code_scanner),
           ),
           SizedBox(width: 6.w),
           IconButton.filledTonal(
             onPressed: onToggleView,
             tooltip: viewMode == PosProductViewMode.grid
-                ? 'สลับเป็น List'
-                : 'สลับเป็น Grid',
+                ? 'ສະຫຼັບເປັນ List'
+                : 'ສະຫຼັບເປັນ Grid',
             icon: Icon(
               viewMode == PosProductViewMode.grid
                   ? Icons.view_list_rounded
@@ -744,51 +808,63 @@ class _MobileCartBottomBar extends StatelessWidget {
     final money = NumberFormat('#,##0.00', 'th_TH');
     return SafeArea(
       top: false,
-      child: Material(
-        color: Theme.of(context).colorScheme.primary,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-                  decoration: BoxDecoration(
-                    color: Colors.white24,
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: Text(
-                    '${cart.itemCount} รายการ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12.sp,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: AppColors.primaryGradient,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primary.withOpacity(0.3),
+              blurRadius: 16,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                    ),
+                    child: Text(
+                      '${cart.itemCount} ລາຍການ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12.sp,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: Text(
-                    'ดูตะกร้า',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w700,
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      'ເບິ່ງກະຕ່າ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  '฿${money.format(cart.total)}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w800,
+                  Text(
+                    '₭${money.format(cart.total)}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
-                ),
-                SizedBox(width: 6.w),
-                const Icon(Icons.keyboard_arrow_up, color: Colors.white),
-              ],
+                  SizedBox(width: 6.w),
+                  const Icon(Icons.keyboard_arrow_up_rounded, color: Colors.white),
+                ],
+              ),
             ),
           ),
         ),

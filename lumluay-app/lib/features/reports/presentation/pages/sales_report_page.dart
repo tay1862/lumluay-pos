@@ -24,12 +24,12 @@ class SalesReportPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('รายงานยอดขาย'),
+        title: const Text('ລາຍງານຍອດຂາຍ'),
         actions: [
           // ── 15.2.8 Export CSV ────────────────────────────────────────────
           IconButton(
             icon: const Icon(Icons.download_outlined),
-            tooltip: 'ส่งออก CSV',
+            tooltip: 'ສົ່ງອອກ CSV',
             onPressed: () => _exportCsv(context, ref, range),
           ),
           TextButton.icon(
@@ -64,7 +64,7 @@ class SalesReportPage extends ConsumerWidget {
             SizedBox(height: 16.h),
 
             // ── Daily Table ──────────────────────────────────────────────
-            Text('รายได้รายวัน',
+            Text('ລາຍໄດ້ລາຍວັນ',
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium
@@ -77,7 +77,7 @@ class SalesReportPage extends ConsumerWidget {
                   ? Card(
                       child: Padding(
                         padding: EdgeInsets.all(24.h),
-                        child: const Center(child: Text('ไม่มีข้อมูลในช่วงนี้')),
+                        child: const Center(child: Text('ບໍ່ມີຂໍ້ມູນໃນຊ່ວງນີ້')),
                       ),
                     )
                   : Card(
@@ -99,20 +99,20 @@ class SalesReportPage extends ConsumerWidget {
                             child: Row(
                               children: [
                                 Expanded(
-                                    child: Text('วันที่',
+                                    child: Text('ວັນທີ',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 13.sp))),
                                 SizedBox(
                                     width: 80.w,
-                                    child: Text('ออเดอร์',
+                                    child: Text('ອໍເດີ',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 13.sp))),
                                 SizedBox(
                                     width: 100.w,
-                                    child: Text('รายได้',
+                                    child: Text('ລາຍໄດ້',
                                         textAlign: TextAlign.right,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
@@ -151,7 +151,7 @@ class SalesReportPage extends ConsumerWidget {
                                     SizedBox(
                                         width: 100.w,
                                         child: Text(
-                                          '฿${fmtMoney.format(d.revenue)}',
+                                          '₭${fmtMoney.format(d.revenue)}',
                                           textAlign: TextAlign.right,
                                           style: TextStyle(
                                               fontSize: 13.sp,
@@ -184,7 +184,7 @@ class SalesReportPage extends ConsumerWidget {
                               child: Row(
                                 children: [
                                   Expanded(
-                                      child: Text('รวม',
+                                      child: Text('ລວມ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 13.sp))),
@@ -198,7 +198,7 @@ class SalesReportPage extends ConsumerWidget {
                                   SizedBox(
                                       width: 100.w,
                                       child: Text(
-                                          '฿${fmtMoney.format(totalRev)}',
+                                          '₭${fmtMoney.format(totalRev)}',
                                           textAlign: TextAlign.right,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -255,13 +255,13 @@ class SalesReportPage extends ConsumerWidget {
       await file.writeAsBytes(csvBytes);
       messenger.showSnackBar(
         SnackBar(
-          content: Text('บันทึกไฟล์แล้ว: ${file.path}'),
-          action: SnackBarAction(label: 'ตกลง', onPressed: () {}),
+          content: Text('ບັນທຶກໄຟລ໌ແລ້ວ: ${file.path}'),
+          action: SnackBarAction(label: 'ຕົກລົງ', onPressed: () {}),
         ),
       );
     } catch (e) {
       messenger
-          .showSnackBar(SnackBar(content: Text('ส่งออกไม่สำเร็จ: $e')));
+          .showSnackBar(SnackBar(content: Text('ສົ່ງອອກບໍ່ສຳເລັດ: $e')));
     }
   }
 }
@@ -290,22 +290,22 @@ class _SummaryStrip extends StatelessWidget {
         Row(
           children: [
             _KpiCard(
-              label: 'รายได้รวม',
-              value: '฿${fmtMoney.format(revenue)}',
+              label: 'ລາຍໄດ້ລວມ',
+              value: '₭${fmtMoney.format(revenue)}',
               icon: Icons.payments_outlined,
               color: Colors.green,
             ),
             SizedBox(width: 8.w),
             _KpiCard(
-              label: 'จำนวนออเดอร์',
+              label: 'ຈຳນວນອໍເດີ',
               value: '$orders',
               icon: Icons.receipt_long_outlined,
               color: Colors.blue,
             ),
             SizedBox(width: 8.w),
             _KpiCard(
-              label: 'เฉลี่ย/ออเดอร์',
-              value: '฿${fmtMoney.format(avg)}',
+              label: 'ສະເລຍ/ອໍເດີ',
+              value: '₭${fmtMoney.format(avg)}',
               icon: Icons.trending_up,
               color: Colors.orange,
             ),
@@ -319,7 +319,7 @@ class _SummaryStrip extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('ช่องทางชำระเงิน',
+                  Text('ຊ່ອງທາງຊຳລະເງິນ',
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
@@ -334,7 +334,7 @@ class _SummaryStrip extends StatelessWidget {
                           Text(e.key,
                               style: TextStyle(fontSize: 13.sp)),
                           Text(
-                            '฿${fmtMoney.format((e.value as num).toDouble())}',
+                            '₭${fmtMoney.format((e.value as num).toDouble())}',
                             style: TextStyle(
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.w600),

@@ -17,7 +17,7 @@ class ProductListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (products.isEmpty) {
-      return const Center(child: Text('ไม่มีสินค้า'));
+      return const Center(child: Text('ບໍ່ມີສິນຄ້າ'));
     }
 
     final money = NumberFormat('#,##0.00', 'th_TH');
@@ -50,7 +50,7 @@ class ProductListView extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
-            '฿${money.format(product.price)}',
+            '₭${money.format(product.price)}',
             style: TextStyle(color: Theme.of(context).colorScheme.primary),
           ),
           trailing: IconButton(

@@ -7,6 +7,7 @@ import '../../core/services/auto_lock_service.dart';
 import '../../core/sync/sync_engine.dart';
 import '../../core/sync/sync_notifier.dart';
 import '../../core/services/connectivity_bloc.dart';
+import '../../core/theme/app_theme.dart';
 import 'offline_banner.dart';
 import 'language_switcher.dart';
 import 'sync_status_indicator.dart';
@@ -39,83 +40,83 @@ bool _canAccessNavItem(_NavItem item, String userRole) {
 const _navItems = [
   _NavItem(
     path: '/dashboard',
-    label: 'หน้าหลัก',
+    label: 'ໜ້າຫຼັກ',
     icon: Icons.dashboard_outlined,
-    selectedIcon: Icons.dashboard,
+    selectedIcon: Icons.dashboard_rounded,
   ),
   _NavItem(
     path: '/pos',
-    label: 'ขายสินค้า',
+    label: 'ຂາຍສິນຄ້າ',
     icon: Icons.point_of_sale_outlined,
-    selectedIcon: Icons.point_of_sale,
+    selectedIcon: Icons.point_of_sale_rounded,
   ),
   _NavItem(
     path: '/tables',
-    label: 'ผังโต๊ะ',
+    label: 'ຜັງໂຕະ',
     icon: Icons.table_restaurant_outlined,
-    selectedIcon: Icons.table_restaurant,
+    selectedIcon: Icons.table_restaurant_rounded,
   ),
   _NavItem(
     path: '/orders',
-    label: 'ออเดอร์',
+    label: 'ອໍເດີ',
     icon: Icons.receipt_long_outlined,
-    selectedIcon: Icons.receipt_long,
+    selectedIcon: Icons.receipt_long_rounded,
   ),
   _NavItem(
     path: '/kitchen',
-    label: 'ครัว (KDS)',
+    label: 'ຄົວ (KDS)',
     icon: Icons.restaurant_outlined,
-    selectedIcon: Icons.restaurant,
+    selectedIcon: Icons.restaurant_rounded,
   ),
   _NavItem(
     path: '/queue',
-    label: 'คิว',
+    label: 'ຄິວ',
     icon: Icons.people_outline,
-    selectedIcon: Icons.people,
+    selectedIcon: Icons.people_rounded,
   ),
   _NavItem(
     path: '/members',
-    label: 'สมาชิก',
+    label: 'ສະມາຊິກ',
     icon: Icons.person_outline,
-    selectedIcon: Icons.person,
+    selectedIcon: Icons.person_rounded,
   ),
   _NavItem(
     path: '/coupons',
-    label: 'คูปอง',
+    label: 'ຄູປອງ',
     icon: Icons.confirmation_number_outlined,
-    selectedIcon: Icons.confirmation_number,
+    selectedIcon: Icons.confirmation_number_rounded,
     roles: ['owner', 'manager'],
   ),
   _NavItem(
     path: '/stock',
-    label: 'สต็อก',
+    label: 'ສະຕ໋ອກ',
     icon: Icons.inventory_2_outlined,
-    selectedIcon: Icons.inventory_2,
+    selectedIcon: Icons.inventory_2_rounded,
   ),
   _NavItem(
     path: '/products',
-    label: 'สินค้า',
+    label: 'ສິນຄ້າ',
     icon: Icons.storefront_outlined,
-    selectedIcon: Icons.storefront,
+    selectedIcon: Icons.storefront_rounded,
   ),
   _NavItem(
     path: '/reports',
-    label: 'รายงาน',
+    label: 'ລາຍງານ',
     icon: Icons.bar_chart_outlined,
-    selectedIcon: Icons.bar_chart,
+    selectedIcon: Icons.bar_chart_rounded,
     roles: ['owner', 'manager'],
   ),
   _NavItem(
     path: '/shifts',
-    label: 'กะ',
+    label: 'ກະ',
     icon: Icons.timer_outlined,
-    selectedIcon: Icons.timer,
+    selectedIcon: Icons.timer_rounded,
   ),
   _NavItem(
     path: '/settings',
-    label: 'ตั้งค่า',
+    label: 'ຕັ້ງຄ່າ',
     icon: Icons.settings_outlined,
-    selectedIcon: Icons.settings,
+    selectedIcon: Icons.settings_rounded,
     roles: ['owner', 'manager'],
   ),
 ];
@@ -124,27 +125,27 @@ const _navItems = [
 const _bottomNavItems = [
   _NavItem(
     path: '/dashboard',
-    label: 'หน้าหลัก',
+    label: 'ໜ້າຫຼັກ',
     icon: Icons.dashboard_outlined,
-    selectedIcon: Icons.dashboard,
+    selectedIcon: Icons.dashboard_rounded,
   ),
   _NavItem(
     path: '/pos',
-    label: 'ขาย',
+    label: 'ຂາຍ',
     icon: Icons.point_of_sale_outlined,
-    selectedIcon: Icons.point_of_sale,
+    selectedIcon: Icons.point_of_sale_rounded,
   ),
   _NavItem(
     path: '/tables',
-    label: 'โต๊ะ',
+    label: 'ໂຕະ',
     icon: Icons.table_restaurant_outlined,
-    selectedIcon: Icons.table_restaurant,
+    selectedIcon: Icons.table_restaurant_rounded,
   ),
   _NavItem(
     path: '/orders',
-    label: 'ออเดอร์',
+    label: 'ອໍເດີ',
     icon: Icons.receipt_long_outlined,
-    selectedIcon: Icons.receipt_long,
+    selectedIcon: Icons.receipt_long_rounded,
   ),
 ];
 
@@ -306,8 +307,8 @@ class _NarrowShell extends ConsumerWidget {
                 label: item.label,
               )),
           const NavigationDestination(
-            icon: Icon(Icons.more_horiz),
-            label: 'เพิ่มเติม',
+            icon: Icon(Icons.more_horiz_rounded),
+            label: 'ເພີ່ມເຕີມ',
           ),
         ],
       ),
@@ -360,15 +361,16 @@ class ShellTopBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final title = _titleForPath(currentPath);
     final initial = userName.isEmpty ? '?' : userName.substring(0, 1);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       height: 56.h,
-      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      padding: EdgeInsets.symmetric(horizontal: 14.w),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: isDark ? AppColors.surfaceDark : AppColors.surface,
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.15),
+            color: isDark ? AppColors.borderDark : AppColors.borderLight,
           ),
         ),
       ),
@@ -377,7 +379,12 @@ class ShellTopBar extends ConsumerWidget {
           Expanded(
             child: Text(
               title,
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                fontFamily: 'Sarabun',
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+                color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
+              ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -388,8 +395,11 @@ class ShellTopBar extends ConsumerWidget {
           Stack(
             children: [
               IconButton(
-                icon: const Icon(Icons.notifications_none),
-                tooltip: 'การแจ้งเตือน',
+                icon: Icon(
+                  Icons.notifications_none_rounded,
+                  color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                ),
+                tooltip: 'ການແຈ້ງເຕືອນ',
                 onPressed: () => context.push('/notifications'),
               ),
               Positioned(
@@ -398,8 +408,8 @@ class ShellTopBar extends ConsumerWidget {
                 child: Container(
                   width: 8,
                   height: 8,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -407,16 +417,25 @@ class ShellTopBar extends ConsumerWidget {
             ],
           ),
           IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            tooltip: 'ตั้งค่า',
+            icon: Icon(
+              Icons.settings_outlined,
+              color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+            ),
+            tooltip: 'ຕັ້ງຄ່າ',
             onPressed: () => context.push('/settings'),
           ),
           SizedBox(width: 8.w),
           CircleAvatar(
             radius: 16.r,
+            backgroundColor: AppColors.primarySoft,
             child: Text(
               initial,
-              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                fontFamily: 'Sarabun',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primary,
+              ),
             ),
           ),
         ],
@@ -425,19 +444,19 @@ class ShellTopBar extends ConsumerWidget {
   }
 
   String _titleForPath(String path) {
-    if (path.startsWith('/dashboard')) return 'ภาพรวมธุรกิจ';
-    if (path.startsWith('/pos')) return 'ขายสินค้า';
-    if (path.startsWith('/tables')) return 'ผังโต๊ะ';
-    if (path.startsWith('/orders')) return 'ออเดอร์';
-    if (path.startsWith('/kitchen')) return 'ครัว (KDS)';
-    if (path.startsWith('/queue')) return 'จัดการคิว';
-    if (path.startsWith('/members')) return 'สมาชิก';
-    if (path.startsWith('/coupons')) return 'คูปอง';
-    if (path.startsWith('/stock')) return 'สต็อก';
-    if (path.startsWith('/products')) return 'จัดการสินค้า';
-    if (path.startsWith('/reports')) return 'รายงาน';
-    if (path.startsWith('/settings')) return 'ตั้งค่า';
-    if (path.startsWith('/notifications')) return 'การแจ้งเตือน';
+    if (path.startsWith('/dashboard')) return 'ພາບລວມທຸລະກິດ';
+    if (path.startsWith('/pos')) return 'ຂາຍສິນຄ້າ';
+    if (path.startsWith('/tables')) return 'ຜັງໂຕະ';
+    if (path.startsWith('/orders')) return 'ອໍເດີ';
+    if (path.startsWith('/kitchen')) return 'ຄົວ (KDS)';
+    if (path.startsWith('/queue')) return 'ຈັດການຄິວ';
+    if (path.startsWith('/members')) return 'ສະມາຊິກ';
+    if (path.startsWith('/coupons')) return 'ຄູປອງ';
+    if (path.startsWith('/stock')) return 'ສະຕ໋ອກ';
+    if (path.startsWith('/products')) return 'ຈັດການສິນຄ້າ';
+    if (path.startsWith('/reports')) return 'ລາຍງານ';
+    if (path.startsWith('/settings')) return 'ຕັ້ງຄ່າ';
+    if (path.startsWith('/notifications')) return 'ການແຈ້ງເຕືອນ';
     return 'LUMLUAY POS';
   }
 }
@@ -457,6 +476,7 @@ class _NavHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         SizedBox(height: 8.h),
@@ -466,11 +486,11 @@ class _NavHeader extends ConsumerWidget {
             child: Row(
               children: [
                 Container(
-                  width: 32.w,
-                  height: 32.w,
+                  width: 34.w,
+                  height: 34.w,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(8.r),
+                    gradient: AppColors.primaryGradient,
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
                   ),
                   child: Center(
                     child: Text('L',
@@ -480,24 +500,29 @@ class _NavHeader extends ConsumerWidget {
                             fontSize: 18.sp)),
                   ),
                 ),
-                SizedBox(width: 8.w),
+                SizedBox(width: 10.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('LUMLUAY',
                           style: TextStyle(
+                              fontFamily: 'Sarabun',
                               fontWeight: FontWeight.w800,
-                              fontSize: 13.sp)),
+                              fontSize: 13.sp,
+                              color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary)),
                       Text(userName,
                           style: TextStyle(
-                              fontSize: 10.sp, color: Colors.black54),
+                              fontFamily: 'Sarabun',
+                              fontSize: 10.sp,
+                              color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary),
                           overflow: TextOverflow.ellipsis),
                     ],
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.chevron_left, size: 20),
+                  icon: Icon(Icons.chevron_left_rounded, size: 20,
+                      color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary),
                   onPressed: onToggle,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -507,7 +532,8 @@ class _NavHeader extends ConsumerWidget {
           ),
         ] else
           IconButton(
-            icon: const Icon(Icons.menu, size: 20),
+            icon: Icon(Icons.menu_rounded, size: 20,
+                color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary),
             onPressed: onToggle,
           ),
         SizedBox(height: 8.h),
@@ -525,19 +551,21 @@ class _NavTrailer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: EdgeInsets.only(bottom: 8.h),
       child: Column(
         children: [
           SyncStatusIndicator(expanded: expanded),
           IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            tooltip: 'การแจ้งเตือน',
+            icon: Icon(Icons.notifications_outlined,
+                color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary),
+            tooltip: 'ການແຈ້ງເຕືອນ',
             onPressed: () => context.push('/notifications'),
           ),
           IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'ออกจากระบบ',
+            icon: Icon(Icons.logout_rounded, color: AppColors.error.withOpacity(0.7)),
+            tooltip: 'ອອກຈາກລະບົບ',
             onPressed: () async {
               await ref.read(authProvider.notifier).logout();
               if (context.mounted) context.go('/login');
@@ -570,28 +598,28 @@ class _TopBarSyncButton extends ConsumerWidget {
     final Widget? overlay;
 
     if (!isOnline) {
-      dotColor = Theme.of(context).colorScheme.error;
-      tooltip = 'ออฟไลน์';
+      dotColor = AppColors.error;
+      tooltip = 'ອອບໄລນ໌';
       overlay = null;
     } else if (syncState.isSyncing) {
-      dotColor = Theme.of(context).colorScheme.primary;
-      tooltip = 'กำลังซิงค์...';
+      dotColor = AppColors.primary;
+      tooltip = 'ກຳລັງຊິງຄ໌...';
       overlay = SizedBox(
         width: 16.w,
         height: 16.w,
         child: CircularProgressIndicator(strokeWidth: 2, color: dotColor),
       );
     } else if (syncState.hasError) {
-      dotColor = Colors.orange;
-      tooltip = 'ซิงค์ล้มเหลว — แตะเพื่อลองใหม่';
+      dotColor = AppColors.warning;
+      tooltip = 'ຊິງຄ໌ລົ້ມເຫຼວ — ແຕະເພື່ອລອງໃໝ່';
       overlay = null;
     } else if (syncState.pendingCount > 0) {
-      dotColor = Colors.orange;
-      tooltip = 'รอซิงค์ ${syncState.pendingCount} รายการ — แตะเพื่อซิงค์';
+      dotColor = AppColors.warning;
+      tooltip = 'ລໍຖ້າຊິງຄ໌ ${syncState.pendingCount} ລາຍການ';
       overlay = null;
     } else {
-      dotColor = Colors.green;
-      tooltip = syncState.lastSyncAt != null ? 'ซิงค์แล้ว' : 'ออนไลน์';
+      dotColor = AppColors.success;
+      tooltip = syncState.lastSyncAt != null ? 'ຊິງຄ໌ແລ້ວ' : 'ອອນໄລນ໌';
       overlay = null;
     }
 

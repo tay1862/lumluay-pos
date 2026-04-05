@@ -107,7 +107,7 @@ class _PinLockPageState extends ConsumerState<PinLockPage>
     final authState = ref.watch(authProvider);
     final displayName = authState is AuthAuthenticated
         ? authState.user.displayName
-        : 'ผู้ใช้งาน';
+        : 'ຜູ້ໃຊ້ງານ';
 
     return Scaffold(
       backgroundColor: AppColors.primary,
@@ -138,7 +138,7 @@ class _PinLockPageState extends ConsumerState<PinLockPage>
             ),
             SizedBox(height: 6.h),
             Text(
-              'กรุณาใส่ PIN',
+              'ກະລຸນາໃສ່ PIN',
               style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.75),
                   fontSize: 13.sp),
@@ -185,7 +185,7 @@ class _PinLockPageState extends ConsumerState<PinLockPage>
             if (_error) ...[
               SizedBox(height: 12.h),
               Text(
-                'PIN ไม่ถูกต้อง ลองอีกครั้ง',
+                'PIN ບໍ່ຖືກຕ້ອງ ລອງອີກຄັ້ງ',
                 style: TextStyle(
                     color: Colors.red.shade200, fontSize: 12.sp),
               ),
@@ -231,7 +231,7 @@ class _PinLockPageState extends ConsumerState<PinLockPage>
             TextButton(
               onPressed: () => context.go('/login'),
               child: Text(
-                'เปลี่ยนผู้ใช้',
+                'ປ່ຽນຜູ້ໃຊ້',
                 style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.7),
                     fontSize: 13.sp),

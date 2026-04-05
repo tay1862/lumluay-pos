@@ -58,7 +58,7 @@ class FcmService {
     const channel = AndroidNotificationChannel(
       'lumluay_high_importance',
       'LUMLUAY Alerts',
-      description: 'ออเดอร์และการแจ้งเตือนจาก LUMLUAY POS',
+      description: 'ອໍເດີແລະການແຈ້ງເຕືອນຈາກ LUMLUAY POS',
       importance: Importance.max,
     );
     await _localNotifications
@@ -92,7 +92,7 @@ class FcmService {
         android: AndroidNotificationDetails(
           'lumluay_high_importance',
           'LUMLUAY Alerts',
-          channelDescription: 'ออเดอร์และการแจ้งเตือนจาก LUMLUAY POS',
+          channelDescription: 'ອໍເດີແລະການແຈ້ງເຕືອນຈາກ LUMLUAY POS',
           importance: Importance.max,
           priority: Priority.high,
           icon: '@mipmap/ic_launcher',

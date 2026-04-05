@@ -16,11 +16,11 @@ class TablesPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ผังโต๊ะ'),
+        title: const Text('ແຜນຜັງໂຕະ'),
         actions: [
           IconButton(
             icon: const Icon(Icons.tune),
-            tooltip: 'จัดการโซน',
+            tooltip: 'ຈັດການໂຊນ',
             onPressed: () => context.push('/settings/zones'),
           ),
           IconButton(
@@ -49,7 +49,7 @@ class TablesPage extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: const Icon(Icons.add),
-        label: const Text('เปิดโต๊ะใหม่'),
+        label: const Text('ເປີດໂຕະໃໝ່'),
         onPressed: () => _showOpenTableDialog(context, ref),
       ),
     );
@@ -84,7 +84,7 @@ class _OpenTableDialogState extends ConsumerState<_OpenTableDialog> {
     final tablesAsync = ref.watch(tablesProvider(null));
 
     return AlertDialog(
-      title: const Text('เปิดโต๊ะใหม่'),
+      title: const Text('ເປີດໂຕະໃໝ່'),
       contentPadding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       content: SizedBox(
         width: 400.w,
@@ -99,7 +99,7 @@ class _OpenTableDialogState extends ConsumerState<_OpenTableDialog> {
             if (available.isEmpty) {
               return const Padding(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                child: Text('ไม่มีโต๊ะว่าง'),
+                child: Text('ບໍ່ມີໂຕະວ່າງ'),
               );
             }
 
@@ -128,7 +128,7 @@ class _OpenTableDialogState extends ConsumerState<_OpenTableDialog> {
           ),
         TextButton(
           onPressed: _loading ? null : () => Navigator.pop(context),
-          child: const Text('ยกเลิก'),
+          child: const Text('ຍົກເລີກ'),
         ),
         FilledButton(
           onPressed: _selectedTableId == null || _loading ? null : _confirm,
@@ -137,7 +137,7 @@ class _OpenTableDialogState extends ConsumerState<_OpenTableDialog> {
                   width: 18,
                   height: 18,
                   child: CircularProgressIndicator(strokeWidth: 2))
-              : const Text('เปิดโต๊ะ'),
+              : const Text('ເປີດໂຕະ'),
         ),
       ],
     );
@@ -180,7 +180,7 @@ class _ZoneTabs extends ConsumerWidget {
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
         children: [
-          _ZoneChip(label: 'ทั้งหมด', selected: selectedId == null, onTap: () {
+          _ZoneChip(label: 'ທັງໝົດ', selected: selectedId == null, onTap: () {
             ref.read(selectedZoneIdProvider.notifier).state = null;
           }),
           ...zones.map((z) => _ZoneChip(
@@ -236,7 +236,7 @@ class _TablesGrid extends ConsumerWidget {
               children: [
                 Icon(Icons.table_restaurant, size: 48, color: Colors.black26),
                 SizedBox(height: 12),
-                Text('ไม่มีโต๊ะ', style: TextStyle(color: Colors.black54)),
+                Text('ບໍ່ມີໂຕະ', style: TextStyle(color: Colors.black54)),
               ],
             ),
           );
@@ -280,10 +280,10 @@ class _TableCard extends ConsumerWidget {
       };
 
   String _statusLabel() => switch (table.status) {
-    TableStatus.occupied => 'มีคนอยู่',
-    TableStatus.reserved => 'จอง',
-    TableStatus.cleaning => 'ทำความสะอาด',
-        _ => 'ว่าง',
+    TableStatus.occupied => 'ມີຄົນຢູ່',
+    TableStatus.reserved => 'ຈອງ',
+    TableStatus.cleaning => 'ທຳຄວາມສະອາດ',
+        _ => 'ວ່າງ',
       };
 
   @override
@@ -349,7 +349,7 @@ class _TableCard extends ConsumerWidget {
             const Spacer(),
             if (table.currentOrderTotal != null)
               Text(
-                '฿${fmtMoney.format(table.currentOrderTotal)}',
+                '₭${fmtMoney.format(table.currentOrderTotal)}',
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w700,
@@ -357,7 +357,7 @@ class _TableCard extends ConsumerWidget {
               ),
             if (elapsed != null)
               Text(
-                '$elapsed นาที',
+                '$elapsed ນາທີ',
                 style: TextStyle(fontSize: 10.sp, color: Colors.black45),
               ),
           ],
@@ -398,7 +398,7 @@ class _TableCard extends ConsumerWidget {
       if (options.isEmpty) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('ไม่มีโต๊ะว่างสำหรับย้าย')),
+            const SnackBar(content: Text('ບໍ່ມີໂຕະວ່າງສຳລັບຍ້າຍ')),
           );
         }
         return;
@@ -408,7 +408,7 @@ class _TableCard extends ConsumerWidget {
       final target = await showDialog<TableModel>(
         context: context,
         builder: (ctx) => SimpleDialog(
-          title: const Text('ย้ายไปโต๊ะ'),
+          title: const Text('ຍ້າຍໄປໂຕະ'),
           children: options
               .map(
                 (t) => SimpleDialogOption(
@@ -433,7 +433,7 @@ class _TableCard extends ConsumerWidget {
       if (candidates.isEmpty) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('ไม่มีโต๊ะที่รวมได้')),
+            const SnackBar(content: Text('ບໍ່ມີໂຕະທີ່ລວມໄດ້')),
           );
         }
         return;
@@ -445,7 +445,7 @@ class _TableCard extends ConsumerWidget {
         context: context,
         builder: (ctx) => StatefulBuilder(
           builder: (ctx, setDialogState) => AlertDialog(
-            title: Text('รวมเข้ากับ ${table.name}'),
+            title: Text('ລວມເຂົ້າກັບ ${table.name}'),
             content: SizedBox(
               width: 320,
               child: ListView(
@@ -470,8 +470,8 @@ class _TableCard extends ConsumerWidget {
               ),
             ),
             actions: [
-              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('ยกเลิก')),
-              FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('รวม')),
+              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('ຍົກເລີກ')),
+              FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('ລວມ')),
             ],
           ),
         ),
@@ -488,7 +488,7 @@ class _TableCard extends ConsumerWidget {
     Future<void> splitTableFlow() async {
       final orderId = table.currentOrderId;
       if (orderId == null) {
-        throw Exception('ไม่พบออเดอร์ที่โต๊ะนี้');
+        throw Exception('ບໍ່ພົບອໍເດີທີ່ໂຕະນີ້');
       }
 
       final allTables = await repo.getTables(forceRefresh: true);
@@ -498,7 +498,7 @@ class _TableCard extends ConsumerWidget {
       if (targetOptions.isEmpty) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('ไม่มีโต๊ะว่างสำหรับแยกบิล')),
+            const SnackBar(content: Text('ບໍ່ມີໂຕະວ່າງສຳລັບແຍກບິນ')),
           );
         }
         return;
@@ -508,7 +508,7 @@ class _TableCard extends ConsumerWidget {
       final target = await showDialog<TableModel>(
         context: context,
         builder: (ctx) => SimpleDialog(
-          title: const Text('เลือกโต๊ะปลายทาง'),
+          title: const Text('ເລືອກໂຕະປາຍທາງ'),
           children: targetOptions
               .map((t) => SimpleDialogOption(
                     onPressed: () => Navigator.pop(ctx, t),
@@ -527,7 +527,7 @@ class _TableCard extends ConsumerWidget {
         context: context,
         builder: (ctx) => StatefulBuilder(
           builder: (ctx, setDialogState) => AlertDialog(
-            title: const Text('เลือกรายการที่จะแยก'),
+            title: const Text('ເລືອກລາຍການທີ່ຈະແຍກ'),
             content: SizedBox(
               width: 360,
               child: ListView(
@@ -537,7 +537,7 @@ class _TableCard extends ConsumerWidget {
                       (item) => CheckboxListTile(
                         value: selectedItemIds.contains('${item['id']}'),
                         title: Text('${item['productName']} x${item['quantity']}'),
-                        subtitle: Text('฿${item['lineTotal']}'),
+                        subtitle: Text('₭${item['lineTotal']}'),
                         onChanged: (v) {
                           setDialogState(() {
                             final id = '${item['id']}';
@@ -554,8 +554,8 @@ class _TableCard extends ConsumerWidget {
               ),
             ),
             actions: [
-              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('ยกเลิก')),
-              FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('แยก')),
+              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('ຍົກເລີກ')),
+              FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('ແຍກ')),
             ],
           ),
         ),
@@ -577,10 +577,10 @@ class _TableCard extends ConsumerWidget {
       await showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('QR URL โต๊ะ'),
+          title: const Text('QR URL ໂຕະ'),
           content: SelectableText('${qr['url'] ?? ''}'),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('ปิด')),
+            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('ປິດ')),
           ],
         ),
       );
@@ -602,7 +602,7 @@ class _TableCard extends ConsumerWidget {
             if (table.status == TableStatus.available) ...[
               ListTile(
                 leading: const Icon(Icons.point_of_sale),
-                title: const Text('เปิดออเดอร์'),
+                title: const Text('ເປີດອໍເດີ'),
                 onTap: () {
                   Navigator.pop(context);
                   openPosForTable();
@@ -610,7 +610,7 @@ class _TableCard extends ConsumerWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.event_seat),
-                title: const Text('ตั้งเป็นจอง'),
+                title: const Text('ຕັ້ງເປັນຈອງ'),
                 onTap: () async {
                   Navigator.pop(context);
                   await repo.updateStatus(table.id, 'reserved');
@@ -622,7 +622,7 @@ class _TableCard extends ConsumerWidget {
             if (table.status == TableStatus.occupied)
               ListTile(
                 leading: const Icon(Icons.receipt_long),
-                title: const Text('ดูออเดอร์'),
+                title: const Text('ເບິ່ງອໍເດີ'),
                 onTap: () {
                   Navigator.pop(context);
                   if (table.currentOrderId != null) {
@@ -633,7 +633,7 @@ class _TableCard extends ConsumerWidget {
             if (table.status == TableStatus.occupied)
               ListTile(
                 leading: const Icon(Icons.swap_horiz),
-                title: const Text('ย้ายโต๊ะ'),
+                title: const Text('ຍ້າຍໂຕະ'),
                 onTap: () async {
                   Navigator.pop(context);
                   try {
@@ -649,7 +649,7 @@ class _TableCard extends ConsumerWidget {
             if (table.status == TableStatus.occupied)
               ListTile(
                 leading: const Icon(Icons.call_merge),
-                title: const Text('รวมโต๊ะ'),
+                title: const Text('ລວມໂຕະ'),
                 onTap: () async {
                   Navigator.pop(context);
                   try {
@@ -665,7 +665,7 @@ class _TableCard extends ConsumerWidget {
             if (table.status == TableStatus.occupied)
               ListTile(
                 leading: const Icon(Icons.call_split),
-                title: const Text('แยกโต๊ะ'),
+                title: const Text('ແຍກໂຕະ'),
                 onTap: () async {
                   Navigator.pop(context);
                   try {
@@ -681,7 +681,7 @@ class _TableCard extends ConsumerWidget {
             if (table.status == TableStatus.reserved)
               ListTile(
                 leading: const Icon(Icons.check_circle_outline),
-                title: const Text('เปลี่ยนเป็นว่าง'),
+                title: const Text('ປ່ຽນເປັນວ່າງ'),
                 onTap: () async {
                   Navigator.pop(context);
                   await repo.updateStatus(table.id, 'available');
@@ -691,7 +691,7 @@ class _TableCard extends ConsumerWidget {
               ),
             ListTile(
               leading: const Icon(Icons.qr_code_2),
-              title: const Text('ดู QR โต๊ะ'),
+              title: const Text('ເບິ່ງ QR ໂຕະ'),
               onTap: () async {
                 Navigator.pop(context);
                 await showQrCode();

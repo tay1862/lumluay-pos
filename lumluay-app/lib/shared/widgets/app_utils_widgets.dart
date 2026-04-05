@@ -13,7 +13,7 @@ final currencyCodeProvider = FutureProvider<String>((ref) async {
     final currencies = await repo.getCurrencies();
     return currencies.defaultCurrency;
   } catch (_) {
-    return 'THB'; // fallback
+    return 'LAK'; // fallback
   }
 });
 
@@ -35,7 +35,7 @@ class CurrencyText extends ConsumerWidget {
   final TextStyle? style;
   final bool showSymbol;
 
-  static String format(double amount, {String currency = 'THB', bool showSymbol = true}) {
+  static String format(double amount, {String currency = 'LAK', bool showSymbol = true}) {
     final int decimals = _decimals(currency);
     final symbol = showSymbol ? _symbol(currency) : '';
     final fmt = NumberFormat('#,##0${decimals > 0 ? '.${'0' * decimals}' : ''}', 'en_US');
@@ -71,9 +71,9 @@ class CurrencyText extends ConsumerWidget {
     final code = currency ??
         (ref.watch(currencyCodeProvider).maybeWhen(
               data: (c) => c,
-              orElse: () => 'THB',
+              orElse: () => 'LAK',
             ) ??
-            'THB');
+            'LAK');
     return Text(
       format(amount, currency: code, showSymbol: showSymbol),
       style: style,
@@ -161,7 +161,7 @@ class AppErrorState extends StatelessWidget {
             OutlinedButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh),
-              label: const Text('ลองใหม่'),
+              label: const Text('ລອງໃໝ່'),
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/services/print_service.dart';
 import '../../data/receipts_repository.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -24,13 +25,32 @@ class ReceiptPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ใบเสร็จ'),
+        title: const Text('ໃບເສັດ'),
         actions: [
           receiptAsync.whenData((r) => IconButton(
                 icon: const Icon(Icons.print),
-                tooltip: 'พิมพ์ใบเสร็จ',
-                onPressed: () {
-                  // TODO: trigger printer service
+                tooltip: 'ພິມໃບເສັດ',
+                onPressed: () async {
+                  final printService = FlutterPrintService();
+                  try {
+                    await printService.printReceipt(ReceiptData(
+                      tenantName: 'LUMLUAY POS',
+                      receiptNumber: r.receiptNumber,
+                      printedAt: r.createdAt,
+                      items: [],
+                      subtotal: r.subtotal,
+                      discountAmount: r.discountAmount,
+                      taxAmount: r.taxAmount,
+                      total: r.total,
+                      paymentMethod: r.paymentMethod,
+                    ));
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('ພິມບໍ່ສຳເລັດ: $e')),
+                      );
+                    }
+                  }
                 },
               )).value ??
               const SizedBox.shrink(),
@@ -38,7 +58,7 @@ class ReceiptPage extends ConsumerWidget {
       ),
       body: receiptAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('ไม่พบใบเสร็จ: $e')),
+        error: (e, _) => Center(child: Text('ບໍ່ພົບໃບເສັດ: $e')),
         data: (receipt) => SingleChildScrollView(
           padding: EdgeInsets.all(24.w),
           child: Center(
@@ -63,28 +83,28 @@ class ReceiptPage extends ConsumerWidget {
                         textAlign: TextAlign.center,
                       ),
                       const Divider(height: 32),
-                      _receiptRow('ยอดรวม', '฿${currFmt.format(receipt.subtotal)}', theme),
+                      _receiptRow('ຍອດລວມ', '₭${currFmt.format(receipt.subtotal)}', theme),
                       if (receipt.discountAmount > 0)
                         _receiptRow(
-                          'ส่วนลด',
-                          '-฿${currFmt.format(receipt.discountAmount)}',
+                          'ສ່ວນຫຼຸດ',
+                          '-₭${currFmt.format(receipt.discountAmount)}',
                           theme,
                           isNegative: true,
                         ),
                       if (receipt.taxAmount > 0)
-                        _receiptRow('ภาษี', '฿${currFmt.format(receipt.taxAmount)}', theme),
+                        _receiptRow('ພາສີ', '₭${currFmt.format(receipt.taxAmount)}', theme),
                       if (receipt.serviceCharge > 0)
-                        _receiptRow('ค่าบริการ', '฿${currFmt.format(receipt.serviceCharge)}', theme),
+                        _receiptRow('ຄ່າບໍລິການ', '₭${currFmt.format(receipt.serviceCharge)}', theme),
                       const Divider(height: 24),
                       _receiptRow(
-                        'รวมทั้งหมด',
-                        '฿${currFmt.format(receipt.total)}',
+                        'ລວມທັງໝົດ',
+                        '₭${currFmt.format(receipt.total)}',
                         theme,
                         isTotal: true,
                       ),
                       SizedBox(height: 16.h),
                       _receiptRow(
-                        'วิธีชำระ',
+                        'ວິທີຊຳລະ',
                         _paymentLabel(receipt.paymentMethod),
                         theme,
                       ),
@@ -127,9 +147,9 @@ class ReceiptPage extends ConsumerWidget {
   String _paymentLabel(String method) {
     switch (method) {
       case 'cash':
-        return 'เงินสด';
+        return 'ເງິນສົດ';
       case 'card':
-        return 'บัตรเครดิต';
+        return 'ບັດເຄຣດິດ';
       case 'qr':
         return 'QR Code';
       default:

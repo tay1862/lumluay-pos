@@ -14,24 +14,24 @@ class ZoneManagementPage extends ConsumerWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('เพิ่มโซน'),
+        title: const Text('ເພີ່ມໂຊນ'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'ชื่อโซน')),
+            TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'ຊື່ໂຊນ')),
             SizedBox(height: 8.h),
-            TextField(controller: descCtrl, decoration: const InputDecoration(labelText: 'รายละเอียด')),
+            TextField(controller: descCtrl, decoration: const InputDecoration(labelText: 'ລາຍລະອຽດ')),
             SizedBox(height: 8.h),
             TextField(
               controller: sortCtrl,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'ลำดับ'),
+              decoration: const InputDecoration(labelText: 'ລຳດັບ'),
             ),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('ยกเลิก')),
-          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('บันทึก')),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('ຍົກເລີກ')),
+          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('ບັນທຶກ')),
         ],
       ),
     );
@@ -54,25 +54,25 @@ class ZoneManagementPage extends ConsumerWidget {
     final action = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('แก้ไขโซน'),
+        title: const Text('ແກ້ໄຂໂຊນ'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'ชื่อโซน')),
+            TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'ຊື່ໂຊນ')),
             SizedBox(height: 8.h),
-            TextField(controller: descCtrl, decoration: const InputDecoration(labelText: 'รายละเอียด')),
+            TextField(controller: descCtrl, decoration: const InputDecoration(labelText: 'ລາຍລະອຽດ')),
             SizedBox(height: 8.h),
             TextField(
               controller: sortCtrl,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'ลำดับ'),
+              decoration: const InputDecoration(labelText: 'ລຳດັບ'),
             ),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, 'delete'), child: const Text('ลบ')),
-          TextButton(onPressed: () => Navigator.pop(ctx, 'cancel'), child: const Text('ยกเลิก')),
-          FilledButton(onPressed: () => Navigator.pop(ctx, 'save'), child: const Text('บันทึก')),
+          TextButton(onPressed: () => Navigator.pop(ctx, 'delete'), child: const Text('ລົບ')),
+          TextButton(onPressed: () => Navigator.pop(ctx, 'cancel'), child: const Text('ຍົກເລີກ')),
+          FilledButton(onPressed: () => Navigator.pop(ctx, 'save'), child: const Text('ບັນທຶກ')),
         ],
       ),
     );
@@ -103,19 +103,19 @@ class ZoneManagementPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('จัดการโซน'),
+        title: const Text('ຈັດການໂຊນ'),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _createZone(context, ref),
         icon: const Icon(Icons.add),
-        label: const Text('เพิ่มโซน'),
+        label: const Text('ເພີ່ມໂຊນ'),
       ),
       body: zonesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('$e')),
         data: (zones) {
           if (zones.isEmpty) {
-            return const Center(child: Text('ยังไม่มีโซน'));
+            return const Center(child: Text('ຍັງບໍ່ມີໂຊນ'));
           }
           return ListView.separated(
             itemCount: zones.length,

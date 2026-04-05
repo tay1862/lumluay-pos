@@ -9,8 +9,8 @@ class ConfirmDialog extends StatelessWidget {
     super.key,
     required this.title,
     required this.message,
-    this.confirmLabel = 'ยืนยัน',
-    this.cancelLabel = 'ยกเลิก',
+    this.confirmLabel = 'ຍືນຍັນ',
+    this.cancelLabel = 'ຍົກເລີກ',
     this.isDanger = false,
   });
 
@@ -24,8 +24,8 @@ class ConfirmDialog extends StatelessWidget {
     BuildContext context, {
     required String title,
     required String message,
-    String confirmLabel = 'ยืนยัน',
-    String cancelLabel = 'ยกเลิก',
+    String confirmLabel = 'ຍືນຍັນ',
+    String cancelLabel = 'ຍົກເລີກ',
     bool isDanger = false,
   }) async {
     final result = await showDialog<bool>(
@@ -69,12 +69,12 @@ class ConfirmDialog extends StatelessWidget {
 // NoteDialog — free-text note input
 // ─────────────────────────────────────────────────────────────────────────────
 class NoteDialog extends StatefulWidget {
-  const NoteDialog({super.key, this.initialNote, this.title = 'เพิ่มหมายเหตุ'});
+  const NoteDialog({super.key, this.initialNote, this.title = 'ເພີ່ມໝາຍເຫດ'});
   final String? initialNote;
   final String title;
 
   static Future<String?> show(BuildContext context,
-      {String? initialNote, String title = 'เพิ่มหมายเหตุ'}) {
+      {String? initialNote, String title = 'ເພີ່ມໝາຍເຫດ'}) {
     return showDialog<String>(
       context: context,
       builder: (_) => NoteDialog(initialNote: initialNote, title: title),
@@ -112,18 +112,18 @@ class _NoteDialogState extends State<NoteDialog> {
         maxLines: 3,
         maxLength: 200,
         decoration: InputDecoration(
-          hintText: 'ระบุหมายเหตุ...',
+          hintText: 'ລະບຸໝາຍເຫດ...',
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.r)),
         ),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('ยกเลิก'),
+          child: const Text('ຍົກເລີກ'),
         ),
         FilledButton(
           onPressed: () => Navigator.pop(context, _ctrl.text.trim()),
-          child: const Text('บันทึก'),
+          child: const Text('ບັນທຶກ'),
         ),
       ],
     );
@@ -134,11 +134,11 @@ class _NoteDialogState extends State<NoteDialog> {
 // VoidReasonDialog — Void order / item with reason text
 // ─────────────────────────────────────────────────────────────────────────────
 class VoidReasonDialog extends StatefulWidget {
-  const VoidReasonDialog({super.key, this.title = 'ยกเลิกรายการ'});
+  const VoidReasonDialog({super.key, this.title = 'ຍົກເລີກລາຍການ'});
   final String title;
 
   static Future<String?> show(BuildContext context,
-      {String title = 'ยกเลิกรายการ'}) {
+      {String title = 'ຍົກເລີກລາຍການ'}) {
     return showDialog<String>(
       context: context,
       builder: (_) => VoidReasonDialog(title: title),
@@ -154,11 +154,11 @@ class _VoidReasonDialogState extends State<VoidReasonDialog> {
   String? _selected;
 
   final List<String> _presets = [
-    'ลูกค้าเปลี่ยนใจ',
-    'สั่งผิด',
-    'สินค้าหมด',
-    'ทดสอบระบบ',
-    'อื่นๆ',
+    'ລູກຄ້າປ່ຽນໃຈ',
+    'ສັ່ງຜິດ',
+    'ສິນຄ້າໝົດ',
+    'ທົດສອບລະບົບ',
+    'ອື່ນໆ',
   ];
 
   @override
@@ -177,7 +177,7 @@ class _VoidReasonDialogState extends State<VoidReasonDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('เลือกเหตุผล',
+          Text('ເລືອກເຫດຜົນ',
               style: TextStyle(fontSize: 12.sp, color: Colors.black54)),
           SizedBox(height: 8.h),
           Wrap(
@@ -191,8 +191,8 @@ class _VoidReasonDialogState extends State<VoidReasonDialog> {
                     onSelected: (v) {
                       setState(() {
                         _selected = v ? p : null;
-                        if (v && p != 'อื่นๆ') _ctrl.text = p;
-                        if (v && p == 'อื่นๆ') _ctrl.clear();
+                        if (v && p != 'ອື່ນໆ') _ctrl.text = p;
+                        if (v && p == 'ອື່ນໆ') _ctrl.clear();
                       });
                     },
                   ),
@@ -204,7 +204,7 @@ class _VoidReasonDialogState extends State<VoidReasonDialog> {
             controller: _ctrl,
             maxLines: 2,
             decoration: InputDecoration(
-              hintText: 'หมายเหตุเพิ่มเติม...',
+              hintText: 'ໝາຍເຫດເພີ່ມເຕີມ...',
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(8.r)),
             ),
@@ -213,7 +213,7 @@ class _VoidReasonDialogState extends State<VoidReasonDialog> {
       ),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(context), child: const Text('ยกเลิก')),
+            onPressed: () => Navigator.pop(context), child: const Text('ຍົກເລີກ')),
         FilledButton(
           onPressed: () {
             final reason = _ctrl.text.trim().isNotEmpty
@@ -222,7 +222,7 @@ class _VoidReasonDialogState extends State<VoidReasonDialog> {
             Navigator.pop(context, reason);
           },
           style: FilledButton.styleFrom(backgroundColor: Colors.red.shade600),
-          child: const Text('ยืนยัน Void'),
+          child: const Text('ຍືນຍັນ Void'),
         ),
       ],
     );
