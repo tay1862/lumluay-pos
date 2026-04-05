@@ -20,7 +20,7 @@ class ProductListView extends StatelessWidget {
       return const Center(child: Text('ບໍ່ມີສິນຄ້າ'));
     }
 
-    final money = NumberFormat('#,##0.00', 'th_TH');
+    final money = NumberFormat('#,##0.00', 'lo');
 
     return ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),

@@ -96,7 +96,7 @@ export const orders = pgTable(
     couponId: uuid('coupon_id'),
     // Rounding
     roundingAmount: numeric('rounding_amount', { precision: 18, scale: 4 }).default('0'),
-    currency: varchar('currency', { length: 3 }).default('THB'),
+    currency: varchar('currency', { length: 3 }).default('LAK'),
     shiftId: uuid('shift_id'),
     waiterId: uuid('waiter_id').references(() => users.id),
     openedAt: timestamp('opened_at', { withTimezone: true }),

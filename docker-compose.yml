@@ -31,7 +31,7 @@ services:
       POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-password}
       POSTGRESQL_DATABASE: lumluay_db
       PGBOUNCER_MAX_CLIENT_CONN: 100
-      PGBOUNCER_POOL_MODE: transaction
+      PGBOUNCER_POOL_MODE: session
     ports:
       - '5433:6432'
     depends_on:

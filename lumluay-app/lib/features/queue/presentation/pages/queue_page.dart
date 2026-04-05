@@ -125,7 +125,7 @@ class _QueueCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final timeFmt = DateFormat('HH:mm', 'th_TH');
+    final timeFmt = DateFormat('HH:mm', 'lo');
 
     return Container(
       padding: EdgeInsets.all(14.w),

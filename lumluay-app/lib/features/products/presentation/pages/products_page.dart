@@ -66,7 +66,7 @@ class _ProductsTabState extends ConsumerState<_ProductsTab> {
     final productsAsync = ref.watch(productsListProvider);
     final categoriesAsync = ref.watch(categoriesListProvider);
     final selectedCat = ref.watch(productsCategoryFilterProvider);
-    final fmt = NumberFormat('#,##0.00', 'th_TH');
+    final fmt = NumberFormat('#,##0.00', 'lo');
 
     return Column(
       children: [

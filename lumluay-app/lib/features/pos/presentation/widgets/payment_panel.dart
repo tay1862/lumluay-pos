@@ -319,7 +319,7 @@ class _PaymentPanelState extends ConsumerState<PaymentPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final currencyFmt = NumberFormat('#,##0.00', 'th_TH');
+    final currencyFmt = NumberFormat('#,##0.00', 'lo');
     final method = ref.watch(_payMethodProvider);
 
     if (_result != null) {
@@ -637,7 +637,7 @@ class _MultiCurrencyInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fmt = NumberFormat('#,##0.00', 'th_TH');
+    final fmt = NumberFormat('#,##0.00', 'lo');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -708,7 +708,7 @@ class _SplitBillPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fmt = NumberFormat('#,##0.00', 'th_TH');
+    final fmt = NumberFormat('#,##0.00', 'lo');
     return Container(
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
@@ -746,7 +746,7 @@ class _SplitBillPanel extends StatelessWidget {
                         style: TextStyle(fontSize: 12.sp),
                       ),
                     ),
-                    Text('THB ${fmt.format(p.baseAmount)}',
+                    Text('LAK ${fmt.format(p.baseAmount)}',
                         style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600)),
                   ],
                 ),
@@ -773,7 +773,7 @@ class _ChangeDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fmt = NumberFormat('#,##0.00', 'th_TH');
+    final fmt = NumberFormat('#,##0.00', 'lo');
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       decoration: BoxDecoration(
@@ -842,7 +842,7 @@ class _SuccessView extends StatelessWidget {
   final VoidCallback onDone;
 
   void _showReceiptPreview(BuildContext context) {
-    final currencyFmt = NumberFormat('#,##0.00', 'th_TH');
+    final currencyFmt = NumberFormat('#,##0.00', 'lo');
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
@@ -887,7 +887,7 @@ class _SuccessView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyFmt = NumberFormat('#,##0.00', 'th_TH');
+    final currencyFmt = NumberFormat('#,##0.00', 'lo');
     final total = (result['total'] as num?)?.toDouble() ?? 0;
     final paid = (result['paid'] as num?)?.toDouble() ?? 0;
     final change = (result['change'] as num?)?.toDouble() ?? 0;

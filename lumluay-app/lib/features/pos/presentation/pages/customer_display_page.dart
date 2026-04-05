@@ -73,7 +73,7 @@ class _CartItemRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currencyCode = ref.watch(currencyCodeProvider).maybeWhen(
-      data: (c) => c, orElse: () => 'THB');
+      data: (c) => c, orElse: () => 'LAK');
     final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h),
@@ -103,7 +103,7 @@ class _TotalsPanel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currencyCode = ref.watch(currencyCodeProvider).maybeWhen(
-      data: (c) => c, orElse: () => 'THB');
+      data: (c) => c, orElse: () => 'LAK');
     final theme = Theme.of(context);
     return Container(
       width: double.infinity,

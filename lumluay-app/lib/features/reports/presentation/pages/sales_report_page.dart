@@ -19,7 +19,7 @@ class SalesReportPage extends ConsumerWidget {
     final range = ref.watch(_salesDateRangeProvider);
     final summaryAsync = ref.watch(reportsSummaryProvider(range));
     final dailyAsync = ref.watch(reportsDailyProvider(range));
-    final fmtDate = DateFormat('d MMM yyyy', 'th_TH');
+    final fmtDate = DateFormat('d MMM yyyy', 'lo');
     final fmtMoney = NumberFormat('#,##0.00');
 
     return Scaffold(
@@ -137,7 +137,7 @@ class SalesReportPage extends ConsumerWidget {
                                   children: [
                                     Expanded(
                                         child: Text(
-                                      DateFormat('EEE d MMM', 'th_TH')
+                                        DateFormat('EEE d MMM', 'lo')
                                           .format(date),
                                       style: TextStyle(fontSize: 13.sp),
                                     )),

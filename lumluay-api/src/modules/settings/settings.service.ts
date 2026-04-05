@@ -170,8 +170,8 @@ export class SettingsService {
     const exchangeRates = extra.exchangeRates ?? {};
 
     return {
-      defaultCurrency: currencies.defaultCurrency ?? 'THB',
-      enabledCurrencies: currencies.enabledCurrencies ?? ['THB'],
+      defaultCurrency: currencies.defaultCurrency ?? 'LAK',
+      enabledCurrencies: currencies.enabledCurrencies ?? ['LAK'],
       decimals: currencies.decimals ?? { THB: 2, LAK: 0, USD: 2 },
       exchangeRates,
     };
@@ -201,8 +201,8 @@ export class SettingsService {
 
     const extra = this.normalizeExtra(updated.extra);
     return {
-      defaultCurrency: extra.currencies?.defaultCurrency ?? 'THB',
-      enabledCurrencies: extra.currencies?.enabledCurrencies ?? ['THB'],
+      defaultCurrency: extra.currencies?.defaultCurrency ?? 'LAK',
+      enabledCurrencies: extra.currencies?.enabledCurrencies ?? ['LAK'],
       decimals: extra.currencies?.decimals ?? { THB: 2, LAK: 0, USD: 2 },
     };
   }
@@ -378,11 +378,11 @@ export class SettingsService {
     }
 
     const sampleCategories = [
-      { name: 'อาหารจานหลัก', color: '#EF4444' },
-      { name: 'อาหารทานเล่น', color: '#F59E0B' },
-      { name: 'เครื่องดื่ม', color: '#3B82F6' },
-      { name: 'ของหวาน', color: '#A855F7' },
-      { name: 'เมนูแนะนำ', color: '#10B981' },
+      { name: 'ອາຫານຫຼັກ', color: '#EF4444' },
+      { name: 'ຂອງກິນຫຼິ້ນ', color: '#F59E0B' },
+      { name: 'ເຄື່ອງດື່ມ', color: '#3B82F6' },
+      { name: 'ຂອງຫວານ', color: '#A855F7' },
+      { name: 'ເມນູແນະນຳ', color: '#10B981' },
     ];
 
     const insertedCategories = await this.db
@@ -401,26 +401,26 @@ export class SettingsService {
       insertedCategories.find((c) => c.name === name)?.id ?? null;
 
     const sampleProducts = [
-      ['ข้าวกะเพราหมูสับ', 65, 'อาหารจานหลัก'],
-      ['ข้าวผัดทะเล', 85, 'อาหารจานหลัก'],
-      ['ผัดไทยกุ้งสด', 90, 'อาหารจานหลัก'],
-      ['ต้มยำกุ้งน้ำข้น', 120, 'อาหารจานหลัก'],
-      ['ข้าวมันไก่', 60, 'อาหารจานหลัก'],
-      ['ปีกไก่ทอดน้ำปลา', 75, 'อาหารทานเล่น'],
-      ['เฟรนช์ฟรายส์', 55, 'อาหารทานเล่น'],
-      ['หมูสะเต๊ะ', 80, 'อาหารทานเล่น'],
-      ['ยำวุ้นเส้น', 95, 'อาหารทานเล่น'],
-      ['นักเก็ตไก่', 69, 'อาหารทานเล่น'],
-      ['น้ำเปล่า', 15, 'เครื่องดื่ม'],
-      ['โค้ก', 25, 'เครื่องดื่ม'],
-      ['ชาเย็น', 35, 'เครื่องดื่ม'],
-      ['กาแฟเย็น', 45, 'เครื่องดื่ม'],
-      ['น้ำส้มคั้นสด', 50, 'เครื่องดื่ม'],
-      ['ไอศกรีมกะทิ', 49, 'ของหวาน'],
-      ['บัวลอยไข่หวาน', 55, 'ของหวาน'],
-      ['เฉาก๊วยนมสด', 40, 'ของหวาน'],
-      ['ข้าวเหนียวมะม่วง', 89, 'ของหวาน'],
-      ['เค้กมะพร้าว', 75, 'ของหวาน'],
+      ['ເຂົ້າກະເພົາໝູສັບ', 65, 'ອາຫານຫຼັກ'],
+      ['ເຂົ້າຜັດທະເລ', 85, 'ອາຫານຫຼັກ'],
+      ['ຜັດໄທກຸ້ງສົດ', 90, 'ອາຫານຫຼັກ'],
+      ['ຕົ້ມຍຳກຸ້ງນ້ຳຂົ້ນ', 120, 'ອາຫານຫຼັກ'],
+      ['ເຂົ້າມັນໄກ່', 60, 'ອາຫານຫຼັກ'],
+      ['ປີກໄກ່ທອດນ້ຳປາ', 75, 'ຂອງກິນຫຼິ້ນ'],
+      ['ຟຣັນຊ໌ຟຣາຍ', 55, 'ຂອງກິນຫຼິ້ນ'],
+      ['ໝູສະເຕະ', 80, 'ຂອງກິນຫຼິ້ນ'],
+      ['ຍຳວຸ້ນເສັ້ນ', 95, 'ຂອງກິນຫຼິ້ນ'],
+      ['ນັກເກັດໄກ່', 69, 'ຂອງກິນຫຼິ້ນ'],
+      ['ນ້ຳເປົ່າ', 15, 'ເຄື່ອງດື່ມ'],
+      ['ໂຄ້ກ', 25, 'ເຄື່ອງດື່ມ'],
+      ['ຊາເຢັນ', 35, 'ເຄື່ອງດື່ມ'],
+      ['ກາເຟເຢັນ', 45, 'ເຄື່ອງດື່ມ'],
+      ['ນ້ຳສົ້ມຄັ້ນສົດ', 50, 'ເຄື່ອງດື່ມ'],
+      ['ໄອສະກຣີມກະທິ', 49, 'ຂອງຫວານ'],
+      ['ບົວລອຍໄຂ່ຫວານ', 55, 'ຂອງຫວານ'],
+      ['ເຉົ້າກ້ວຍນົມສົດ', 40, 'ຂອງຫວານ'],
+      ['ເຂົ້າໜຽວໝາກມ່ວງ', 89, 'ຂອງຫວານ'],
+      ['ເຄັກໝາກພ້າວ', 75, 'ຂອງຫວານ'],
     ] as const;
 
     const insertedProducts = await this.db

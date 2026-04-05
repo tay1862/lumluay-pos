@@ -301,8 +301,8 @@ class CurrencySettings {
     final rawDecimals = j['decimals'] as Map<String, dynamic>? ?? {};
     final rawRates = j['exchangeRates'] as Map<String, dynamic>? ?? {};
     return CurrencySettings(
-      defaultCurrency: j['defaultCurrency']?.toString() ?? 'THB',
-      enabledCurrencies: ((j['enabledCurrencies'] as List?) ?? ['THB'])
+      defaultCurrency: j['defaultCurrency']?.toString() ?? 'LAK',
+      enabledCurrencies: ((j['enabledCurrencies'] as List?) ?? ['LAK'])
           .map((e) => e.toString())
           .toList(),
       decimals: rawDecimals.map(

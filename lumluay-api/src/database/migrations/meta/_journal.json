@@ -36,6 +36,13 @@
       "when": 1743811205000,
       "tag": "20260405_005_account_lockout",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1743811206000,
+      "tag": "20260405_006_phase1a_defaults_and_rls",
+      "breakpoints": true
     }
   ]
 }

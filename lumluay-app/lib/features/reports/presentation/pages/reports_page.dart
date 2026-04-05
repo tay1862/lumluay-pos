@@ -27,7 +27,7 @@ class ReportsPage extends ConsumerWidget {
     final summaryAsync = ref.watch(reportsSummaryProvider(range));
     final dailyAsync = ref.watch(reportsDailyProvider(range));
     final topAsync = ref.watch(reportsTopProductsProvider(range));
-    final fmt = DateFormat('d MMM yyyy', 'th_TH');
+    final fmt = DateFormat('d MMM yyyy', 'lo');
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),

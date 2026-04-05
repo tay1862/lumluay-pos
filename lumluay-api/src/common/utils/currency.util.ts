@@ -21,7 +21,7 @@ function getMeta(currency: string): CurrencyMeta {
 /** Format a numeric amount as a currency string */
 export function formatCurrency(
   amount: number,
-  currency: CurrencyCode = 'THB',
+  currency: CurrencyCode = 'LAK',
   options?: { showSymbol?: boolean },
 ): string {
   const meta = getMeta(currency);
@@ -48,7 +48,7 @@ export function convertCurrency(
   if (fromCurrency === toCurrency) return amount;
   const fromRate = rates[fromCurrency] ?? 1;
   const toRate = rates[toCurrency] ?? 1;
-  // Convert via base currency (rates are relative to THB by convention)
+  // Convert via the supplied base-currency rate map.
   return (amount / fromRate) * toRate;
 }
 

@@ -332,9 +332,18 @@ export class OrdersService {
     if (order.status !== 'open') {
       throw new BadRequestException(`Order is already ${order.status}`);
     }
+    const extra = {
+      ...(order.extra as Record<string, unknown> | null ?? {}),
+      confirmedAt: new Date().toISOString(),
+    };
     const [updated] = await this.db
       .update(orders)
-      .set({ status: 'open', updatedAt: new Date() })
+      .set({
+        status: 'open',
+        openedAt: order.openedAt ?? new Date(),
+        extra,
+        updatedAt: new Date(),
+      })
       .where(eq(orders.id, id))
       .returning();
     return updated;

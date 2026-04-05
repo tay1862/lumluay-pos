@@ -13,7 +13,7 @@ class DashboardPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final summaryAsync = ref.watch(dashboardSummaryProvider);
     final hourlyAsync = ref.watch(hourlyProvider);
-    final fmt = NumberFormat('#,##0', 'th_TH');
+    final fmt = NumberFormat('#,##0', 'lo');
     final today = DateFormat('EEEE, d MMMM y').format(DateTime.now());
     final isDark = Theme.of(context).brightness == Brightness.dark;
 

@@ -49,8 +49,9 @@ export class TenantRlsInterceptor implements NestInterceptor {
     //   is_local = true  → transaction-scoped (preferred, but requires explicit BEGIN)
     //
     // We use false here because Drizzle does not wrap every query in an explicit
-    // transaction.  The connection pool (postgres-js) assigns one connection per
-    // concurrent request, so session-scoped settings are safe in practice.
+    // transaction. This interceptor therefore requires either direct PostgreSQL
+    // connections or session pooling. Transaction pooling is not compatible with
+    // session-scoped RLS context.
     return new Observable((subscriber) => {
       this.db
         .execute(sql`SELECT set_config('app.tenant_id', ${tenantId}, false)`)

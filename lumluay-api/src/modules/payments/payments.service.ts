@@ -322,8 +322,8 @@ export class PaymentsService {
       if (lowThreshold > 0 && balanceAfter <= lowThreshold) {
         await this.notificationsService.create(tenantId, {
           type: 'low_stock',
-          title: 'สินค้าใกล้หมด',
-          body: `${product.name} เหลือ ${balanceAfter} ${product.unit ?? 'ชิ้น'}`,
+          title: 'ສິນຄ້າໃກ້ໝົດ',
+          body: `${product.name} ເຫຼືອ ${balanceAfter} ${product.unit ?? 'ຊິ້ນ'}`,
           data: { productId: item.productId, quantity: balanceAfter },
         });
       }

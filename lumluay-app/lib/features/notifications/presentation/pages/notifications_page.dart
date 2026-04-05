@@ -97,7 +97,7 @@ class _NotificationCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final timeFmt = DateFormat('d MMM HH:mm', 'th_TH');
+    final timeFmt = DateFormat('d MMM HH:mm', 'lo');
 
     return Dismissible(
       key: Key(notification.id),

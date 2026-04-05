@@ -17,7 +17,7 @@ class ProductsReportPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final range = ref.watch(_productReportDateRangeProvider);
     final topAsync = ref.watch(reportsTopProductsProvider(range));
-    final fmtDate = DateFormat('d MMM yyyy', 'th_TH');
+    final fmtDate = DateFormat('d MMM yyyy', 'lo');
     final fmtMoney = NumberFormat('#,##0.00');
     final fmtQty = NumberFormat('#,##0');
 

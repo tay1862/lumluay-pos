@@ -149,7 +149,7 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
     await repo.updateCurrencies(
       CurrencySettings(
         defaultCurrency: _defaultCurrency,
-        enabledCurrencies: {_defaultCurrency, 'THB'}.toList(),
+        enabledCurrencies: {_defaultCurrency, 'LAK'}.toList(),
         decimals: const {'THB': 2, 'LAK': 0, 'USD': 2},
         exchangeRates: const {},
       ),

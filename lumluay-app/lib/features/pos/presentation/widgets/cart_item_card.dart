@@ -12,7 +12,7 @@ class CartItemCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currencyFmt = NumberFormat('#,##0.00', 'th_TH');
+    final currencyFmt = NumberFormat('#,##0.00', 'lo');
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
       child: Row(

@@ -53,7 +53,7 @@ export const payments = pgTable(
     amount: numeric('amount', { precision: 18, scale: 4 }).notNull(),
     tendered: numeric('tendered', { precision: 18, scale: 4 }),
     change: numeric('change', { precision: 18, scale: 4 }),
-    currency: varchar('currency', { length: 3 }).default('THB'),
+    currency: varchar('currency', { length: 3 }).default('LAK'),
     exchangeRate: numeric('exchange_rate', { precision: 18, scale: 6 }),
     amountInBase: numeric('amount_in_base', { precision: 18, scale: 4 }),
     reference: varchar('reference', { length: 255 }),

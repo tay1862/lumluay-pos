@@ -119,7 +119,7 @@ class _ModifierDialogState extends ConsumerState<ModifierDialog> {
   // Map: groupId → Set of selected optionIds
   final Map<String, Set<String>> _selected = {};
 
-  final _fmt = NumberFormat('#,##0.00', 'th_TH');
+  final _fmt = NumberFormat('#,##0.00', 'lo');
 
   @override
   void initState() {
@@ -455,7 +455,7 @@ class _OptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fmt = NumberFormat('#,##0.00', 'th_TH');
+    final fmt = NumberFormat('#,##0.00', 'lo');
     return GestureDetector(
       onTap: onToggle,
       child: Container(

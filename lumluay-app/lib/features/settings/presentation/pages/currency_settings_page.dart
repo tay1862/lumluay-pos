@@ -47,7 +47,7 @@ class _CurrencySettingsPageState extends ConsumerState<CurrencySettingsPage> {
   ];
 
   late List<_CurrencyEntry> _entries;
-  String _baseCurrency = 'THB';
+  String _baseCurrency = 'LAK';
   bool _didLoad = false;
   bool _loading = true;
   bool _saving = false;
@@ -60,8 +60,8 @@ class _CurrencySettingsPageState extends ConsumerState<CurrencySettingsPage> {
         code: c.$1,
         symbol: c.$2,
         name: c.$3,
-        enabled: c.$1 == 'THB',
-        rate: c.$1 == 'THB' ? 1.0 : 0.0,
+        enabled: c.$1 == 'LAK',
+        rate: c.$1 == 'LAK' ? 1.0 : 0.0,
       );
     }).toList();
   }

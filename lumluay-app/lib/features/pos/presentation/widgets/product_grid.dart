@@ -32,7 +32,7 @@ class ProductGrid extends StatelessWidget {
       );
     }
 
-    final currencyFmt = NumberFormat('#,##0.00', 'th_TH');
+    final currencyFmt = NumberFormat('#,##0.00', 'lo');
 
     return GridView.builder(
       padding: EdgeInsets.all(12.w),

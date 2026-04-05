@@ -29,10 +29,10 @@ export const tenants = pgTable(
     taxId: varchar('tax_id', { length: 50 }),
     defaultCurrency: varchar('default_currency', { length: 3 })
       .notNull()
-      .default('THB'),
+      .default('LAK'),
     defaultLocale: varchar('default_locale', { length: 5 })
       .notNull()
-      .default('th'),
+      .default('lo'),
     timezone: varchar('timezone', { length: 50 })
       .notNull()
       .default('Asia/Bangkok'),

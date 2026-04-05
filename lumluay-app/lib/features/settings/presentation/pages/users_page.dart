@@ -70,7 +70,7 @@ class _UserCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dateFmt = DateFormat('d MMM y', 'th_TH');
+    final dateFmt = DateFormat('d MMM y', 'lo');
 
     return Container(
       padding: EdgeInsets.all(14.w),

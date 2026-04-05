@@ -62,8 +62,8 @@ export class StockAlertJob {
 
       await this.notificationsService.create(item.tenantId, {
         type: 'low_stock',
-        title: 'สินค้าใกล้หมด',
-        body: `${item.product.name} เหลือ ${Number(item.quantity)} ${item.product.unit ?? 'ชิ้น'} (ต่ำกว่าขั้นต่ำ ${Number(item.lowStockThreshold)})`,
+        title: 'ສິນຄ້າໃກ້ໝົດ',
+        body: `${item.product.name} ເຫຼືອ ${Number(item.quantity)} ${item.product.unit ?? 'ຊິ້ນ'} (ຕ່ຳກວ່າຄ່າຂັ້ນຕ່ຳ ${Number(item.lowStockThreshold)})`,
         data: {
           productId: item.productId,
           quantity: Number(item.quantity),

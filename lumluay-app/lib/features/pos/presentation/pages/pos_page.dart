@@ -805,7 +805,7 @@ class _MobileCartBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final money = NumberFormat('#,##0.00', 'th_TH');
+    final money = NumberFormat('#,##0.00', 'lo');
     return SafeArea(
       top: false,
       child: Container(
